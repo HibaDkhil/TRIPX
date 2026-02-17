@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.control.Separator?>
+
+<AnchorPane prefHeight="740.0" prefWidth="1040.0" style="-fx-background-color: #F4F6FA;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.admin.SettingsController">
+
+    <VBox spacing="25" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0" style="-fx-padding: 30;">
+
+        <!-- HEADER -->
+        <HBox alignment="CENTER_LEFT" spacing="15">
+            <Label text="⚙️" style="-fx-font-size: 40px;" />
+            <VBox>
+                <Label text="Settings" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-font-family: 'Poppins'; -fx-text-fill: #2c3e50;" />
+                <Label text="Manage your account, claims, and platform preferences" style="-fx-font-size: 14px; -fx-font-family: 'Poppins'; -fx-text-fill: #7f8c8d;" />
+            </VBox>
+        </HBox>
+
+        <!-- TAB PANE -->
+        <TabPane tabClosingPolicy="UNAVAILABLE" style="-fx-background-color: transparent; -fx-font-family: 'Poppins';" VBox.vgrow="ALWAYS">
+
+            <!-- ============ TAB 1: MY CLAIMS ============ -->
+            <Tab text="📩 My Claims">
+                <content>
+                    <HBox spacing="30" style="-fx-padding: 20;">
+
+                        <!-- LEFT SIDE: SUBMIT CLAIM FORM -->
+                        <VBox spacing="20" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);" HBox.hgrow="ALWAYS" prefWidth="500">
+
+                            <Label text="Submit a New Claim" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: 'Poppins'; -fx-text-fill: #2c3e50;" />
+
+                            <GridPane hgap="15" vgap="15">
+                                <Label text="Subject:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <TextField fx:id="claimSubjectField" promptText="Brief summary of your issue" prefWidth="350" style="-fx-background-radius: 10; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                                <Label text="Category:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                <ComboBox fx:id="claimCategoryCombo" prefWidth="350" promptText="Select category" style="-fx-background-radius: 10; -fx-padding: 5; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                <Label text="Priority:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                <HBox spacing="20" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <Button fx:id="priorityLowBtn" text="Low" style="-fx-background-color: #4caf50; -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8 20;" />
+                                    <Button fx:id="priorityMediumBtn" text="Medium" style="-fx-background-color: #ff9800; -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8 20;" />
+                                    <Button fx:id="priorityHighBtn" text="High" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8 20;" />
+                                    <Button fx:id="priorityUrgentBtn" text="Urgent" style="-fx-background-color: #9c27b0; -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8 20;" />
+                                </HBox>
+
+                                <Label text="Message:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                <TextArea fx:id="claimMessageArea" prefHeight="150" prefWidth="350" promptText="Describe your issue in detail..." wrapText="true" style="-fx-background-radius: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            </GridPane>
+
+                            <HBox spacing="15" alignment="CENTER_RIGHT">
+                                <Button fx:id="attachFileBtn" text="📎 Attach File" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 10 20;" />
+                                <Button fx:id="submitClaimBtn" text="📨 SUBMIT CLAIM" style="-fx-background-color: #4cccad; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 10 30;" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- RIGHT SIDE: MY TICKETS -->
+                        <VBox spacing="20" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);" HBox.hgrow="ALWAYS" prefWidth="400">
+                            <Label text="📋 My Recent Tickets" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: 'Poppins'; -fx-text-fill: #2c3e50;" />
+
+                            <TableView fx:id="ticketsTable" prefHeight="300" style="-fx-background-radius: 10;">
+                                <columns>
+                                    <TableColumn fx:id="ticketIdColumn" text="ID" prefWidth="50" />
+                                    <TableColumn fx:id="ticketSubjectColumn" text="Subject" prefWidth="150" />
+                                    <TableColumn fx:id="ticketStatusColumn" text="Status" prefWidth="80" />
+                                    <TableColumn fx:id="ticketPriorityColumn" text="Priority" prefWidth="70" />
+                                    <TableColumn fx:id="ticketDateColumn" text="Date" prefWidth="100" />
+                                </columns>
+                            </TableView>
+
+                            <Button text="View All Tickets →" style="-fx-background-color: transparent; -fx-text-fill: #4cccad; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand;" alignment="CENTER_RIGHT" />
+                        </VBox>
+                    </HBox>
+                </content>
+            </Tab>
+
+            <!-- ============ TAB 3: ADMIN PANEL (SUPER_ADMIN ONLY) ============ -->
+            <Tab fx:id="adminPanelTab" text="🛡️ Admin Panel">
+                <content>
+                    <VBox spacing="20" style="-fx-padding: 20;">
+
+                        <Label text="Super Admin Controls" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-font-family: 'Poppins'; -fx-text-fill: #2c3e50;" />
+                        <Label text="Manage platform, roles, and view all claims" style="-fx-font-size: 14px; -fx-font-family: 'Poppins'; -fx-text-fill: #7f8c8d;" />
+
+                        <HBox spacing="20">
+
+                            <!-- ALL CLAIMS TABLE -->
+                            <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);" HBox.hgrow="ALWAYS">
+                                <Label text="📩 All Admin Claims" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" />
+
+                                <TableView fx:id="allClaimsTable" prefHeight="300">
+                                    <columns>
+                                        <TableColumn fx:id="allClaimIdColumn" text="ID" prefWidth="50" />
+                                        <TableColumn fx:id="allClaimAdminColumn" text="Admin" prefWidth="120" />
+                                        <TableColumn fx:id="allClaimSubjectColumn" text="Subject" prefWidth="150" />
+                                        <TableColumn fx:id="allClaimStatusColumn" text="Status" prefWidth="80" />
+                                        <TableColumn fx:id="allClaimPriorityColumn" text="Priority" prefWidth="70" />
+                                        <TableColumn fx:id="allClaimDateColumn" text="Date" prefWidth="100" />
+                                        <TableColumn fx:id="allClaimActionColumn" text="Action" prefWidth="100" />
+                                    </columns>
+                                </TableView>
+                            </VBox>
+
+                            <!-- ROLE MANAGEMENT -->
+                            <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);" prefWidth="300">
+                                <Label text="👥 Role Management" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" />
+
+                                <Button text="View All Admins" style="-fx-background-color: #4cccad; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12;" prefWidth="250" />
+                                <Button text="Add New Admin" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12;" prefWidth="250" />
+                                <Button text="Audit Logs" style="-fx-background-color: #9c27b0; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12;" prefWidth="250" />
+
+                                <Separator />
+
+                                <Label text="⚙️ System Settings" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" />
+                                <Button text="Maintenance Mode" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12;" prefWidth="250" />
+                                <Button text="Backup Database" style="-fx-background-color: #ff9800; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12;" prefWidth="250" />
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </content>
+            </Tab>
+        </TabPane>
+    </VBox>
+</AnchorPane>

@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="profile-root" stylesheets="/css/style.css, /css/profile.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.user.ProfileController">
+    
+    <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        
+        <!-- Left Side Rail -->
+        <VBox prefWidth="300.0" spacing="10.0" styleClass="profile-rail">
+            <padding>
+                <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
+            </padding>
+            
+            <!-- Logo Area -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 0 0 20 0;">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/logo.png" /> 
+                    </image>
+                </ImageView>
+                <Label styleClass="logo-text-small" text="TRIPX" />
+            </HBox>
+            
+            <Button onAction="#handleBack" styleClass="rail-back-button" text="← Back to Home" />
+            
+            <Separator style="-fx-padding: 10 0 10 0;" />
+            
+            <Label styleClass="rail-header" text="Settings" />
+            
+            <VBox spacing="5.0">
+                <Button fx:id="btnPersonalInfo" maxWidth="Infinity" onAction="#showPersonalInfo" styleClass="rail-item-active" text="Personal info" />
+                <Button fx:id="btnSecurity" maxWidth="Infinity" styleClass="rail-item" text="Account security" />
+                <Button fx:id="btnFavorites" maxWidth="Infinity" styleClass="rail-item" text="Favorites" />
+                <Button fx:id="btnHistory" maxWidth="Infinity" styleClass="rail-item" text="Recently viewed" />
+                <Button fx:id="btnBookings" maxWidth="Infinity" styleClass="rail-item" text="Bookings" />
+                <Button fx:id="btnPreferences" maxWidth="Infinity" onAction="#showSearchPreferences" styleClass="rail-item" text="Search preferences" />
+                <Button fx:id="btnNotifications" maxWidth="Infinity" styleClass="rail-item" text="Notifications" />
+            </VBox>
+        </VBox>
+        
+        <!-- Right Content Area (StackPane to switch views) -->
+        <StackPane fx:id="contentArea" HBox.hgrow="ALWAYS">
+            <padding>
+                <Insets bottom="40.0" left="50.0" right="50.0" top="40.0" />
+            </padding>
+
+            <!-- VIEW 1: PERSONAL INFO -->
+            <VBox fx:id="personalInfoView" spacing="30.0" visible="true" style="-fx-alignment: TOP_LEFT;">
+                
+                <!-- Header -->
+                <VBox spacing="5.0">
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <Label styleClass="page-title" text="Personal info" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <!-- Collapsible Chevron Placeholder -->
+                        <Label text="▼" style="-fx-text-fill: grey; -fx-font-size: 14px;" /> 
+                    </HBox>
+                    <Label styleClass="page-subtitle" text="Check or change your personal information." />
+                </VBox>
+
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-padding: 0;">
+                    <content>
+                        <VBox spacing="30.0" style="-fx-background-color: transparent;">
+
+                             <!-- Avatar Selection Section -->
+                            <VBox styleClass="white-card">
+                                <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 0 0 15 0;">
+                                    <Label styleClass="card-header" text="Choose avatar" />
+                                    <Label styleClass="card-subtitle" text="Choose an avatar that represents you." />
+                                </HBox>
+                                
+                                <ScrollPane fitToHeight="true" vbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-padding: 10 0;">
+                                    <content>
+                                        <HBox fx:id="avatarContainer" spacing="15.0" alignment="CENTER_LEFT">
+                                            <!-- "Your Avatar" Placeholder -->
+                                             <VBox alignment="CENTER" spacing="5.0">
+                                                <StackPane styleClass="avatar-circle-large">
+                                                    <Label fx:id="currentAvatarLabel" text="H" styleClass="avatar-initial" />
+                                                </StackPane>
+                                                <Label text="Your avatar" styleClass="avatar-caption"/>
+                                            </VBox>
+                                            
+                                            <!-- Separator -->
+                                            <Separator orientation="VERTICAL" />
+
+                                            <!-- Add Button -->
+                                             <StackPane styleClass="avatar-circle-add">
+                                                <Label text="+" style="-fx-text-fill: #1a1a2e; -fx-font-size: 24px;" />
+                                            </StackPane>
+
+                                            <!-- Avatars (Dynamically populated or static for now) -->
+                                            <!-- Example Avatars -->
+                                            <StackPane styleClass="avatar-circle-option" style="-fx-background-color: #FFCDD2;" />
+                                            <StackPane styleClass="avatar-circle-option" style="-fx-background-color: #E1BEE7;" />
+                                            <StackPane styleClass="avatar-circle-option" style="-fx-background-color: #C5CAE9;" />
+                                            <StackPane styleClass="avatar-circle-option" style="-fx-background-color: #B2DFDB;" />
+                                            <StackPane styleClass="avatar-circle-option" style="-fx-background-color: #FFF9C4;" />
+                                            <StackPane styleClass="avatar-circle-option" style="-fx-background-color: #FFCCBC;" />
+                                        </HBox>
+                                    </content>
+                                </ScrollPane>
+                            </VBox>
+                            
+                            <!-- Personal Details Form -->
+                            <VBox spacing="20.0" styleClass="white-card">
+                                
+                                <!-- Name Row -->
+                                <HBox spacing="30.0">
+                                    <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                        <Label styleClass="input-label" text="First name" />
+                                        <TextField fx:id="firstNameField" promptText="e.g. John" styleClass="modern-input" />
+                                        <Label fx:id="firstNameError" styleClass="error-label" visible="false" />
+                                    </VBox>
+                                    <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                        <Label styleClass="input-label" text="Last name" />
+                                        <TextField fx:id="lastNameField" promptText="e.g. Smith" styleClass="modern-input" />
+                                        <Label fx:id="lastNameError" styleClass="error-label" visible="false" />
+                                    </VBox>
+                                </HBox>
+
+                                <!-- Email Section -->
+                                <VBox spacing="15.0">
+                                    <VBox spacing="8.0">
+                                        <Label styleClass="input-label" text="Email address" />
+                                        <TextField fx:id="emailField" promptText="name@example.com" styleClass="modern-input" />
+                                        <Label fx:id="emailError" styleClass="error-label" visible="false" />
+                                    </VBox>
+                                    
+                                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                        <Label text="Current email address:" styleClass="subtitle-label" />
+                                        <Label fx:id="currentEmailLabel" text="john.smith@example.com" styleClass="value-label" />
+                                    </HBox>
+                                </VBox>
+
+                                <!-- Phone & Gender Row -->
+                                <HBox spacing="30.0">
+                                    <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                        <Label styleClass="input-label" text="Phone Number" />
+                                        <TextField fx:id="phoneField" promptText="+1 234 567 8900" styleClass="modern-input" />
+                                        <Label fx:id="phoneError" styleClass="error-label" visible="false" />
+                                    </VBox>
+                                    <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                        <Label styleClass="input-label" text="Gender" />
+                                        <ComboBox fx:id="genderComboBox" promptText="Select Gender" maxWidth="Infinity" styleClass="modern-input" />
+                                        <Label fx:id="genderError" styleClass="error-label" visible="false" />
+                                    </VBox>
+                                </HBox>
+
+                                 <!-- Birth Date -->
+                                <VBox spacing="8.0">
+                                    <Label styleClass="input-label" text="Date of Birth" />
+                                    <DatePicker fx:id="birthDatePicker" maxWidth="Infinity" styleClass="modern-input" />
+                                </VBox>
+
+                                <!-- Save Button -->
+                                <HBox alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
+                                    <Label fx:id="statusLabel" textFill="red" visible="false" style="-fx-padding: 0 20 0 0;" />
+                                    <Button fx:id="saveButton" onAction="#handleUpdateProfile" styleClass="save-button" text="Save changes" />
+                                </HBox>
+
+                            </VBox>
+
+                            <!-- Password Section -->
+                            <VBox spacing="20.0" styleClass="white-card">
+                                <Label styleClass="card-header" text="Security" />
+                                <VBox spacing="15.0">
+                                    <VBox spacing="8.0">
+                                        <Label styleClass="input-label" text="Current Password" />
+                                        <PasswordField fx:id="currentPasswordField" promptText="Enter current password" styleClass="modern-input" />
+                                        <Label fx:id="currentPasswordError" styleClass="error-label" visible="false" />
+                                    </VBox>
+                                    <VBox spacing="8.0">
+                                        <Label styleClass="input-label" text="New Password" />
+                                        <PasswordField fx:id="newPasswordField" promptText="Min 8 chars, uppercase, lowercase, number" styleClass="modern-input" />
+                                        <Label fx:id="newPasswordError" styleClass="error-label" visible="false" />
+                                    </VBox>
+                                    <VBox spacing="8.0">
+                                        <Label styleClass="input-label" text="Confirm New Password" />
+                                        <PasswordField fx:id="confirmPasswordField" promptText="Re-enter new password" styleClass="modern-input" />
+                                        <Label fx:id="confirmPasswordError" styleClass="error-label" visible="false" />
+                                    </VBox>
+                                    
+                                    <!-- Change Password Button -->
+                                    <HBox alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+                                        <Label fx:id="passwordStatusLabel" visible="false" style="-fx-padding: 0 20 0 0;" />
+                                        <Button onAction="#handleChangePassword" styleClass="save-button" text="Change Password" />
+                                    </HBox>
+                                </VBox>
+                                
+                                <Separator />
+                                
+                                <!-- Delete Account Section -->
+                                <VBox spacing="10.0" style="-fx-padding: 10 0 0 0;">
+                                    <Label styleClass="card-header-danger" text="Danger Zone" />
+                                    <Label styleClass="card-subtitle" text="Once you delete your account, there is no going back. Please be certain." wrapText="true" />
+                                    <HBox alignment="CENTER_LEFT">
+                                        <Button onAction="#handleDeleteAccount" styleClass="delete-button" text="Delete My Account" />
+                                    </HBox>
+                                </VBox>
+                            </VBox>
+
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </VBox>
+
+            <!-- VIEW 2: SEARCH PREFERENCES -->
+            <VBox fx:id="searchPreferencesView" spacing="30.0" visible="false">
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <Label styleClass="page-title" text="Search preferences" />
+                </HBox>
+                <Label styleClass="page-subtitle" text="Manage your search settings constraints." />
+                
+                <!-- Preferences List -->
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-padding: 0;">
+                    <content>
+                        <VBox spacing="15.0">
+                            
+                            <!-- Budget Row -->
+                            <VBox styleClass="settings-card">
+                                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                    <Label styleClass="settings-card-icon" text="💰" />
+                                    <VBox HBox.hgrow="ALWAYS">
+                                        <Label styleClass="settings-card-title" text="Budget Range (Per Night)" />
+                                        <Label fx:id="budgetLabel" styleClass="settings-card-subtitle" text="Not set" />
+                                    </VBox>
+                                    <Button onAction="#handleEditBudget" styleClass="secondary-button" text="Edit" />
+                                </HBox>
+                            </VBox>
+
+                            <!-- Priorities Row -->
+                            <VBox styleClass="settings-card">
+                                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                    <Label styleClass="settings-card-icon" text="⭐" />
+                                    <VBox HBox.hgrow="ALWAYS">
+                                        <Label styleClass="settings-card-title" text="Travel Priorities" />
+                                        <Label fx:id="prioritiesLabel" styleClass="settings-card-subtitle" text="Not set" />
+                                    </VBox>
+                                    <Button onAction="#handleEditPriorities" styleClass="secondary-button" text="Edit" />
+                                </HBox>
+                            </VBox>
+
+                            <!-- Location Preferences Row -->
+                            <VBox styleClass="settings-card">
+                                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                    <Label styleClass="settings-card-icon" text="📍" />
+                                    <VBox HBox.hgrow="ALWAYS">
+                                        <Label styleClass="settings-card-title" text="Location Preferences" />
+                                        <Label fx:id="locationLabel" styleClass="settings-card-subtitle" text="Not set" />
+                                    </VBox>
+                                    <Button onAction="#handleEditLocation" styleClass="secondary-button" text="Edit" />
+                                </HBox>
+                            </VBox>
+
+                            <!-- Accommodation Types Row -->
+                            <VBox styleClass="settings-card">
+                                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                    <Label styleClass="settings-card-icon" text="🏨" />
+                                    <VBox HBox.hgrow="ALWAYS">
+                                        <Label styleClass="settings-card-title" text="Accommodation Types" />
+                                        <Label fx:id="accommodationLabel" styleClass="settings-card-subtitle" text="Not set" />
+                                    </VBox>
+                                    <Button onAction="#handleEditAccommodation" styleClass="secondary-button" text="Edit" />
+                                </HBox>
+                            </VBox>
+
+                            <!-- Style Preferences Row -->
+                            <VBox styleClass="settings-card">
+                                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                    <Label styleClass="settings-card-icon" text="🎨" />
+                                    <VBox HBox.hgrow="ALWAYS">
+                                        <Label styleClass="settings-card-title" text="Travel Style / Themes" />
+                                        <Label fx:id="styleLabel" styleClass="settings-card-subtitle" text="Not set" />
+                                    </VBox>
+                                    <Button onAction="#handleEditStyle" styleClass="secondary-button" text="Edit" />
+                                </HBox>
+                            </VBox>
+
+                            <!-- Dietary Restrictions Row -->
+                            <VBox styleClass="settings-card">
+                                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                    <Label styleClass="settings-card-icon" text="🍽️" />
+                                    <VBox HBox.hgrow="ALWAYS">
+                                        <Label styleClass="settings-card-title" text="Dietary Restrictions" />
+                                        <Label fx:id="dietaryLabel" styleClass="settings-card-subtitle" text="Not set" />
+                                    </VBox>
+                                    <Button onAction="#handleEditDietary" styleClass="secondary-button" text="Edit" />
+                                </HBox>
+                            </VBox>
+
+                            <!-- Preferred Climate Row -->
+                            <VBox styleClass="settings-card">
+                                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                    <Label styleClass="settings-card-icon" text="🌤️" />
+                                    <VBox HBox.hgrow="ALWAYS">
+                                        <Label styleClass="settings-card-title" text="Preferred Climate" />
+                                        <Label fx:id="climateLabel" styleClass="settings-card-subtitle" text="Not set" />
+                                    </VBox>
+                                    <Button onAction="#handleEditClimate" styleClass="secondary-button" text="Edit" />
+                                </HBox>
+                            </VBox>
+
+                            <!-- Travel Pace Row -->
+                            <VBox styleClass="settings-card">
+                                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                    <Label styleClass="settings-card-icon" text="⚡" />
+                                    <VBox HBox.hgrow="ALWAYS">
+                                        <Label styleClass="settings-card-title" text="Travel Pace" />
+                                        <Label fx:id="paceLabel" styleClass="settings-card-subtitle" text="Not set" />
+                                    </VBox>
+                                    <Button onAction="#handleEditPace" styleClass="secondary-button" text="Edit" />
+                                </HBox>
+                            </VBox>
+
+                            <!-- Group Type Row -->
+                            <VBox styleClass="settings-card">
+                                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                    <Label styleClass="settings-card-icon" text="👥" />
+                                    <VBox HBox.hgrow="ALWAYS">
+                                        <Label styleClass="settings-card-title" text="Group Type" />
+                                        <Label fx:id="groupLabel" styleClass="settings-card-subtitle" text="Not set" />
+                                    </VBox>
+                                    <Button onAction="#handleEditGroup" styleClass="secondary-button" text="Edit" />
+                                </HBox>
+                            </VBox>
+
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </VBox>
+
+        </StackPane>
+    </HBox>
+
+</AnchorPane>

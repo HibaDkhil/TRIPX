@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.layout.Region?>
+
+<AnchorPane prefHeight="740.0" prefWidth="1040.0" style="-fx-background-color: #F5F7FA;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.admin.ProfileAdminController">
+
+    <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-border-width: 0;" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <content>
+            <VBox spacing="30" style="-fx-padding: 40;">
+
+                <!-- Header with Profile Circle and Name -->
+                <HBox alignment="CENTER_LEFT" spacing="20">
+                    <Circle fx:id="profileCircle" radius="50" fill="linear-gradient(to bottom right, #0A4174, #4E8EA2)" />
+                    <VBox>
+                        <Label fx:id="profileNameLabel" text="Loading..." style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" />
+                        <Label fx:id="profileRoleLabel" text="Loading..." style="-fx-font-size: 14px; -fx-font-family: 'Poppins'; -fx-text-fill: #4E8EA2; -fx-font-weight: bold;" />
+                        <Label fx:id="profileEmailLabel" text="Loading..." style="-fx-font-size: 14px; -fx-font-family: 'Poppins'; -fx-text-fill: #666;" />
+                    </VBox>
+                </HBox>
+
+                <!-- Edit Profile Form -->
+                <VBox spacing="20" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                    <Label text="Edit Profile" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" />
+
+                    <GridPane hgap="20" vgap="15">
+                        <Label text="First Name:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="firstNameField" prefWidth="400" style="-fx-background-radius: 10; -fx-padding: 10;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label text="Last Name:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="lastNameField" prefWidth="400" style="-fx-background-radius: 10; -fx-padding: 10;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label text="Email:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="emailField" prefWidth="400" style="-fx-background-radius: 10; -fx-padding: 10;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <Label text="Role:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Label fx:id="roleDisplayField" prefWidth="400" style="-fx-background-radius: 10; -fx-padding: 10; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    </GridPane>
+
+                    <Button fx:id="saveProfileBtn" text="Save Changes" style="-fx-background-color: #4E8EA2; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12 30;" prefWidth="200" />
+                </VBox>
+
+                <!-- Member Since Info -->
+                <HBox spacing="20" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                    <Label text="📅" style="-fx-font-size: 24px;" />
+                    <VBox>
+                        <Label text="Member Since" style="-fx-font-size: 12px; -fx-text-fill: #666; -fx-font-family: 'Poppins';" />
+                        <Label fx:id="memberSinceLabel" text="Loading..." style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label text="🕒" style="-fx-font-size: 24px;" />
+                    <VBox>
+                        <Label text="Last Login" style="-fx-font-size: 12px; -fx-text-fill: #666; -fx-font-family: 'Poppins';" />
+                        <Label fx:id="lastLoginLabel" text="Today" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" />
+                    </VBox>
+                </HBox>
+
+                <!-- Change Password -->
+                <VBox spacing="20" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                    <Label text="Change Password" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" />
+
+                    <GridPane hgap="20" vgap="15">
+                        <Label text="Current Password:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <PasswordField fx:id="currentPwdField" prefWidth="400" style="-fx-background-radius: 10; -fx-padding: 10;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label text="New Password:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <PasswordField fx:id="newPwdField" prefWidth="400" style="-fx-background-radius: 10; -fx-padding: 10;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label text="Confirm Password:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <PasswordField fx:id="confirmPwdField" prefWidth="400" style="-fx-background-radius: 10; -fx-padding: 10;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    </GridPane>
+
+                    <Button fx:id="changePwdBtn" text="Update Password" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12 30;" prefWidth="200" />
+                </VBox>
+            </VBox>
+        </content>
+    </ScrollPane>
+</AnchorPane>

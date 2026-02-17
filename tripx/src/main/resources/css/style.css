@@ -1,0 +1,273 @@
+/*
+ * TRIPX Application Stylesheet
+ * 
+ * =========================================
+ * COLOR PALETTE
+ * =========================================
+ * - Primary Blue:      #2196F3 (Action buttons, active states, highlights)
+ * - Dark Blue:         #1a237e (Play button, deep accents)
+ * - Dark Purple:       #1a1a2e (Home page background)
+ * - Black:             #000000 (Main card backgrounds)
+ * - White:             #FFFFFF (Text, Cards, Inputs)
+ * - Grey:              #bdc3c7, #7f8c8d (Subtitles, Borders, Inactive states)
+ * - Light Blue:        #e3f2fd (Active rail items)
+ * 
+ * =========================================
+ * SECTIONS
+ * =========================================
+ * 1. Global Styles
+ * 2. Typography
+ * 3. Buttons & Interactive Elements
+ * 4. Forms & Inputs
+ * 5. Onboarding Slides (Blue & White Themes)
+ * 6. Home Page (Redesign)
+ * 7. Profile Page
+ */
+
+/* =========================================
+   1. GLOBAL STYLES
+   ========================================= */
+.root {
+    -fx-font-family: 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    -fx-base: #f4f4f4;
+}
+
+/* =========================================
+   2. TYPOGRAPHY
+   ========================================= */
+.header-label {
+    -fx-text-fill: #333333;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
+}
+
+.sub-header-label {
+    -fx-text-fill: #666666;
+    -fx-font-size: 18px;
+    -fx-padding: 0 0 20 0;
+}
+
+/* =========================================
+   3. BUTTONS & INTERACTIVE ELEMENTS
+   ========================================= */
+.action-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25;
+    -fx-padding: 10 30;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(33, 150, 243, 0.4), 10, 0, 0, 4);
+    -fx-transition: all 0.3s;
+}
+
+.action-button:hover {
+    -fx-background-color: #1976D2;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.secondary-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 14px;
+    -fx-background-radius: 25;
+    -fx-padding: 10 30;
+    -fx-cursor: hand;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 25;
+    -fx-transition: all 0.3s;
+}
+
+.secondary-button:hover {
+    -fx-background-color: rgba(189, 195, 199, 0.2);
+    -fx-text-fill: #2c3e50;
+}
+
+/* Option Cards (Toggle Buttons) */
+.option-card {
+    -fx-background-color: white;
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 15;
+    -fx-border-color: transparent;
+    -fx-padding: 15 25;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.05), 10, 0, 0, 5);
+    -fx-min-width: 140px;
+    -fx-min-height: 50px;
+    -fx-alignment: center;
+}
+
+.option-card:hover {
+    -fx-background-color: rgba(193, 217, 236, 0.1);
+    /* Transparent Blue */
+    -fx-border-color: #2196F3;
+    -fx-text-fill: #2196F3;
+    -fx-cursor: hand;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.option-card:selected {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-border-color: #2980b9;
+}
+
+/* Circular Slider Style (Volume Knob Metaphor) */
+.slider .track {
+    -fx-background-color: #ecf0f1;
+    -fx-background-radius: 5px;
+    -fx-pref-height: 10px;
+}
+
+.slider .thumb {
+    -fx-background-color: white;
+    -fx-background-radius: 50%;
+    -fx-pref-width: 24px;
+    -fx-pref-height: 24px;
+    -fx-border-color: #2196F3;
+    -fx-border-width: 2px;
+    -fx-border-radius: 50%;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
+.slider:hover .thumb {
+    -fx-background-color: #2196F3;
+    -fx-border-color: white;
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+/* =========================================
+   4. FORMS & INPUTS
+   ========================================= */
+.combo-box {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 10;
+    -fx-padding: 5;
+    -fx-font-size: 14px;
+}
+
+.combo-box:hover {
+    -fx-border-color: #2196F3;
+}
+
+.list-cell {
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+}
+
+.list-cell:filled:selected,
+.list-cell:filled:hover {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}
+
+/* Progress Indicators (Optional) */
+.progress-dot {
+    -fx-background-color: #bdc3c7;
+    -fx-background-radius: 50%;
+    -fx-pref-width: 10px;
+    -fx-pref-height: 10px;
+}
+
+/* ... previous styles ... */
+
+.progress-dot.active {
+    -fx-background-color: #2196F3;
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+/* =========================================
+   5. ONBOARDING SLIDES (Blue & White Themes)
+   ========================================= */
+.slide-blue {
+    -fx-background-color: #0a153a;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 20, 0, 0, 10);
+    /* Enhanced Shadow */
+}
+
+.slide-white {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 20, 0, 0, 10);
+    /* Enhanced Shadow */
+}
+
+.label-white {
+    -fx-text-fill: white !important;
+    -fx-font-family: 'Poppins';
+    -fx-font-weight: bold;
+    -fx-font-size: 32px;
+    /* Increased Size */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 3, 0, 0, 1);
+}
+
+.label-blue {
+    -fx-text-fill: #2c3e50 !important;
+    -fx-font-family: 'Poppins';
+    -fx-font-weight: bold;
+    -fx-font-size: 32px;
+    /* Increased Size */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 1, 0, 0, 1);
+}
+
+.sub-label-white {
+    -fx-text-fill: #ecf0f1 !important;
+    -fx-font-size: 18px;
+    /* Increased Size */
+}
+
+.sub-label-blue {
+    -fx-text-fill: #7f8c8d !important;
+    -fx-font-size: 18px;
+    /* Increased Size */
+}
+
+/* Option Cards on Blue Background */
+.option-card-blue {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 15;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1;
+    -fx-padding: 15 25;
+    -fx-cursor: hand;
+    -fx-min-width: 140px;
+    -fx-min-height: 50px;
+    -fx-alignment: center;
+}
+
+.option-card-blue:hover {
+    -fx-background-color: rgba(200, 200, 200, 0.5);
+    /* Semi-transparent Grey */
+    -fx-border-color: white;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.option-card-blue:selected {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-border-color: #2980b9;
+}
+
+/* Sections 6 & 7 moved to home.css and profile.css */
+
+.logo-text-small {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}

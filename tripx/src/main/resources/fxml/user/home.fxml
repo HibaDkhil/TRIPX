@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1374.0" styleClass="home-root" stylesheets="/css/style.css, /css/home.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.user.HomeController">
+    
+    <!-- Outer Container (Dark Background handled by CSS .home-root) -->
+    <StackPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+        
+        <!-- Main Card (White Rounded) -->
+        <AnchorPane styleClass="main-card">
+            
+            <!-- Hero Image -->
+            <ImageView fitHeight="719.0" fitWidth="1393.0" layoutX="-3.2" layoutY="112.0" pickOnBounds="true" preserveRatio="false" styleClass="hero-image" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="112.0">
+                <image>
+                    <!--  image front lteli -->
+                    <Image url="@../../images/view.png" />
+                </image>
+            </ImageView>
+
+            <!-- Navigation Bar -->
+            <HBox alignment="CENTER_LEFT" layoutX="32.0" layoutY="19.4" prefHeight="91.0" prefWidth="1310.0" spacing="20.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="36.799999999999955" AnchorPane.topAnchor="19.4">
+                <ImageView fitHeight="100.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/logo.png" /> 
+                    </image>
+                </ImageView>
+                <Label prefHeight="12.0" prefWidth="139.0" styleClass="logo-text-small" text="Explore More, Worry Less">
+               <font>
+                  <Font size="11.0" />
+               </font></Label>
+                
+                <Region HBox.hgrow="ALWAYS" />
+                
+                <HBox alignment="CENTER" spacing="30.0">
+                    <Label styleClass="nav-link" text="About" />
+                    <Label styleClass="nav-link" text="Destinations" />
+               <Label layoutX="10.0" layoutY="21.0" styleClass="nav-link" text="Accomodations" />
+                    <Label styleClass="nav-link" text="Packages" />
+                    <Label styleClass="nav-link" text="Blog" />
+                    <Label styleClass="nav-link" text="Transport" />
+                </HBox>
+                
+                <Region HBox.hgrow="ALWAYS" />
+                
+                
+                <HBox alignment="CENTER" spacing="20.0">
+                    <Label styleClass="nav-lang" text="EN" textFill="WHITE" />
+                    <Button onAction="#handleProfile" styleClass="profile-button" text="My Profile" />
+                    <Button onAction="#handleLogout" styleClass="logout-button" text="Logout" />
+                </HBox>
+            </HBox>
+
+            <!-- Hero Content -->
+            <VBox layoutX="150.4" layoutY="270.6" spacing="10.0" AnchorPane.leftAnchor="150.4" AnchorPane.topAnchor="270.6">
+                <Label styleClass="hero-subtitle" text="YOUR DREAM DESTINATION" />
+                <Label styleClass="hero-title" text="Live Fully" />
+                <Label styleClass="hero-title" text="Explore Freely" />
+                <Label styleClass="hero-title" text="Travel Deeply" />
+                
+                <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-padding: 30 0 0 0;">
+                    <Button onAction="#handleBooking" styleClass="booking-button" text="Booking Now" />
+                    <HBox alignment="CENTER" spacing="10.0" styleClass="play-video-container">
+                        <StackPane styleClass="play-button-circle">
+                            <Label text="▶" textFill="white" />
+                        </StackPane>
+                        <Label onMouseClicked="#handlePlayVideo" styleClass="play-video-text" text="Play Videos" />
+                    </HBox>
+                </HBox>
+            </VBox>
+
+            <!-- Left Progress Indicator -->
+            <VBox alignment="CENTER" spacing="15.0" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="250.0">
+                <Label styleClass="progress-step-active" text="01" textFill="WHITE" />
+                <Line endY="30.0" stroke="WHITE" styleClass="progress-line" />
+                <Label styleClass="progress-step" text="02" textFill="WHITE" />
+                <Line endY="30.0" stroke="WHITE" styleClass="progress-line" />
+                <Label styleClass="progress-step" text="03" textFill="WHITE" />
+            </VBox>
+
+            <!-- Right Social Icons -->
+            <VBox alignment="CENTER" spacing="25.0" AnchorPane.bottomAnchor="250.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="250.0">
+                <StackPane styleClass="social-icon">
+                    <Label text="IG" textFill="WHITE" /> <!-- Placeholder for Icon -->
+                </StackPane>
+                <StackPane styleClass="social-icon">
+                    <Label text="TG" textFill="WHITE" />
+                </StackPane>
+                <StackPane styleClass="social-icon">
+                    <Label text="WA" textFill="WHITE" />
+                </StackPane>
+                <StackPane styleClass="social-icon">
+                    <Label text="YT" textFill="WHITE" />
+                </StackPane>
+            </VBox>
+
+            <!-- Bottom Right CRT Panel -->
+            <HBox alignment="CENTER_LEFT" layoutX="925.0" layoutY="624.0" maxWidth="399.0" prefHeight="50.0" prefWidth="399.0" style="-fx-background-color: rgba(255, 255, 255, 0.3); -fx-background-radius: 9; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 20, 0, 0, 0);;" styleClass="crt-panel" AnchorPane.bottomAnchor="225.0" AnchorPane.rightAnchor="84.0" />
+            
+            <!-- Scrolling Indicator -->
+            <VBox alignment="CENTER" spacing="5.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="150.0">
+                <StackPane styleClass="scroll-circle" />
+            </VBox>
+             <Label layoutX="926.0" layoutY="625.0" prefHeight="46.0" prefWidth="366.0" text="Embark on a journey tailored just for you, exploring destinations that match your unique travel style." textFill="WHITE" wrapText="true">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
+               <Label layoutX="162.0" layoutY="622.0" prefHeight="26.0" prefWidth="69.0" style="-fx-font-size: 10px;" text="Scrolling" textFill="WHITE">
+            <font>
+               <Font name="System Bold Italic" size="18.0" />
+            </font>
+         </Label>
+             <Label layoutX="176.0" layoutY="658.0" styleClass="arrow-down" text="↓" textFill="WHITE" />
+
+        </AnchorPane>
+    </StackPane>
+
+</AnchorPane>

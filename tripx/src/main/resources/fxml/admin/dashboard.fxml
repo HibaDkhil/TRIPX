@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import java.lang.String?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="tn.esprit.controllers.admin.DashboardController"
+           stylesheets="@../../css/dashboard.css">
+
+    <BorderPane styleClass="admin-root">
+        <!-- ================= LEFT SIDEBAR ================= -->
+        <left>
+            <VBox fx:id="sidebar" prefWidth="280" minWidth="280" maxWidth="280" styleClass="sidebar-container">
+                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="sidebar-header">
+                    <padding>
+                        <Insets top="24" right="20" bottom="20" left="24"/>
+                    </padding>
+                    <ImageView fitWidth="56" fitHeight="56" preserveRatio="true">
+                        <image>
+                            <Image url="@/images/logo.png"/>
+                        </image>
+                    </ImageView>
+                    <VBox spacing="2">
+                        <Label text="TripX" styleClass="logo-title"/>
+                        <Label text="Admin" styleClass="logo-subtitle"/>
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="sidebarToggle" text="◀" styleClass="sidebar-toggle-btn"/>
+                </HBox>
+
+                <HBox spacing="8" alignment="CENTER_LEFT" styleClass="sidebar-search-container">
+                    <padding>
+                        <Insets top="8" right="18" bottom="12" left="18"/>
+                    </padding>
+                    <TextField promptText="Search modules..." styleClass="sidebar-search" HBox.hgrow="ALWAYS"/>
+                    <Button text="🔍" styleClass="search-btn"/>
+                </HBox>
+
+                <ScrollPane fitToWidth="true" styleClass="sidebar-scroll" VBox.vgrow="ALWAYS">
+                    <VBox spacing="2" styleClass="sidebar-menu">
+
+                        <!-- DASHBOARD SECTION - LIGNE 63 -->
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox fx:id="dashboardHeader" alignment="CENTER_LEFT" spacing="10" styleClass="menu-header" onMouseClicked="#toggleDashboardMenu">
+                                <Label text="📊" styleClass="menu-icon"/>
+                                <Label text="Dashboard" styleClass="menu-title"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="dashboardToggle" text="▼" styleClass="menu-toggle" mouseTransparent="true"/>
+                            </HBox>
+                            <VBox fx:id="dashboardMenu" spacing="0" styleClass="submenu">
+                                <Button fx:id="overviewBtn" text="Overview" styleClass="menu-item"/>
+                                <Button text="Statistics" styleClass="menu-item"/>
+                            </VBox>
+                        </VBox>
+
+                        <!-- USERS SECTION -->
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox fx:id="usersHeader" alignment="CENTER_LEFT" spacing="10" styleClass="menu-header" onMouseClicked="#toggleUsersMenu">
+                                <Label text="👤" styleClass="menu-icon"/>
+                                <Label text="Users" styleClass="menu-title"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="usersToggle" text="▶" styleClass="menu-toggle" mouseTransparent="true"/>
+                            </HBox>
+                            <VBox fx:id="usersMenu" spacing="0" styleClass="submenu">
+                                <Button fx:id="usersBtn" text="Manage Users" styleClass="menu-item"/>
+                                <Button text="Roles &amp; Permissions" styleClass="menu-item"/>
+                            </VBox>
+                        </VBox>
+
+                        <!-- ACCOMMODATIONS SECTION -->
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox fx:id="accommodationsHeader" alignment="CENTER_LEFT" spacing="10" styleClass="menu-header" onMouseClicked="#toggleAccommodationsMenu">
+                                <Label text="🏨" styleClass="menu-icon"/>
+                                <Label text="Accommodations" styleClass="menu-title"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="accommodationsToggle" text="▶" styleClass="menu-toggle" mouseTransparent="true"/>
+                            </HBox>
+                            <VBox fx:id="accommodationsMenu" spacing="0" styleClass="submenu">
+                                <Button fx:id="accommodationsBtn" text="Manage Accommodations" styleClass="menu-item"/>
+                                <Button text="Manage Bookings" styleClass="menu-item"/>
+                            </VBox>
+                        </VBox>
+
+                        <!-- DESTINATIONS SECTION -->
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox fx:id="destinationsHeader" alignment="CENTER_LEFT" spacing="10" styleClass="menu-header" onMouseClicked="#toggleDestinationsMenu">
+                                <Label text="🌍" styleClass="menu-icon"/>
+                                <Label text="Destinations" styleClass="menu-title"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="destinationsToggle" text="▶" styleClass="menu-toggle" mouseTransparent="true"/>
+                            </HBox>
+                            <VBox fx:id="destinationsMenu" spacing="0" styleClass="submenu">
+                                <Button fx:id="destinationsBtn" text="All Destinations" styleClass="menu-item"/>
+                                <Button text="Activities" styleClass="menu-item"/>
+                            </VBox>
+                        </VBox>
+
+                        <!-- TRANSPORT SECTION -->
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox fx:id="transportHeader" alignment="CENTER_LEFT" spacing="10" styleClass="menu-header" onMouseClicked="#toggleTransportMenu">
+                                <Label text="🚗" styleClass="menu-icon"/>
+                                <Label text="Transport" styleClass="menu-title"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="transportToggle" text="▶" styleClass="menu-toggle" mouseTransparent="true"/>
+                            </HBox>
+                            <VBox fx:id="transportMenu" spacing="0" styleClass="submenu">
+                                <Button fx:id="transportBtn" text="Manage Transport" styleClass="menu-item"/>
+                            </VBox>
+                        </VBox>
+
+                        <!-- OFFERS SECTION -->
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox fx:id="offersHeader" alignment="CENTER_LEFT" spacing="10" styleClass="menu-header" onMouseClicked="#toggleOffersMenu">
+                                <Label text="🎯" styleClass="menu-icon"/>
+                                <Label text="Offers" styleClass="menu-title"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="offersToggle" text="▶" styleClass="menu-toggle" mouseTransparent="true"/>
+                            </HBox>
+                            <VBox fx:id="offersMenu" spacing="0" styleClass="submenu">
+                                <Button fx:id="offersBtn" text="Manage Offers" styleClass="menu-item"/>
+                            </VBox>
+                        </VBox>
+
+                        <!-- BLOG SECTION -->
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox fx:id="blogHeader" alignment="CENTER_LEFT" spacing="10" styleClass="menu-header" onMouseClicked="#toggleBlogMenu">
+                                <Label text="📝" styleClass="menu-icon"/>
+                                <Label text="Blog" styleClass="menu-title"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="blogToggle" text="▶" styleClass="menu-toggle" mouseTransparent="true"/>
+                            </HBox>
+                            <VBox fx:id="blogMenu" spacing="0" styleClass="submenu">
+                                <Button fx:id="blogBtn" text="Blog &amp; Community" styleClass="menu-item"/>
+                            </VBox>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+
+                <VBox spacing="10" styleClass="sidebar-footer">
+                    <Separator styleClass="sidebar-separator"/>
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="theme-toggle-container">
+                        <Label fx:id="themeIcon" text="☀️" styleClass="theme-icon"/>
+                        <Label text="Light Mode" styleClass="theme-label"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <ToggleButton fx:id="darkModeToggle" styleClass="theme-toggle"/>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="🌐" styleClass="theme-icon"/>
+                        <ComboBox fx:id="languageSelector" styleClass="language-selector" prefWidth="140">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="English" />
+                                    <String fx:value="Français" />
+                                    <String fx:value="العربية" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                    </HBox>
+
+                    <!-- LOGOUT BUTTON (BOTTOM) -->
+                    <Separator styleClass="sidebar-separator"/>
+                    <HBox alignment="CENTER" spacing="15" style="-fx-padding: 10 15;">
+                        <Label style="-fx-text-fill: white; -fx-font-size: 12px; -fx-font-family: 'Poppins'; -fx-font-weight: BOLD;" text="TRIPX ADMIN" />
+                        <Button fx:id="logoutBtn" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: BOLD; -fx-background-radius: 20;" text="🚪 Logout" />
+                    </HBox>
+                </VBox>
+            </VBox>
+        </left>
+
+        <!-- ================= MAIN CONTENT ================= -->
+        <center>
+            <VBox spacing="0">
+                <HBox alignment="CENTER_LEFT" spacing="16" styleClass="main-header">
+                    <Button fx:id="sidebarOpenButton" text="☰" styleClass="sidebar-open-btn"/>
+                    <HBox alignment="CENTER_LEFT" spacing="8" styleClass="breadcrumb-container">
+                        <Label fx:id="breadcrumb1" text="Dashboard" styleClass="breadcrumb-item"/>
+                        <Label fx:id="breadcrumbSeparator" text="›" styleClass="breadcrumb-separator"/>
+                        <Label fx:id="breadcrumb2" text="Overview" styleClass="breadcrumb-item active"/>
+                    </HBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <HBox alignment="CENTER_RIGHT" spacing="12" styleClass="header-actions">
+                        <TextField promptText="Search across modules..." styleClass="global-search"/>
+                        <StackPane styleClass="notification-badge">
+                            <Button text="🔔" styleClass="notification-btn"/>
+                            <Circle radius="5" styleClass="notification-dot"/>
+                        </StackPane>
+
+                        <!-- BOUTON SETTINGS DANS LE HEADER -->
+                        <Button fx:id="headerSettingsBtn" text="⚙️" styleClass="header-settings-btn"/>
+
+                        <MenuButton fx:id="profileDropdown" text="Admin User" styleClass="profile-dropdown">
+                            <graphic>
+                                <StackPane styleClass="profile-avatar">
+                                    <Circle radius="16" styleClass="avatar-circle"/>
+                                    <Label fx:id="avatarText" text="AU" styleClass="avatar-text"/>
+                                </StackPane>
+                            </graphic>
+                            <items>
+                                <MenuItem fx:id="profileMenuItem" text="👤 My Profile"/>
+                                <MenuItem fx:id="settingsMenuItem" text="⚙️ Settings"/>
+                                <SeparatorMenuItem/>
+                                <MenuItem fx:id="logoutMenuItem" text="🚪 Logout"/>
+                            </items>
+                        </MenuButton>
+                    </HBox>
+                </HBox>
+
+                <!-- CONTENT HOST -->
+                <StackPane fx:id="mainContent" VBox.vgrow="ALWAYS" styleClass="center-content-host">
+                    <!-- Overview content loaded by default -->
+                </StackPane>
+            </VBox>
+        </center>
+    </BorderPane>
+</StackPane>

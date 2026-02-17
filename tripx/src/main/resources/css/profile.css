@@ -1,0 +1,285 @@
+/* =========================================
+   PROFILE PAGE STYLES
+   ========================================= */
+
+.profile-root {
+    -fx-background-color: #F3F4F6;
+    /* Light Grey Background */
+}
+
+/* Left Rail */
+.profile-rail {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.05), 10, 0, 0, 0);
+}
+
+.rail-header {
+    -fx-text-fill: #9CA3AF;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 0 5 0;
+}
+
+.rail-item {
+    -fx-background-color: transparent;
+    -fx-alignment: center-left;
+    -fx-text-fill: #4B5563;
+    -fx-font-size: 14px;
+    -fx-padding: 10 15;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+}
+
+.rail-item:hover {
+    -fx-background-color: #F3F4F6;
+}
+
+.rail-item-active {
+    -fx-background-color: #EBF5FF;
+    -fx-alignment: center-left;
+    -fx-text-fill: #2563EB;
+    /* Blue */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 15;
+    -fx-background-radius: 8;
+}
+
+.rail-back-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6B7280;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+}
+
+.rail-back-button:hover {
+    -fx-underline: true;
+}
+
+/* Page Typography */
+.page-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.page-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6B7280;
+}
+
+/* Cards */
+.white-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.05), 5, 0, 0, 2);
+    -fx-padding: 24;
+}
+
+.card-header {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.card-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6B7280;
+}
+
+/* Avatars */
+.avatar-circle-large {
+    -fx-background-color: #E5E7EB;
+    -fx-background-radius: 50%;
+    -fx-min-width: 64px;
+    -fx-min-height: 64px;
+    -fx-max-width: 64px;
+    -fx-max-height: 64px;
+    -fx-alignment: center;
+}
+
+.avatar-initial {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #374151;
+}
+
+.avatar-caption {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #374151;
+}
+
+.avatar-circle-add {
+    -fx-background-color: white;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 50%;
+    -fx-border-style: dashed;
+    -fx-min-width: 48px;
+    -fx-min-height: 48px;
+    -fx-max-width: 48px;
+    -fx-max-height: 48px;
+    -fx-alignment: center;
+    -fx-cursor: hand;
+}
+
+.avatar-circle-option {
+    -fx-background-radius: 50%;
+    -fx-min-width: 48px;
+    -fx-min-height: 48px;
+    -fx-max-width: 48px;
+    -fx-max-height: 48px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-border-width: 2;
+}
+
+.avatar-circle-option:hover {
+    -fx-border-color: #2563EB;
+}
+
+/* Form Inputs */
+.input-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #374151;
+    -fx-font-weight: bold;
+}
+
+.modern-input {
+    -fx-background-color: white;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 6;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-text-fill: #111827;
+}
+
+.modern-input:focused {
+    -fx-border-color: #2563EB;
+    -fx-effect: dropshadow(three-pass-box, rgba(37, 99, 235, 0.1), 5, 0, 0, 0);
+}
+
+.subtitle-label {
+    -fx-text-fill: #6B7280;
+    -fx-font-size: 12px;
+}
+
+.value-label {
+    -fx-text-fill: #111827;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* Buttons */
+.save-button {
+    -fx-background-color: #2563EB;
+    /* Blue */
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-padding: 10 20;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.save-button:hover {
+    -fx-background-color: #1D4ED8;
+    /* Darker blue on hover */
+}
+
+/* When active (handled via code changing style class or opacity, but let's define an active class) */
+.save-button-active {
+    -fx-background-color: #2563EB;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.save-button-active:hover {
+    -fx-background-color: #1D4ED8;
+}
+
+/* Settings Cards (Reuse or adapt) */
+.settings-card {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #E5E7EB;
+    -fx-padding: 15;
+}
+
+.settings-card-icon {
+    -fx-font-size: 24px;
+}
+
+.settings-card-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.settings-card-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6B7280;
+}
+
+.secondary-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 6;
+    -fx-text-fill: #374151;
+    -fx-padding: 5 12;
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #F3F4F6;
+}
+
+/* =========================================
+   VALIDATION STYLES
+   ========================================= */
+
+.error-label {
+    -fx-text-fill: #DC2626;
+    -fx-font-size: 12px;
+    -fx-padding: 2 0 0 0;
+}
+
+.input-error {
+    -fx-border-color: #DC2626 !important;
+    -fx-border-width: 2px !important;
+    -fx-border-radius: 6px;
+}
+
+/* =========================================
+   DANGER ZONE STYLES
+   ========================================= */
+
+.card-header-danger {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #DC2626;
+    /* Red */
+}
+
+.delete-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #DC2626;
+    -fx-border-radius: 6;
+    -fx-text-fill: #DC2626;
+    -fx-padding: 10 20;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.delete-button:hover {
+    -fx-background-color: #FEF2F2;
+    -fx-border-color: #B91C1C;
+    -fx-text-fill: #B91C1C;
+}
+
+.input-valid {
+    -fx-border-color: #10B981 !important;
+    -fx-border-width: 2px !important;
+    -fx-border-radius: 6px;
+}
