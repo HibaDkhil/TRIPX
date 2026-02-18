@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.controllers.adminn.AccommodationDetailsController"
+      style="-fx-background-color: white; -fx-background-radius: 15;"
+      spacing="0" prefWidth="900" maxWidth="900" maxHeight="700">
+
+    <!-- Modal Header -->
+    <HBox style="-fx-background-color: linear-gradient(to right, #2c3e50, #34495e); -fx-background-radius: 15 15 0 0;"
+          alignment="CENTER_LEFT">
+        <padding>
+            <Insets top="20" right="25" bottom="20" left="25"/>
+        </padding>
+
+        <Label fx:id="titleLabel" text="Accommodation Details"
+               style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Button fx:id="closeButton" text="✕"
+                style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 5 10;"/>
+    </HBox>
+
+    <!-- Main Content -->
+    <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+        <VBox spacing="20" style="-fx-padding: 25;">
+
+            <!-- Hero Image -->
+            <StackPane style="-fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);">
+                <ImageView fx:id="mainImageView" fitWidth="850" fitHeight="250" preserveRatio="true"
+                           style="-fx-background-radius: 10;">
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
+                </ImageView>
+
+                <!-- Overlay with accommodation name -->
+                <VBox alignment="BOTTOM_LEFT" style="-fx-background-color: linear-gradient(to top, rgba(0,0,0,0.7), transparent); -fx-background-radius: 10;">
+                    <padding>
+                        <Insets bottom="15" left="20"/>
+                    </padding>
+                    <Label fx:id="nameLabel" text="Accommodation Name"
+                           style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 2);"/>
+                </VBox>
+            </StackPane>
+
+            <!-- Quick Info Row -->
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Label fx:id="locationLabel" text="📍 Location"
+                       style="-fx-text-fill: #2c3e50; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+
+                <Separator orientation="VERTICAL" style="-fx-background-color: #ecf0f1;"/>
+
+                <Label fx:id="typeLabel" text="🏠 Type"
+                       style="-fx-text-fill: #3498db; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+
+                <Separator orientation="VERTICAL" style="-fx-background-color: #ecf0f1;"/>
+
+                <Label fx:id="starsLabel" text="★★★★☆"
+                       style="-fx-text-fill: #f39c12; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label fx:id="ratingLabel" text="★ 4.5"
+                       style="-fx-text-fill: #27ae60; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+
+                <Separator orientation="VERTICAL" style="-fx-background-color: #ecf0f1;"/>
+
+                <Label fx:id="statusLabel" text="Active"
+                       style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 5 15; -fx-background-radius: 20;"/>
+            </HBox>
+
+            <!-- Description Section -->
+            <VBox spacing="10">
+                <Label text="Description" style="-fx-text-fill: #2c3e50; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <Label fx:id="descriptionLabel" text="Description will appear here..." wrapText="true"
+                       style="-fx-text-fill: #7f8c8d; -fx-font-size: 14px; -fx-line-spacing: 5px;"/>
+            </VBox>
+
+            <!-- Two Column Layout -->
+            <GridPane hgap="20" vgap="20">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+
+                <!-- Left Column: Amenities -->
+                <VBox spacing="10" GridPane.columnIndex="0">
+                    <Label text="🏆 Amenities and Features" style="-fx-text-fill: #2c3e50; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <Label fx:id="amenitiesLabel" wrapText="true"
+                           style="-fx-text-fill: #7f8c8d; -fx-font-size: 14px; -fx-background-color: #f8f9fa; -fx-border-color: #ecf0f1; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 10; -fx-min-height: 150;"/>
+                </VBox>
+
+                <!-- Right Column: Contact Info -->
+                <VBox spacing="10" GridPane.columnIndex="1">
+                    <Label text="📞 Contact Information" style="-fx-text-fill: #2c3e50; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <Label fx:id="contactLabel" wrapText="true"
+                           style="-fx-text-fill: #7f8c8d; -fx-font-size: 14px; -fx-background-color: #f8f9fa; -fx-border-color: #ecf0f1; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 10; -fx-min-height: 150;"/>
+                </VBox>
+            </GridPane>
+
+            <!-- Rooms Section -->
+            <VBox spacing="15">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="🛏️ Available Rooms" style="-fx-text-fill: #2c3e50; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label text="Manage rooms from the edit accommodation option" style="-fx-text-fill: #95a5a6; -fx-font-size: 12px;"/>
+                </HBox>
+
+                <VBox fx:id="roomsContainer" spacing="10" style="-fx-padding: 10;">
+                    <!-- Rooms will be added dynamically -->
+                </VBox>
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+
+    <!-- Simplified Footer - Just close button -->
+    <HBox style="-fx-background-color: #f8f9fa; -fx-background-radius: 0 0 15 15; -fx-border-color: #ecf0f1; -fx-border-width: 1 0 0 0;"
+          alignment="CENTER">
+        <padding>
+            <Insets top="20" right="25" bottom="20" left="25"/>
+        </padding>
+
+        <Button text="Close"
+                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 12 40; -fx-background-radius: 8; -fx-cursor: hand;"
+                onAction="#handleClose"/>
+    </HBox>
+
+</VBox>

@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.controllers.adminn.AccommodationModalController"
+      styleClass="modal-content" spacing="0" prefWidth="900" maxHeight="800">
+
+    <!-- Modal Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15" styleClass="modal-header">
+        <padding>
+            <Insets top="20" right="25" bottom="20" left="25"/>
+        </padding>
+
+        <Label fx:id="modalTitle" text="➕ Add New Accommodation" styleClass="modal-title">
+            <font>
+                <Font name="System Bold" size="20"/>
+            </font>
+        </Label>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Button fx:id="closeModalBtn" text="✕" styleClass="close-modal-btn"
+                onAction="#closeModal"/>
+    </HBox>
+
+    <Separator/>
+
+    <!-- Modal Body with Tabs -->
+    <TabPane fx:id="accommodationTabs" tabClosingPolicy="UNAVAILABLE"
+             styleClass="modal-tabs" VBox.vgrow="ALWAYS">
+
+        <!-- Tab 1: Basic Information -->
+        <Tab text="📝 Basic Info">
+            <ScrollPane fitToWidth="true" style="-fx-background-color: white;">
+                <VBox spacing="20">
+                    <padding>
+                        <Insets top="25" right="30" bottom="25" left="30"/>
+                    </padding>
+
+                    <!-- Name -->
+                    <VBox spacing="8">
+                        <Label text="Accommodation Name *" styleClass="form-label"/>
+                        <TextField fx:id="nameField" promptText="e.g., Luxury Beach Resort"
+                                   styleClass="form-input"/>
+                    </VBox>
+
+                    <!-- Type & Status Row -->
+                    <HBox spacing="20">
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Type *" styleClass="form-label"/>
+                            <ComboBox fx:id="typeCombo" promptText="Select type"
+                                      maxWidth="Infinity" styleClass="form-input">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="Hotel"/>
+                                        <String fx:value="Apartment"/>
+                                        <String fx:value="Villa"/>
+                                        <String fx:value="Resort"/>
+                                        <String fx:value="Guest House"/>
+                                        <String fx:value="Hostel"/>
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
+                        </VBox>
+
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Status *" styleClass="form-label"/>
+                            <ComboBox fx:id="statusCombo" promptText="Select status"
+                                      maxWidth="Infinity" styleClass="form-input">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="Active"/>
+                                        <String fx:value="Inactive"/>
+                                        <String fx:value="Pending"/>
+                                        <String fx:value="Under Maintenance"/>
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
+                        </VBox>
+
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Star Rating *" styleClass="form-label"/>
+                            <ComboBox fx:id="starRatingCombo" promptText="Select rating"
+                                      maxWidth="Infinity" styleClass="form-input">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="5 Stars"/>
+                                        <String fx:value="4 Stars"/>
+                                        <String fx:value="3 Stars"/>
+                                        <String fx:value="2 Stars"/>
+                                        <String fx:value="1 Star"/>
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Description -->
+                    <VBox spacing="8">
+                        <Label text="Description *" styleClass="form-label"/>
+                        <TextArea fx:id="descriptionArea" promptText="Enter detailed description..."
+                                  prefRowCount="4" wrapText="true" styleClass="form-input"/>
+                        <Label text="0 / 500 characters" style="-fx-text-fill: #95a5a6; -fx-font-size: 11;"/>
+                    </VBox>
+
+                    <!-- Location Section -->
+                    <Label text="📍 Location" styleClass="section-subtitle">
+                        <font>
+                            <Font name="System Bold" size="16"/>
+                        </font>
+                    </Label>
+
+                    <!-- Address -->
+                    <VBox spacing="8">
+                        <Label text="Address *" styleClass="form-label"/>
+                        <TextField fx:id="addressField" promptText="e.g., 123 Beach Road"
+                                   styleClass="form-input"/>
+                    </VBox>
+
+                    <!-- City, Country, Postal Code Row -->
+                    <HBox spacing="20">
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="City *" styleClass="form-label"/>
+                            <TextField fx:id="cityField" promptText="e.g., Dubai"
+                                       styleClass="form-input"/>
+                        </VBox>
+
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Country *" styleClass="form-label"/>
+                            <ComboBox fx:id="countryCombo" promptText="Select country"
+                                      maxWidth="Infinity" styleClass="form-input" editable="true"/>
+                        </VBox>
+
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Postal Code" styleClass="form-label"/>
+                            <TextField fx:id="postalCodeField" promptText="e.g., 12345"
+                                       styleClass="form-input"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Latitude & Longitude -->
+                    <HBox spacing="20">
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Latitude" styleClass="form-label"/>
+                            <TextField fx:id="latitudeField" promptText="e.g., 25.2048"
+                                       styleClass="form-input"/>
+                        </VBox>
+
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Longitude" styleClass="form-label"/>
+                            <TextField fx:id="longitudeField" promptText="e.g., 55.2708"
+                                       styleClass="form-input"/>
+                        </VBox>
+
+                        <VBox spacing="8" alignment="BOTTOM_LEFT">
+                            <Button text="📍 Get from Map" styleClass="btn-secondary"
+                                    onAction="#handleGetFromMap"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Contact Information -->
+                    <Label text="📞 Contact Information" styleClass="section-subtitle">
+                        <font>
+                            <Font name="System Bold" size="16"/>
+                        </font>
+                    </Label>
+
+                    <HBox spacing="20">
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Phone Number *" styleClass="form-label"/>
+                            <TextField fx:id="phoneField" promptText="e.g., +971 4 123 4567"
+                                       styleClass="form-input"/>
+                        </VBox>
+
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Email *" styleClass="form-label"/>
+                            <TextField fx:id="emailField" promptText="e.g., info@resort.com"
+                                       styleClass="form-input"/>
+                        </VBox>
+                    </HBox>
+
+                    <VBox spacing="8">
+                        <Label text="Website" styleClass="form-label"/>
+                        <TextField fx:id="websiteField" promptText="e.g., https://www.resort.com"
+                                   styleClass="form-input"/>
+                    </VBox>
+
+                    <!-- Images -->
+                    <Label text="🖼️ Images" styleClass="section-subtitle">
+                        <font>
+                            <Font name="System Bold" size="16"/>
+                        </font>
+                    </Label>
+
+                    <VBox spacing="10">
+                        <HBox spacing="15">
+                            <Button text="📤 Upload Images" styleClass="btn-secondary"
+                                    onAction="#handleUploadImages"/>
+                            <Label text="Max 10 images, 5MB each"
+                                   style="-fx-text-fill: #95a5a6; -fx-font-size: 12;"/>
+                        </HBox>
+                        <FlowPane fx:id="imagesPreviewPane" hgap="10" vgap="10"
+                                  style="-fx-border-color: #ddd; -fx-border-radius: 5; -fx-padding: 10;"/>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+        </Tab>
+
+        <!-- Tab 2: Rooms Management -->
+        <Tab text="🛏️ Rooms">
+            <VBox spacing="20">
+                <padding>
+                    <Insets top="20" right="25" bottom="20" left="25"/>
+                </padding>
+
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Label text="Manage Rooms" styleClass="section-subtitle">
+                        <font>
+                            <Font name="System Bold" size="16"/>
+                        </font>
+                    </Label>
+
+                    <Region HBox.hgrow="ALWAYS"/>
+
+                    <Button fx:id="addRoomBtn" text="➕ Add Room" styleClass="btn-add"
+                            onAction="#handleAddRoom"/>
+                </HBox>
+
+                <ScrollPane fitToWidth="true" prefHeight="500"
+                            style="-fx-background-color: white;">
+                    <VBox fx:id="roomsContainer" spacing="15">
+                        <!-- Room cards will be added dynamically -->
+
+                        <!-- Example Room Card Template (will be created in Java) -->
+                        <HBox styleClass="room-card" spacing="20" alignment="CENTER_LEFT">
+                            <padding>
+                                <Insets top="15" right="20" bottom="15" left="20"/>
+                            </padding>
+
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="Deluxe Suite" styleClass="room-name"/>
+                                <Label text="Type: Suite | Capacity: 2 adults, 1 child | Size: 45m²"
+                                       styleClass="room-details"/>
+                                <Label text="Price: €250/night" styleClass="room-price"/>
+                            </VBox>
+
+                            <VBox spacing="8">
+                                <Button text="✏️ Edit" styleClass="btn-sm-secondary"/>
+                                <Button text="🗑️ Delete" styleClass="btn-sm-danger"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </ScrollPane>
+            </VBox>
+        </Tab>
+
+        <!-- Tab 3: Amenities & Services -->
+        <Tab text="✨ Amenities">
+            <ScrollPane fitToWidth="true" style="-fx-background-color: white;">
+                <VBox spacing="25">
+                    <padding>
+                        <Insets top="25" right="30" bottom="25" left="30"/>
+                    </padding>
+
+                    <!-- General Amenities -->
+                    <VBox spacing="12">
+                        <Label text="🏨 General Amenities" styleClass="section-subtitle">
+                            <font>
+                                <Font name="System Bold" size="16"/>
+                            </font>
+                        </Label>
+
+                        <FlowPane hgap="15" vgap="15">
+                            <CheckBox fx:id="wifiCheck" text="Wi-Fi" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="parkingCheck" text="Free Parking" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="airConditioningCheck" text="Air Conditioning" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="heatingCheck" text="Heating" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="elevatorCheck" text="Elevator" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="wheelchairCheck" text="Wheelchair Accessible" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="petFriendlyCheck" text="Pet Friendly" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="smokingCheck" text="Smoking Allowed" styleClass="amenity-checkbox"/>
+                        </FlowPane>
+                    </VBox>
+
+                    <Separator/>
+
+                    <!-- Facilities -->
+                    <VBox spacing="12">
+                        <Label text="🏊 Facilities" styleClass="section-subtitle">
+                            <font>
+                                <Font name="System Bold" size="16"/>
+                            </font>
+                        </Label>
+
+                        <FlowPane hgap="15" vgap="15">
+                            <CheckBox fx:id="poolCheck" text="Swimming Pool" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="gymCheck" text="Fitness Center" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="spaCheck" text="Spa &amp; Wellness" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="restaurantCheck" text="Restaurant" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="barCheck" text="Bar/Lounge" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="conferenceCheck" text="Conference Rooms" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="businessCenterCheck" text="Business Center" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="laundryCheck" text="Laundry Service" styleClass="amenity-checkbox"/>
+                        </FlowPane>
+                    </VBox>
+
+                    <Separator/>
+
+                    <!-- Services -->
+                    <VBox spacing="12">
+                        <Label text="🛎️ Services" styleClass="section-subtitle">
+                            <font>
+                                <Font name="System Bold" size="16"/>
+                            </font>
+                        </Label>
+
+                        <FlowPane hgap="15" vgap="15">
+                            <CheckBox fx:id="reception24Check" text="24h Reception" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="conciergeCheck" text="Concierge" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="roomServiceCheck" text="Room Service" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="airportShuttleCheck" text="Airport Shuttle" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="breakfastCheck" text="Breakfast Included" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="vipServicesCheck" text="VIP Services" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="babyCheck" text="Babysitting" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="tourDeskCheck" text="Tour Desk" styleClass="amenity-checkbox"/>
+                        </FlowPane>
+                    </VBox>
+
+                    <Separator/>
+
+                    <!-- Safety & Security -->
+                    <VBox spacing="12">
+                        <Label text="🔒 Safety &amp; Security" styleClass="section-subtitle">
+                            <font>
+                                <Font name="System Bold" size="16"/>
+                            </font>
+                        </Label>
+
+                        <FlowPane hgap="15" vgap="15">
+                            <CheckBox fx:id="securityCheck" text="24h Security" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="cctvCheck" text="CCTV" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="safeCheck" text="In-room Safe" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="fireExtinguisherCheck" text="Fire Extinguishers" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="smokeDetectorCheck" text="Smoke Detectors" styleClass="amenity-checkbox"/>
+                            <CheckBox fx:id="firstAidCheck" text="First Aid Kit" styleClass="amenity-checkbox"/>
+                        </FlowPane>
+                    </VBox>
+
+                    <!-- Custom Amenities -->
+                    <VBox spacing="12">
+                        <Label text="➕ Add Custom Amenity" styleClass="section-subtitle">
+                            <font>
+                                <Font name="System Bold" size="14"/>
+                            </font>
+                        </Label>
+
+                        <HBox spacing="10">
+                            <TextField fx:id="customAmenityField" promptText="Enter custom amenity name..."
+                                       prefWidth="300" styleClass="form-input"/>
+                            <Button text="Add" styleClass="btn-add" onAction="#handleAddCustomAmenity"/>
+                        </HBox>
+
+                        <FlowPane fx:id="customAmenitiesPane" hgap="10" vgap="10">
+                            <!-- Custom amenities will be added here dynamically -->
+                        </FlowPane>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+        </Tab>
+    </TabPane>
+
+    <Separator/>
+
+    <!-- Modal Footer -->
+    <HBox alignment="CENTER_RIGHT" spacing="15" styleClass="modal-footer">
+        <padding>
+            <Insets top="20" right="25" bottom="20" left="25"/>
+        </padding>
+
+        <Button text="Cancel" styleClass="btn-cancel" onAction="#closeModal"/>
+        <Button fx:id="saveDraftBtn" text="💾 Save as Draft" styleClass="btn-secondary"
+                onAction="#handleSaveDraft"/>
+        <Button fx:id="saveBtn" text="✓ Save Accommodation" styleClass="btn-save"
+                onAction="#handleSave"/>
+    </HBox>
+
+</VBox>

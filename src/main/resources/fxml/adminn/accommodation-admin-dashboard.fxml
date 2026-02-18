@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    UPDATED: accommodation-admin-dashboard.fxml
+    Now with advanced sidebar navigation and modern header
+    Main content remains untouched
+-->
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+
+<StackPane prefHeight="1000.0" prefWidth="1600.0" stylesheets="@/css/admin-style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.adminn.AccommodationAdminController">
+
+    <!-- Main Layout Container -->
+    <BorderPane prefHeight="1000.0" prefWidth="1600.0" styleClass="admin-root">
+
+        <!-- LEFT: Sidebar Navigation -->
+        <left>
+            <VBox fx:id="sidebar" maxWidth="280" minWidth="280" prefWidth="280" spacing="0" styleClass="sidebar-container">
+                <!-- Sidebar Header with Logo -->
+                <HBox alignment="CENTER_LEFT" spacing="15" styleClass="sidebar-header">
+                    <padding>
+                        <Insets bottom="25" left="25" right="20" top="25" />
+                    </padding>
+                    <!-- Logo Container -->
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <StackPane>
+                            <!-- App logo image -->
+                            <ImageView fitHeight="90.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@/images/tripx-logo.png" />
+                                </image>
+                            </ImageView>
+                        </StackPane>
+                        <VBox spacing="4">
+                            <Label styleClass="logo-title" text="TripX" />
+                            <Label styleClass="logo-subtitle" text="Admin" />
+                        </VBox>
+                    </HBox>
+                    <!-- Collapse Button -->
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button fx:id="sidebarToggle" styleClass="sidebar-toggle-btn" text="◀">
+                        <tooltip>
+                            <Tooltip text="Toggle Sidebar" />
+                        </tooltip>
+                    </Button>
+                </HBox>
+
+                <!-- Search Bar -->
+                <HBox alignment="CENTER" spacing="10" styleClass="sidebar-search-container">
+                    <padding>
+                        <Insets bottom="15" left="20" right="20" top="15" />
+                    </padding>
+                    <TextField promptText="Search modules..." styleClass="sidebar-search" />
+                    <Button styleClass="search-btn" text="🔍" />
+                </HBox>
+
+                <!-- Navigation Menu -->
+                <ScrollPane fitToWidth="true" styleClass="sidebar-scroll" VBox.vgrow="ALWAYS">
+                    <VBox spacing="2" styleClass="sidebar-menu">
+                        <!-- Dashboard Section -->
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-header">
+                                <Label styleClass="menu-icon" text="🏠" />
+                                <Label styleClass="menu-title" text="Dashboard" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button fx:id="dashboardToggle" styleClass="menu-toggle" text="▼" />
+                            </HBox>
+                            <VBox fx:id="dashboardMenu" spacing="0" styleClass="submenu" visible="true">
+                                <Button styleClass="menu-item" text="Overview" />
+                                <Button styleClass="menu-item" text="Statistics" />
+                                <Button styleClass="menu-item" text="Recent Activity" />
+                            </VBox>
+                        </VBox>
+
+                        <!-- Users Section -->
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-header">
+                                <Label styleClass="menu-icon" text="👤" />
+                                <Label styleClass="menu-title" text="Users" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button fx:id="usersToggle" styleClass="menu-toggle" text="▼" />
+                            </HBox>
+                            <VBox fx:id="usersMenu" spacing="0" styleClass="submenu">
+                                <Button styleClass="menu-item" text="Manage Users" />
+                                <Button styleClass="menu-item" text="Roles &amp; Permissions" />
+                                <Button styleClass="menu-item" text="User Reports" />
+                            </VBox>
+                        </VBox>
+
+                        <!-- Accommodations Section (Active) -->
+                        <VBox spacing="0" styleClass="menu-section active">
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-header">
+                                <Label styleClass="menu-icon" text="🏨" />
+                                <Label styleClass="menu-title" text="Accommodations" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button fx:id="accommodationsToggle" styleClass="menu-toggle" text="▼" />
+                            </HBox>
+                            <VBox fx:id="accommodationsMenu" spacing="0" styleClass="submenu" visible="true">
+                                <Button styleClass="menu-item" text="Manage Accommodations" />
+                                <Button styleClass="menu-item" text="Manage Bookings" />
+                            </VBox>
+                        </VBox>
+
+                        <!-- Destinations Section -->
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-header">
+                                <Label styleClass="menu-icon" text="🌍" />
+                                <Label styleClass="menu-title" text="Destinations" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button fx:id="destinationsToggle" styleClass="menu-toggle" text="▼" />
+                            </HBox>
+                            <VBox fx:id="destinationsMenu" spacing="0" styleClass="submenu">
+                                <Button styleClass="menu-item" text="All Destinations" />
+                                <Button styleClass="menu-item" text="Add Destination" />
+                                <Button styleClass="menu-item" text="Categories" />
+                            </VBox>
+                        </VBox>
+
+                        <!-- Packs & Offers Section -->
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-header">
+                                <Label styleClass="menu-icon" text="🎁" />
+                                <Label styleClass="menu-title" text="Packs &amp; Offers" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button fx:id="offersToggle" styleClass="menu-toggle" text="▼" />
+                            </HBox>
+                            <VBox fx:id="offersMenu" spacing="0" styleClass="submenu">
+                                <Button styleClass="menu-item" text="All Offers" />
+                                <Button styleClass="menu-item" text="Create Offers" />
+                            </VBox>
+                        </VBox>
+
+                        <!-- Transport Section -->
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-header">
+                                <Label styleClass="menu-icon" text="🚗" />
+                                <Label styleClass="menu-title" text="Transport" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button fx:id="transportToggle" styleClass="menu-toggle" text="▼" />
+                            </HBox>
+                            <VBox fx:id="transportMenu" spacing="0" styleClass="submenu">
+                                <Button styleClass="menu-item" text="Vehicles" />
+                                <Button styleClass="menu-item" text="Bookings" />
+                                <Button styleClass="menu-item" text="Routes" />
+                                <Button styleClass="menu-item" text="Transport Providers" />
+                            </VBox>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+
+                <!-- Sidebar Footer -->
+                <VBox spacing="15" styleClass="sidebar-footer">
+                    <Separator styleClass="sidebar-separator" />
+                    <!-- Dark Mode Toggle -->
+                    <HBox alignment="CENTER_LEFT" spacing="15" styleClass="theme-toggle-container">
+                        <Label styleClass="theme-icon" text="🌙" />
+                        <Label styleClass="theme-label" text="Dark Mode" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <ToggleButton fx:id="darkModeToggle" styleClass="theme-toggle" />
+                    </HBox>
+                </VBox>
+            </VBox>
+        </left>
+
+        <!-- MAIN CONTENT AREA (Right side of sidebar) -->
+        <center>
+            <VBox spacing="0">
+                <!-- TOP HEADER -->
+                <HBox alignment="CENTER_LEFT" spacing="20" styleClass="main-header">
+                    <!-- Sidebar open button (visible when sidebar is hidden) -->
+                    <Button fx:id="sidebarOpenButton" styleClass="sidebar-open-btn" text="☰">
+                  <textFill>
+                     <LinearGradient endX="1.0" endY="1.0" startX="0.6666666585387606">
+                        <stops>
+                           <Stop>
+                              <color>
+                                 <Color red="0.18311890959739685" green="0.5579577684402466" blue="0.6421052813529968" />
+                              </color>
+                           </Stop>
+                           <Stop offset="1.0">
+                              <color>
+                                 <Color red="1.0" green="1.0" blue="1.0" />
+                              </color>
+                           </Stop>
+                        </stops>
+                     </LinearGradient>
+                  </textFill></Button>
+
+                    <!-- Left: Breadcrumb -->
+                    <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="297.0" spacing="10" styleClass="breadcrumb-container">
+                        <Label styleClass="breadcrumb-item" text="Dashboard" />
+                        <Label styleClass="breadcrumb-separator" text="›" />
+                        <Label styleClass="breadcrumb-item active" text="Accommodations" />
+                        <Label styleClass="breadcrumb-separator" text="›" />
+                        <Label styleClass="breadcrumb-item" text="Management" />
+                    </HBox>
+
+                    <Region HBox.hgrow="ALWAYS" />
+
+                    <!-- Right: Header Actions -->
+                    <HBox alignment="CENTER_RIGHT" spacing="15" styleClass="header-actions">
+                        <!-- Global Search -->
+                        <TextField promptText="Search across modules..." styleClass="global-search" />
+
+                        <!-- Notifications -->
+                        <StackPane styleClass="notification-badge">
+                            <Button styleClass="icon-btn notification-btn" text="🔔">
+                                <tooltip>
+                                    <Tooltip text="Notifications" />
+                                </tooltip>
+                            </Button>
+                            <Circle radius="5" styleClass="notification-dot" />
+                        </StackPane>
+
+                        <!-- Profile Dropdown -->
+                        <MenuButton styleClass="profile-dropdown" text="Admin User">
+                            <graphic>
+                                <StackPane styleClass="profile-avatar">
+                                    <Circle radius="16" styleClass="avatar-circle" />
+                                    <Label styleClass="avatar-text" text="AU" />
+                                </StackPane>
+                            </graphic>
+                            <items>
+                                <MenuItem text="👤 My Profile" />
+                                <MenuItem text="⚙️ Settings" />
+                                <SeparatorMenuItem />
+                                <MenuItem text="🚪 Logout" />
+                            </items>
+                        </MenuButton>
+                    </HBox>
+                </HBox>
+
+                <!-- EXISTING CONTENT (Everything below stays exactly the same) -->
+                <ScrollPane fitToWidth="true" style="-fx-background-color: #F5F7FA; -fx-border-color: transparent;">
+                    <VBox spacing="24" VBox.vgrow="ALWAYS">
+                        <padding>
+                            <Insets bottom="24" left="30" right="30" top="24" />
+                        </padding>
+
+                        <!-- Actions Bar -->
+                        <HBox alignment="CENTER_LEFT" spacing="14" style="-fx-background-color: linear-gradient(to right, #FFFFFF, #F8FAFC); -fx-background-radius: 12; -fx-padding: 14 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 2);">
+                            <Label style="-fx-text-fill: #37474F; -fx-font-size: 17; -fx-font-weight: 700;" text="🏨 Accommodations Overview" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Button fx:id="addAccommodationBtn" onAction="#showAddAccommodationModal" style="-fx-font-size: 13; -fx-font-weight: 700; -fx-padding: 10 18;" styleClass="btn-add-primary" text="➕ Add Accommodation" />
+                        </HBox>
+
+                        <!-- KPI Cards Row -->
+                        <HBox alignment="CENTER_LEFT" spacing="24">
+                            <!-- Total Accommodations Card -->
+                            <VBox maxWidth="280" prefWidth="280" spacing="10" styleClass="kpi-card">
+                                <padding>
+                                    <Insets bottom="20" left="20" right="20" top="20" />
+                                </padding>
+                                <HBox alignment="CENTER_LEFT" spacing="15">
+                                    <Label style="-fx-font-size: 32;" text="🏨" />
+                                    <VBox spacing="5">
+                                        <Label styleClass="kpi-label" text="Total Accommodations" />
+                                        <Label fx:id="totalAccommodationsLabel" styleClass="kpi-value" text="0" />
+                                        <Label styleClass="kpi-change positive" text="↑ 12% from last month" />
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+
+                            <!-- Active Bookings Card -->
+                            <VBox maxWidth="280" prefWidth="280" spacing="10" styleClass="kpi-card">
+                                <padding>
+                                    <Insets bottom="20" left="20" right="20" top="20" />
+                                </padding>
+                                <HBox alignment="CENTER_LEFT" spacing="15">
+                                    <Label style="-fx-font-size: 32;" text="📅" />
+                                    <VBox spacing="5">
+                                        <Label styleClass="kpi-label" text="Active Bookings" />
+                                        <Label fx:id="activeBookingsLabel" styleClass="kpi-value" text="0" />
+                                        <Label styleClass="kpi-change positive" text="↑ 8% from last month" />
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+
+                            <!-- Revenue Card -->
+                            <VBox maxWidth="280" prefWidth="280" spacing="10" styleClass="kpi-card">
+                                <padding>
+                                    <Insets bottom="20" left="20" right="20" top="20" />
+                                </padding>
+                                <HBox alignment="CENTER_LEFT" spacing="15">
+                                    <Label style="-fx-font-size: 32;" text="💰" />
+                                    <VBox spacing="5">
+                                        <Label styleClass="kpi-label" text="Monthly Revenue" />
+                                        <Label fx:id="revenueLabel" styleClass="kpi-value" text="€0" />
+                                        <Label styleClass="kpi-change positive" text="↑ 23% from last month" />
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+
+                            <!-- Occupancy Rate Card -->
+                            <VBox maxWidth="280" prefWidth="280" spacing="10" styleClass="kpi-card">
+                                <padding>
+                                    <Insets bottom="20" left="20" right="20" top="20" />
+                                </padding>
+                                <HBox alignment="CENTER_LEFT" spacing="15">
+                                    <Label style="-fx-font-size: 32;" text="📊" />
+                                    <VBox spacing="5">
+                                        <Label styleClass="kpi-label" text="Occupancy Rate" />
+                                        <Label fx:id="occupancyLabel" styleClass="kpi-value" text="0%" />
+                                        <Label styleClass="kpi-change negative" text="↓ 2% from last month" />
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+
+                        <!-- Charts Row -->
+                        <HBox alignment="TOP_LEFT" spacing="24">
+                            <!-- Bookings Chart -->
+                            <VBox spacing="15" styleClass="chart-card" HBox.hgrow="ALWAYS">
+                                <padding>
+                                    <Insets bottom="20" left="20" right="20" top="20" />
+                                </padding>
+                                <Label styleClass="chart-title" text="📈 Bookings Trend (Last 6 Months)" />
+                                <LineChart fx:id="bookingsChart" legendVisible="false" prefHeight="250">
+                                    <xAxis>
+                                        <CategoryAxis label="Month" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Bookings" />
+                                    </yAxis>
+                                </LineChart>
+                            </VBox>
+
+                            <!-- Revenue Chart -->
+                            <VBox spacing="15" styleClass="chart-card" HBox.hgrow="ALWAYS">
+                                <padding>
+                                    <Insets bottom="20" left="20" right="20" top="20" />
+                                </padding>
+                                <Label styleClass="chart-title" text="💵 Revenue by Type" />
+                                <PieChart fx:id="revenueChart" legendVisible="true" prefHeight="250" />
+                            </VBox>
+                        </HBox>
+
+                        <!-- Advanced Search & Filter Section -->
+                        <VBox spacing="15" styleClass="filter-section">
+                            <padding>
+                                <Insets bottom="20" left="20" right="20" top="20" />
+                            </padding>
+
+                            <Label styleClass="section-title" text="🔍 Advanced Search &amp; Filters" />
+
+                            <HBox alignment="CENTER_LEFT" spacing="15">
+                                <TextField fx:id="searchField" prefWidth="350" promptText="🔎 Search by name, location, or ID..." styleClass="search-input" />
+
+                                <ComboBox fx:id="statusFilter" prefWidth="150" promptText="Status">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="All Status" />
+                                            <String fx:value="Active" />
+                                            <String fx:value="Inactive" />
+                                            <String fx:value="Pending" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+
+                                <ComboBox fx:id="typeFilter" prefWidth="150" promptText="Type">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="All Types" />
+                                            <String fx:value="Hotel" />
+                                            <String fx:value="Apartment" />
+                                            <String fx:value="Villa" />
+                                            <String fx:value="Resort" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+
+                                <ComboBox fx:id="cityFilter" prefWidth="150" promptText="City">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="All Cities" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+
+                                <ComboBox fx:id="sortBy" prefWidth="150" promptText="Sort by">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Name (A-Z)" />
+                                            <String fx:value="Name (Z-A)" />
+                                            <String fx:value="Stars (High-Low)" />
+                                            <String fx:value="Stars (Low-High)" />
+                                            <String fx:value="Newest First" />
+                                            <String fx:value="Oldest First" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+
+                                <Button onAction="#handleResetFilters" styleClass="btn-reset" text="🔄 Reset" />
+                                <Button styleClass="btn-ai" text="🤖 AI Suggest" />
+
+                                <Region HBox.hgrow="ALWAYS" />
+
+                                <ToggleButton fx:id="gridViewToggle" selected="true" styleClass="view-toggle" text="⊞ Grid" />
+                                <ToggleButton fx:id="listViewToggle" styleClass="view-toggle" text="☰ List" />
+                            </HBox>
+
+                            <Label fx:id="resultsLabel" style="-fx-text-fill: #90A4AE; -fx-font-size: 13;" text="Showing 0 accommodations" />
+                        </VBox>
+
+                        <!-- Accommodations Grid/List -->
+                        <VBox spacing="18" style="-fx-background-color: white; -fx-padding: 24; -fx-background-radius: 14;" VBox.vgrow="ALWAYS">
+                            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0;">
+                                <FlowPane fx:id="accommodationsGrid" alignment="TOP_LEFT" hgap="24" style="-fx-background-color: transparent; -fx-padding: 8;" vgap="24">
+                                    <!-- Accommodation cards will be added dynamically -->
+                                </FlowPane>
+                            </ScrollPane>
+
+                            <!-- Pagination -->
+                            <HBox alignment="CENTER" spacing="10" style="-fx-padding: 20 0 0 0;">
+                                <Button styleClass="page-btn" text="«" />
+                                <Button styleClass="page-btn active" text="1" />
+                                <Button styleClass="page-btn" text="2" />
+                                <Button styleClass="page-btn" text="3" />
+                                <Button styleClass="page-btn" text="..." />
+                                <Button styleClass="page-btn" text="25" />
+                                <Button styleClass="page-btn" text="»" />
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </VBox>
+        </center>
+
+    </BorderPane>
+
+    <!-- Modal Overlay (Hidden by default) -->
+    <StackPane fx:id="modalOverlay" managed="false" mouseTransparent="false" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false">
+        <!-- Add/Edit Modal Container -->
+        <VBox fx:id="accommodationModal" maxHeight="800" maxWidth="900" prefWidth="900" spacing="0" styleClass="modal-container">
+            <!-- Modal content will be loaded dynamically -->
+        </VBox>
+    </StackPane>
+
+</StackPane>

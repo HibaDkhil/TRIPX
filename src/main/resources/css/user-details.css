@@ -1,0 +1,314 @@
+.details-root {
+    -fx-background-color: linear-gradient(to bottom right, #F8FAFC, #E0F2FE);
+    -fx-font-family: "Poppins", "Inter", "Segoe UI", "Arial";
+}
+
+.details-topbar {
+    -fx-background-color: linear-gradient(to right, #FFFFFF, #ECFEFF);
+    -fx-padding: 14 26;
+    -fx-border-color: rgba(14,165,164,0.18);
+    -fx-border-width: 0 0 1 0;
+    -fx-effect: dropshadow(gaussian, rgba(31,41,55,0.10), 18, 0, 0, 4);
+}
+
+.details-logo {
+    -fx-font-size: 30;
+    -fx-font-weight: 900;
+    -fx-text-fill: #1E3A8A;
+}
+
+.details-nav-pill,
+.details-nav-pill-teal {
+    -fx-background-radius: 999;
+    -fx-padding: 8 14;
+    -fx-font-size: 14;
+    -fx-font-weight: 700;
+}
+
+.details-nav-pill {
+    -fx-background-color: rgba(37,99,235,0.06);
+    -fx-text-fill: #1E3A8A;
+}
+
+.details-nav-pill-teal {
+    -fx-background-color: rgba(20,184,166,0.08);
+    -fx-text-fill: #0F766E;
+}
+
+.details-nav-pill-active {
+    -fx-background-color: linear-gradient(to right, #1E3A8A, #2563EB);
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+    -fx-font-weight: 800;
+    -fx-background-radius: 999;
+    -fx-padding: 8 16;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.30), 10, 0, 0, 3);
+}
+
+.details-scroll,
+.details-scroll > .viewport,
+.details-gallery-scroll,
+.details-gallery-scroll > .viewport {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.details-content-wrap {
+    -fx-padding: 18 24 28 24;
+}
+
+.details-back-btn {
+    -fx-background-color: #E2E8F0;
+    -fx-text-fill: #1E3A8A;
+    -fx-font-weight: 800;
+    -fx-background-radius: 999;
+    -fx-padding: 8 14;
+    -fx-cursor: hand;
+}
+
+.details-primary-cta {
+    -fx-background-color: linear-gradient(to right, #1E3A8A, #2563EB);
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-background-radius: 12;
+    -fx-padding: 9 16;
+    -fx-cursor: hand;
+}
+
+.details-title {
+    -fx-text-fill: #111827;
+    -fx-font-size: 31;
+    -fx-font-weight: 900;
+}
+
+.details-subtitle {
+    -fx-text-fill: #1E3A8A;
+    -fx-font-size: 14;
+    -fx-font-weight: 700;
+}
+
+.details-location {
+    -fx-text-fill: #334155;
+    -fx-font-size: 13;
+}
+
+.details-stars {
+    -fx-text-fill: #F59E0B;
+    -fx-font-size: 13;
+    -fx-font-weight: 700;
+}
+
+.details-status {
+    -fx-background-color: #DCFCE7;
+    -fx-text-fill: #166534;
+    -fx-background-radius: 999;
+    -fx-padding: 4 10;
+    -fx-font-size: 11;
+    -fx-font-weight: 700;
+}
+
+.details-anchor-bar {
+    -fx-background-color: rgba(255,255,255,0.72);
+    -fx-background-radius: 12;
+    -fx-padding: 10;
+}
+
+.details-anchor-btn {
+    -fx-background-color: #EEF2FF;
+    -fx-text-fill: #1E3A8A;
+    -fx-font-weight: 700;
+    -fx-background-radius: 999;
+    -fx-padding: 6 12;
+    -fx-cursor: hand;
+}
+
+.details-anchor-btn:hover {
+    -fx-background-color: #DBEAFE;
+}
+
+.details-hero-card,
+.details-section-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-padding: 14;
+    -fx-border-color: #DBEAFE;
+    -fx-border-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.10), 14, 0, 0, 4);
+}
+
+.details-gallery-strip {
+    -fx-padding: 4;
+}
+
+.details-gallery-thumb {
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+}
+
+.details-gallery-hint {
+    -fx-text-fill: #64748B;
+    -fx-font-size: 12;
+    -fx-font-weight: 700;
+}
+
+.details-section-title {
+    -fx-text-fill: #111827;
+    -fx-font-size: 22;
+    -fx-font-weight: 900;
+}
+
+.details-subsection-title {
+    -fx-text-fill: #0F172A;
+    -fx-font-size: 15;
+    -fx-font-weight: 800;
+}
+
+.details-section-body {
+    -fx-text-fill: #334155;
+    -fx-font-size: 14;
+    -fx-line-spacing: 3;
+}
+
+.details-amenities {
+    -fx-text-fill: #0EA5A4;
+    -fx-font-size: 13;
+    -fx-font-weight: 700;
+}
+
+.details-room-table-header {
+    -fx-background-color: #EFF6FF;
+    -fx-background-radius: 10;
+    -fx-padding: 9 12;
+}
+
+.details-room-header-label {
+    -fx-text-fill: #1E3A8A;
+    -fx-font-size: 13;
+    -fx-font-weight: 800;
+}
+
+.details-room-table-row {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-border-color: #E2E8F0;
+    -fx-border-radius: 10;
+    -fx-padding: 10 12;
+}
+
+.details-room-name {
+    -fx-text-fill: #0F172A;
+    -fx-font-size: 14;
+    -fx-font-weight: 800;
+}
+
+.details-room-meta {
+    -fx-text-fill: #64748B;
+    -fx-font-size: 12;
+}
+
+.details-room-guests {
+    -fx-text-fill: #334155;
+    -fx-font-size: 12.5;
+    -fx-font-weight: 700;
+}
+
+.details-room-status-available,
+.details-room-status-unavailable {
+    -fx-background-radius: 999;
+    -fx-padding: 4 10;
+    -fx-font-size: 11;
+    -fx-font-weight: 700;
+}
+
+.details-room-status-available {
+    -fx-background-color: #DCFCE7;
+    -fx-text-fill: #166534;
+}
+
+.details-room-status-unavailable {
+    -fx-background-color: #FEE2E2;
+    -fx-text-fill: #991B1B;
+}
+
+.details-room-price {
+    -fx-text-fill: #0F766E;
+    -fx-font-size: 13;
+    -fx-font-weight: 800;
+}
+
+.details-room-cta {
+    -fx-background-color: linear-gradient(to right, #1E3A8A, #2563EB);
+    -fx-text-fill: white;
+    -fx-font-size: 12;
+    -fx-font-weight: 700;
+    -fx-background-radius: 10;
+    -fx-padding: 6 11;
+    -fx-cursor: hand;
+}
+
+.details-room-empty {
+    -fx-text-fill: #64748B;
+    -fx-font-size: 13;
+    -fx-padding: 8 0;
+}
+
+.details-ai-summary {
+    -fx-text-fill: #334155;
+    -fx-font-size: 12.5;
+}
+
+.details-ai-btn {
+    -fx-background-color: linear-gradient(to right, #0EA5A4, #14B8A6);
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-background-radius: 10;
+    -fx-padding: 8 12;
+    -fx-cursor: hand;
+}
+
+.details-ai-card {
+    -fx-background-color: linear-gradient(to bottom right, #FFFFFF, #EFF6FF);
+    -fx-background-radius: 12;
+    -fx-border-color: #BFDBFE;
+    -fx-border-radius: 12;
+    -fx-padding: 10 12;
+}
+
+.details-ai-card-title {
+    -fx-text-fill: #1E3A8A;
+    -fx-font-size: 13;
+    -fx-font-weight: 800;
+}
+
+.details-ai-card-line {
+    -fx-text-fill: #334155;
+    -fx-font-size: 12.5;
+}
+
+.details-side-scroll,
+.details-side-scroll > .viewport {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.details-side-rail {
+    -fx-padding: 18 16 20 0;
+}
+
+.details-side-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16;
+    -fx-border-color: #DBEAFE;
+    -fx-border-radius: 16;
+    -fx-padding: 14;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.12), 14, 0, 0, 4);
+}
+
+.details-side-rail .scroll-bar:vertical {
+    -fx-pref-width: 10;
+}
+
+.details-side-rail .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(30,58,138,0.35);
+    -fx-background-radius: 999;
+}

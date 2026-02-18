@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="admin.shell.kit.AdminShellController"
+           stylesheets="@../css/admin-shell.css">
+
+    <BorderPane styleClass="admin-root">
+        <left>
+            <VBox fx:id="sidebar" prefWidth="280" minWidth="280" maxWidth="280" styleClass="sidebar-container">
+                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="sidebar-header">
+                    <padding>
+                        <Insets top="24" right="20" bottom="20" left="24"/>
+                    </padding>
+                    <ImageView fitWidth="56" fitHeight="56" preserveRatio="true">
+                        <image>
+                            <Image url="@/images/tripx-logo.png"/>
+                        </image>
+                    </ImageView>
+                    <VBox spacing="2">
+                        <Label text="TripX" styleClass="logo-title"/>
+                        <Label text="Admin" styleClass="logo-subtitle"/>
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="sidebarToggle" text="◀" styleClass="sidebar-toggle-btn"/>
+                </HBox>
+
+                <HBox spacing="8" alignment="CENTER_LEFT" styleClass="sidebar-search-container">
+                    <padding>
+                        <Insets top="8" right="18" bottom="12" left="18"/>
+                    </padding>
+                    <TextField promptText="Search modules..." styleClass="sidebar-search" HBox.hgrow="ALWAYS"/>
+                    <Button text="🔍" styleClass="search-btn"/>
+                </HBox>
+
+                <ScrollPane fitToWidth="true" styleClass="sidebar-scroll" VBox.vgrow="ALWAYS">
+                    <VBox spacing="2" styleClass="sidebar-menu">
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-header">
+                                <Label text="🏠" styleClass="menu-icon"/>
+                                <Label text="Dashboard" styleClass="menu-title"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="dashboardToggle" text="▼" styleClass="menu-toggle"/>
+                            </HBox>
+                            <VBox fx:id="dashboardMenu" spacing="0" styleClass="submenu">
+                                <Button text="Overview" styleClass="menu-item"/>
+                                <Button text="Statistics" styleClass="menu-item"/>
+                            </VBox>
+                        </VBox>
+
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-header">
+                                <Label text="👤" styleClass="menu-icon"/>
+                                <Label text="Users" styleClass="menu-title"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="usersToggle" text="▼" styleClass="menu-toggle"/>
+                            </HBox>
+                            <VBox fx:id="usersMenu" spacing="0" styleClass="submenu">
+                                <Button text="Manage Users" styleClass="menu-item"/>
+                                <Button text="Roles &amp; Permissions" styleClass="menu-item"/>
+                            </VBox>
+                        </VBox>
+
+                        <VBox spacing="0" styleClass="menu-section active">
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-header">
+                                <Label text="🏨" styleClass="menu-icon"/>
+                                <Label text="Accommodations" styleClass="menu-title"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="accommodationsToggle" text="▼" styleClass="menu-toggle"/>
+                            </HBox>
+                            <VBox fx:id="accommodationsMenu" spacing="0" styleClass="submenu">
+                                <Button text="Manage Accommodations" styleClass="menu-item active"/>
+                                <Button text="Manage Bookings" styleClass="menu-item"/>
+                            </VBox>
+                        </VBox>
+
+                        <VBox spacing="0" styleClass="menu-section">
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-header">
+                                <Label text="🌍" styleClass="menu-icon"/>
+                                <Label text="Destinations" styleClass="menu-title"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="destinationsToggle" text="▼" styleClass="menu-toggle"/>
+                            </HBox>
+                            <VBox fx:id="destinationsMenu" spacing="0" styleClass="submenu">
+                                <Button text="All Destinations" styleClass="menu-item"/>
+                                <Button text="Categories" styleClass="menu-item"/>
+                            </VBox>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+
+                <VBox spacing="10" styleClass="sidebar-footer">
+                    <Separator styleClass="sidebar-separator"/>
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="theme-toggle-container">
+                        <Label text="🌙" styleClass="theme-icon"/>
+                        <Label text="Dark Mode" styleClass="theme-label"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <ToggleButton fx:id="darkModeToggle" styleClass="theme-toggle"/>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="🌐" styleClass="theme-icon"/>
+                        <ComboBox fx:id="languageSelector" styleClass="language-selector" prefWidth="140">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="English"/>
+                                    <String fx:value="Français"/>
+                                    <String fx:value="العربية"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                    </HBox>
+                </VBox>
+            </VBox>
+        </left>
+
+        <center>
+            <VBox spacing="0">
+                <HBox alignment="CENTER_LEFT" spacing="16" styleClass="main-header">
+                    <Button fx:id="sidebarOpenButton" text="☰" styleClass="sidebar-open-btn"/>
+                    <HBox alignment="CENTER_LEFT" spacing="8" styleClass="breadcrumb-container">
+                        <Label text="Dashboard" styleClass="breadcrumb-item"/>
+                        <Label text="›" styleClass="breadcrumb-separator"/>
+                        <Label text="Module" styleClass="breadcrumb-item active"/>
+                    </HBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <HBox alignment="CENTER_RIGHT" spacing="12" styleClass="header-actions">
+                        <TextField promptText="Search across modules..." styleClass="global-search"/>
+                        <StackPane styleClass="notification-badge">
+                            <Button text="🔔" styleClass="notification-btn"/>
+                            <Circle radius="5" styleClass="notification-dot"/>
+                        </StackPane>
+                        <MenuButton fx:id="profileDropdown" text="Admin User" styleClass="profile-dropdown">
+                            <graphic>
+                                <StackPane styleClass="profile-avatar">
+                                    <Circle radius="16" styleClass="avatar-circle"/>
+                                    <Label text="AU" styleClass="avatar-text"/>
+                                </StackPane>
+                            </graphic>
+                            <items>
+                                <MenuItem text="👤 My Profile"/>
+                                <MenuItem text="⚙️ Settings"/>
+                                <SeparatorMenuItem/>
+                                <MenuItem text="🚪 Logout"/>
+                            </items>
+                        </MenuButton>
+                    </HBox>
+                </HBox>
+
+                <StackPane fx:id="centerContentHost" VBox.vgrow="ALWAYS" styleClass="center-content-host">
+                    <Label text="Inject module content here" styleClass="placeholder-label"/>
+                </StackPane>
+            </VBox>
+        </center>
+    </BorderPane>
+</StackPane>

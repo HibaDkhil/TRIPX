@@ -1,0 +1,308 @@
+/* ============================================
+        MODERN ACCOMMODATION BROWSER STYLES
+        ============================================ */
+
+        .root {
+        -fx-font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        -fx-background-color: #F8F9FA;
+        }
+
+        /* ============================================
+        HEADER & NAVIGATION
+        ============================================ */
+
+        .header-bar {
+        -fx-background-color: white;
+        -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 5, 0, 0, 2);
+        }
+
+        .logo-text {
+        -fx-font-size: 24px;
+        -fx-font-weight: bold;
+        -fx-text-fill: #0D6EFD;
+        }
+
+        .nav-button {
+        -fx-background-color: transparent;
+        -fx-text-fill: #6C757D;
+        -fx-font-size: 14px;
+        -fx-padding: 8 16;
+        -fx-cursor: hand;
+        -fx-background-radius: 6;
+        }
+
+        .nav-button:hover {
+        -fx-text-fill: #0D6EFD;
+        -fx-background-color: #E8F4FD;
+        }
+
+        .nav-button.active {
+        -fx-text-fill: #0D6EFD;
+        -fx-background-color: #E8F4FD;
+        -fx-font-weight: bold;
+        }
+
+        /* ============================================
+        SEARCH BAR
+        ============================================ */
+
+        .search-container {
+        -fx-background-color: white;
+        -fx-background-radius: 50;
+        -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);
+        }
+
+        .combo-box,
+        .date-picker {
+        -fx-background-color: transparent;
+        -fx-border-color: transparent;
+        }
+
+        .combo-box .text-field,
+        .date-picker .text-field {
+        -fx-background-color: transparent;
+        -fx-padding: 8 15;
+        -fx-font-size: 14px;
+        }
+
+        .combo-box:focused,
+        .date-picker:focused {
+        -fx-background-color: #F8F9FA;
+        -fx-background-radius: 8;
+        }
+
+        .search-button {
+        -fx-background-color: #0D6EFD;
+        -fx-text-fill: white;
+        -fx-background-radius: 25;
+        -fx-padding: 12 35;
+        -fx-font-size: 14px;
+        -fx-font-weight: bold;
+        -fx-cursor: hand;
+        }
+
+        .search-button:hover {
+        -fx-background-color: #0B5ED7;
+        }
+
+        .search-button:pressed {
+        -fx-background-color: #0A58CA;
+        }
+
+        /* ============================================
+        FILTER SIDEBAR
+        ============================================ */
+
+        .filter-panel {
+        -fx-background-color: white;
+        }
+
+        .filter-title {
+        -fx-font-size: 16px;
+        -fx-font-weight: bold;
+        -fx-text-fill: #2C3E50;
+        }
+
+        .price-label {
+        -fx-font-size: 14px;
+        -fx-text-fill: #495057;
+        -fx-font-weight: 600;
+        }
+
+        .slider {
+        -fx-padding: 10 0;
+        }
+
+        .slider .track {
+        -fx-background-color: #E9ECEF;
+        -fx-background-radius: 4;
+        }
+
+        .slider .thumb {
+        -fx-background-color: #0D6EFD;
+        -fx-background-radius: 50%;
+        -fx-pref-width: 16;
+        -fx-pref-height: 16;
+        }
+
+        .slider .colored-track {
+        -fx-background-color: #0D6EFD;
+        }
+
+        .radio-button {
+        -fx-font-size: 13px;
+        -fx-text-fill: #495057;
+        }
+
+        .radio-button .radio {
+        -fx-background-color: white;
+        -fx-border-color: #CED4DA;
+        -fx-border-radius: 50%;
+        -fx-border-width: 2;
+        }
+
+        .radio-button:selected .radio {
+        -fx-background-color: #0D6EFD;
+        -fx-border-color: #0D6EFD;
+        }
+
+        .radio-button:selected .dot {
+        -fx-background-color: white;
+        }
+
+        .check-box {
+        -fx-font-size: 13px;
+        -fx-text-fill: #495057;
+        }
+
+        .check-box .box {
+        -fx-background-color: white;
+        -fx-border-color: #CED4DA;
+        -fx-border-radius: 4;
+        -fx-border-width: 2;
+        }
+
+        .check-box:selected .box {
+        -fx-background-color: #0D6EFD;
+        -fx-border-color: #0D6EFD;
+        }
+
+        .check-box:selected .mark {
+        -fx-background-color: white;
+        }
+
+        /* ============================================
+        ACCOMMODATION CARDS
+        ============================================ */
+
+        .accommodations-grid {
+        -fx-background-color: transparent;
+        }
+
+        /* Card styles are in AccommodationCard.java */
+
+        /* ============================================
+        COMPARE PANEL
+        ============================================ */
+
+        .compare-panel {
+        -fx-background-color: #E8F4FD;
+        -fx-background-radius: 12;
+        }
+
+        .compare-title {
+        -fx-font-size: 16px;
+        -fx-font-weight: bold;
+        -fx-text-fill: #0D6EFD;
+        }
+
+        .compare-description {
+        -fx-font-size: 12px;
+        -fx-text-fill: #6C757D;
+        -fx-text-alignment: center;
+        }
+
+        .compare-button {
+        -fx-background-color: #0D6EFD;
+        -fx-text-fill: white;
+        -fx-background-radius: 8;
+        -fx-padding: 12 0;
+        -fx-font-weight: bold;
+        -fx-cursor: hand;
+        }
+
+        .compare-button:hover {
+        -fx-background-color: #0B5ED7;
+        }
+
+        .compare-button:disabled {
+        -fx-background-color: #B0C4DE;
+        -fx-opacity: 0.6;
+        }
+
+        /* ============================================
+        BUTTONS
+        ============================================ */
+
+        .btn-primary {
+        -fx-background-color: #0D6EFD;
+        -fx-text-fill: white;
+        -fx-background-radius: 8;
+        -fx-padding: 10 20;
+        -fx-font-weight: bold;
+        -fx-cursor: hand;
+        }
+
+        .btn-primary:hover {
+        -fx-background-color: #0B5ED7;
+        }
+
+        .btn-primary:pressed {
+        -fx-background-color: #0A58CA;
+        }
+
+        .btn-success {
+        -fx-background-color: #28A745;
+        -fx-text-fill: white;
+        -fx-background-radius: 8;
+        -fx-padding: 10 20;
+        -fx-font-weight: bold;
+        -fx-cursor: hand;
+        }
+
+        .btn-success:hover {
+        -fx-background-color: #218838;
+        }
+
+        .btn-danger {
+        -fx-background-color: #DC3545;
+        -fx-text-fill: white;
+        -fx-background-radius: 8;
+        -fx-padding: 10 20;
+        -fx-font-weight: bold;
+        -fx-cursor: hand;
+        }
+
+        .btn-danger:hover {
+        -fx-background-color: #C82333;
+        }
+
+        /* ============================================
+        SCROLLBAR
+        ============================================ */
+
+        .scroll-pane {
+        -fx-background-color: transparent;
+        -fx-border-color: transparent;
+        }
+
+        .scroll-pane .viewport {
+        -fx-background-color: transparent;
+        }
+
+        .scroll-bar:vertical .thumb {
+        -fx-background-color: #CED4DA;
+        -fx-background-radius: 4;
+        }
+
+        .scroll-bar:vertical .track {
+        -fx-background-color: #F8F9FA;
+        }
+
+        .scroll-bar:horizontal .thumb {
+        -fx-background-color: #CED4DA;
+        -fx-background-radius: 4;
+        }
+
+        .scroll-bar:horizontal .track {
+        -fx-background-color: #F8F9FA;
+        }
+
+        /* ============================================
+        SEPARATOR
+        ============================================ */
+
+        .separator .line {
+        -fx-border-color: #E9ECEF;
+        -fx-border-width: 1 0 0 0;
+        }
