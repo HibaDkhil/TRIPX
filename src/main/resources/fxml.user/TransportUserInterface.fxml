@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane prefWidth="1200" prefHeight="720"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="tn.esprit.controllers.user.TransportUserInterfaceController"
+            style="-fx-background-color: #F1EAE7;">
+
+    <!-- LEFT SIDEBAR -->
+    <left>
+        <VBox prefWidth="210" spacing="12"
+              style="-fx-background-color: #1F294C; -fx-padding: 28;">
+
+            <!-- Logo / Title -->
+            <Label text="TRANSPORT"
+                   style="-fx-text-fill: #4FB3B5; -fx-font-size: 20px; -fx-font-weight: bold;" />
+            <Label text="MODULE"
+                   style="-fx-text-fill: #FFFFFF; -fx-font-size: 20px; -fx-font-weight: bold;" />
+
+            <Separator style="-fx-background-color: #4FB3B5;" />
+
+            <!-- Nav Buttons -->
+            <Button fx:id="btnBrowse"
+                    text="&#128269;  Browse Transports"
+                    maxWidth="Infinity"
+                    onAction="#showBrowseTab"
+                    style="-fx-background-color: #4FB3B5; -fx-text-fill: white;
+                           -fx-font-weight: bold; -fx-font-size: 13px;
+                           -fx-padding: 10 15 10 15; -fx-cursor: hand;
+                           -fx-background-radius: 6;" />
+
+            <Button fx:id="btnSchedules"
+                    text="&#128467;  View Schedules"
+                    maxWidth="Infinity"
+                    onAction="#showSchedulesTab"
+                    style="-fx-background-color: transparent; -fx-text-fill: #CCCCCC;
+                           -fx-font-size: 13px; -fx-padding: 10 15 10 15;
+                           -fx-cursor: hand; -fx-background-radius: 6;" />
+
+            <Button fx:id="btnMyBookings"
+                    text="&#128203;  My Bookings"
+                    maxWidth="Infinity"
+                    onAction="#showMyBookingsTab"
+                    style="-fx-background-color: transparent; -fx-text-fill: #CCCCCC;
+                           -fx-font-size: 13px; -fx-padding: 10 15 10 15;
+                           -fx-cursor: hand; -fx-background-radius: 6;" />
+
+            <!-- Spacer -->
+            <Region VBox.vgrow="ALWAYS" />
+
+            <Separator style="-fx-background-color: #4FB3B5;" />
+
+            <Button fx:id="btnLogout"
+                    text="&#128682;  Logout"
+                    maxWidth="Infinity"
+                    onAction="#handleLogout"
+                    style="-fx-background-color: #F06E32; -fx-text-fill: white;
+                           -fx-font-weight: bold; -fx-font-size: 13px;
+                           -fx-padding: 10 15 10 15; -fx-cursor: hand;
+                           -fx-background-radius: 6;" />
+        </VBox>
+    </left>
+
+    <!-- TOP BAR -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="15"
+              style="-fx-background-color: #FFFFFF; -fx-padding: 15 25 15 25;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);">
+            <Label text="Transport Module"
+                   style="-fx-text-fill: #1F294C; -fx-font-size: 20px; -fx-font-weight: bold;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="welcomeLabel"
+                   text="Welcome, Traveller"
+                   style="-fx-text-fill: #4FB3B5; -fx-font-size: 13px;" />
+        </HBox>
+    </top>
+
+    <!-- CENTER CONTENT -->
+    <center>
+        <StackPane fx:id="contentArea">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+        </StackPane>
+    </center>
+
+</BorderPane>
