@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.admin.DestinationManagementController"
+            stylesheets="@../../css/destination.css">
+
+    <top>
+        <VBox spacing="15" styleClass="header-section">
+            <padding>
+                <Insets top="20" right="25" left="25" bottom="15"/>
+            </padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="✈ TripX Destination Manager" styleClass="page-title"/>
+                <Label fx:id="totalDestinationsLabel" text="Total: 0" styleClass="stat-badge"/>
+                <Button fx:id="themeBtn" text="🌙" styleClass="theme-toggle-btn"/>
+                <javafx.scene.layout.Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="userViewBtn" text="👤 Go to User View" styleClass="action-button"/>
+                <Button fx:id="activityBtn" text="🛶 Manage Activities" styleClass="action-button"/>
+                <Button fx:id="bookingBtn" text="📅 Bookings" styleClass="action-button"/>
+            </HBox>
+
+            <Label text="Add, edit, and manage your travel destinations" styleClass="page-subtitle"/>
+            <Separator styleClass="section-separator"/>
+        </VBox>
+    </top>
+
+    <center>
+        <javafx.scene.control.ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <content>
+                <VBox spacing="20" styleClass="content-section">
+                    <padding>
+                        <Insets top="5" right="25" left="25" bottom="25"/>
+                    </padding>
+
+                    <!-- Search and Filter Bar -->
+                    <HBox spacing="15" alignment="CENTER_LEFT">
+                        <TextField fx:id="searchField" promptText="Search by name, country or city..."
+                                   HBox.hgrow="ALWAYS" styleClass="search-field">
+                            <tooltip>
+                                <Tooltip text="Type at least 2 characters to search" />
+                            </tooltip>
+                        </TextField>
+
+                        <ComboBox fx:id="typeFilterCombo" prefWidth="150" styleClass="filter-combo"
+                                  promptText="Filter by type"/>
+
+                        <Button fx:id="searchBtn" text="🔍 Search" styleClass="action-button"/>
+                        <Button fx:id="refreshBtn" text="🔄 Refresh" styleClass="action-button"/>
+                        <Button fx:id="addNewBtn" text="➕ Add New Destination" styleClass="action-button-primary"/>
+                    </HBox>
+
+                    <!-- Status Bar -->
+                    <HBox spacing="10" styleClass="stats-bar">
+                        <Label fx:id="statusLabel" text="Ready" styleClass="status-label"/>
+                    </HBox>
+
+                    <!-- Main Grid: Table and Form -->
+                    <GridPane hgap="20" vgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="60" />
+                            <ColumnConstraints percentWidth="40" />
+                        </columnConstraints>
+
+                        <rowConstraints>
+                            <RowConstraints vgrow="ALWAYS" />
+                        </rowConstraints>
+
+                        <!-- Left: Destinations Table -->
+                        <VBox spacing="10" GridPane.columnIndex="0">
+                            <Label text="Destinations List" styleClass="section-label"/>
+                            <TableView fx:id="destinationTable" minHeight="400" VBox.vgrow="ALWAYS" styleClass="destination-table">
+                                <columns>
+                                    <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                                    <TableColumn fx:id="colName" text="Name" prefWidth="150"/>
+                                    <TableColumn fx:id="colType" text="Type" prefWidth="90"/>
+                                    <TableColumn fx:id="colCountry" text="Country" prefWidth="100"/>
+                                    <TableColumn fx:id="colCity" text="City" prefWidth="100"/>
+                                    <TableColumn fx:id="colBestSeason" text="Best Season" prefWidth="90"/>
+                                    <TableColumn fx:id="colRating" text="Rating" prefWidth="70"/>
+                                    <TableColumn fx:id="colActions" text="Actions" prefWidth="90"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+
+                        <!-- Right: Add/Edit Form -->
+                        <VBox spacing="15" GridPane.columnIndex="1" styleClass="form-section">
+                            <Label text="Destination Details" styleClass="section-label"/>
+
+                            <GridPane hgap="10" vgap="12">
+                                <padding>
+                                    <Insets top="5" right="10" bottom="5" left="10"/>
+                                </padding>
+
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="30" />
+                                    <ColumnConstraints percentWidth="70" />
+                                </columnConstraints>
+
+                                <!-- Name -->
+                                <Label text="Name *" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+                                <TextField fx:id="nameField" promptText="Enter destination name"
+                                           GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="form-field"/>
+
+                                <!-- Type -->
+                                <Label text="Type *" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="form-label"/>
+                                <ComboBox fx:id="typeCombo" prefWidth="250"
+                                          GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="form-combo"/>
+
+                                <!-- Country -->
+                                <Label text="Country *" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="form-label"/>
+                                <TextField fx:id="countryField" promptText="Enter country"
+                                           GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="form-field"/>
+
+                                <!-- City -->
+                                <Label text="City" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="form-label"/>
+                                <TextField fx:id="cityField" promptText="Enter city (optional)"
+                                           GridPane.rowIndex="3" GridPane.columnIndex="1" styleClass="form-field"/>
+
+                                <!-- Best Season -->
+                                <Label text="Best Season *" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="form-label"/>
+                                <ComboBox fx:id="seasonCombo" prefWidth="250"
+                                          GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="form-combo"/>
+
+                                <!-- Timezone -->
+                                <Label text="Timezone" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="form-label"/>
+                                <TextField fx:id="timezoneField" promptText="e.g., Europe/Paris"
+                                           GridPane.rowIndex="5" GridPane.columnIndex="1" styleClass="form-field"/>
+
+                                <!-- Rating -->
+                                <Label text="Rating" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="form-label"/>
+                                <TextField fx:id="ratingField" promptText="0-5"
+                                           GridPane.rowIndex="6" GridPane.columnIndex="1" styleClass="form-field"/>
+
+                                <!-- Description -->
+                                <Label text="Description" GridPane.rowIndex="7" GridPane.columnIndex="0" styleClass="form-label"/>
+                                <TextArea fx:id="descriptionArea" promptText="Enter description"
+                                          prefRowCount="4" wrapText="true"
+                                          GridPane.rowIndex="7" GridPane.columnIndex="1" styleClass="form-textarea"/>
+                            </GridPane>
+
+                            <Separator/>
+
+                            <!-- Form Buttons -->
+                            <HBox spacing="10" alignment="CENTER">
+                                <Button fx:id="saveBtn" text="Save" styleClass="form-button-save" prefWidth="100">
+                                    <tooltip>
+                                        <Tooltip text="Save destination" />
+                                    </tooltip>
+                                </Button>
+                                <Button fx:id="cancelBtn" text="Cancel" styleClass="form-button-cancel" prefWidth="100"/>
+                                <Button fx:id="clearBtn" text="Clear" styleClass="form-button-clear" prefWidth="100"/>
+                            </HBox>
+
+                            <Label text="* Required fields" style="-fx-text-fill: #7f8c8d; -fx-font-size: 11px; -fx-font-family: 'Poppins';"/>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+            </content>
+        </javafx.scene.control.ScrollPane>
+    </center>
+</BorderPane>

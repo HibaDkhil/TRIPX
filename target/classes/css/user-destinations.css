@@ -1,0 +1,104 @@
+/* User Destinations CSS */
+
+.header-section {
+    -fx-background-color: linear-gradient(to right, #667eea, #764ba2);
+    -fx-background-radius: 0 0 30 30;
+}
+
+.page-title {
+    -fx-font-family: "Poppins";
+    -fx-font-weight: bold;
+    -fx-font-size: 32px;
+    -fx-text-fill: white;
+}
+
+.page-subtitle {
+    -fx-font-family: "Poppins";
+    -fx-font-size: 16px;
+    -fx-text-fill: rgba(255, 255, 255, 0.9);
+}
+
+.filter-bar {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+.search-field {
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-font-family: "Poppins";
+    -fx-background-color: #f5f7fa;
+    -fx-border-color: transparent;
+}
+
+.search-field:focused {
+    -fx-border-color: #667eea;
+    -fx-background-color: white;
+}
+
+.filter-combo {
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
+    -fx-font-size: 14px;
+    -fx-font-family: "Poppins";
+    -fx-background-color: #f5f7fa;
+}
+
+.action-button {
+    -fx-background-radius: 25;
+    -fx-padding: 10 25;
+    -fx-font-size: 14px;
+    -fx-font-family: "Poppins";
+    -fx-font-weight: bold;
+    -fx-background-color: #667eea;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.action-button:hover {
+    -fx-background-color: #5a67d8;
+}
+
+.action-button-secondary {
+    -fx-background-radius: 25;
+    -fx-padding: 10 25;
+    -fx-font-size: 14px;
+    -fx-font-family: "Poppins";
+    -fx-background-color: #e2e8f0;
+    -fx-text-fill: #4a5568;
+    -fx-cursor: hand;
+}
+
+.action-button-secondary:hover {
+    -fx-background-color: #cbd5e0;
+}
+
+.results-count {
+    -fx-font-family: "Poppins";
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+}
+
+.content-scroll {
+    -fx-background-color: #f7fafc;
+}
+
+.content-scroll .viewport {
+    -fx-background-color: #f7fafc;
+}
+
+.destinations-grid {
+    -fx-background-color: #f7fafc;
+}
+
+/* Card hover effect */
+.destinations-grid .vbox:hover {
+    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 15, 0, 0, 5);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-transition: all 0.3s ease;
+}

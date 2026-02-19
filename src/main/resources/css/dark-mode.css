@@ -1,0 +1,137 @@
+/* Dark Mode Variables & Overrides */
+.root {
+    -fx-base: #2d2d2d;
+    -fx-background: #2d2d2d;
+    -fx-control-inner-background: #2d2d2d;
+    -fx-control-inner-background-alt: #363636;
+    -fx-text-base-color: #e0e0e0;
+    -fx-text-fill: #e0e0e0;
+}
+
+/* Header */
+.header-section {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #404040;
+}
+
+.page-title {
+    -fx-text-fill: #ecf0f1;
+}
+
+.page-subtitle {
+    -fx-text-fill: #95a5a6;
+}
+
+/* Content Backgrounds */
+.content-section,
+.content-scroll,
+.content-scroll .viewport,
+.destinations-grid {
+    -fx-background-color: #1a1a1a;
+}
+
+/* Cards & Containers */
+.form-section,
+.stats-bar,
+.destination-table,
+.filter-bar,
+.filter-combo,
+.search-field,
+.action-button-secondary {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #404040;
+    -fx-text-fill: #e0e0e0;
+}
+
+/* Text Fields & Inputs */
+.search-field,
+.form-field,
+.form-textarea,
+.form-combo {
+    -fx-background-color: #363636;
+    -fx-text-fill: #e0e0e0;
+    -fx-prompt-text-fill: #808080;
+    -fx-border-color: #404040;
+}
+
+.search-field:focused,
+.form-field:focused,
+.form-textarea:focused {
+    -fx-border-color: #3498db;
+    -fx-background-color: #404040;
+}
+
+/* Table Specifics */
+.destination-table .column-header,
+.destination-table .column-header .label {
+    -fx-background-color: #363636;
+    -fx-text-fill: #e0e0e0;
+}
+
+.destination-table .table-row-cell:odd {
+    -fx-background-color: #2d2d2d;
+    -fx-text-fill: #e0e0e0;
+}
+
+.destination-table .table-row-cell:even {
+    -fx-background-color: #333333;
+    -fx-text-fill: #e0e0e0;
+}
+
+.destination-table .table-cell {
+    -fx-text-fill: #e0e0e0;
+}
+
+.destination-table .table-row-cell:selected {
+    -fx-background-color: #2980b9;
+    -fx-text-fill: white;
+}
+
+/* User View Cards */
+.destinations-grid .vbox {
+    -fx-background-color: #2d2d2d;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 0, 2);
+}
+
+.destinations-grid .vbox .label {
+    -fx-text-fill: #e0e0e0;
+}
+
+/* Exceptions for Labels that should keep color */
+.status-label {
+    -fx-text-fill: #2ecc71;
+}
+
+.error-label {
+    -fx-text-fill: #e74c3c;
+}
+
+/* Dialogs */
+.dialog-pane {
+    -fx-background-color: #2d2d2d;
+}
+
+.dialog-pane .label {
+    -fx-text-fill: #e0e0e0;
+}
+
+.dialog-pane .content {
+    -fx-background-color: #2d2d2d;
+}
+
+/* Toggle Button */
+.theme-toggle-btn {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-font-size: 16px;
+    -fx-text-fill: #f1c40f;
+    /* Sun color */
+    -fx-padding: 5;
+    -fx-border-color: #f1c40f;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+}
+
+.theme-toggle-btn:hover {
+    -fx-background-color: rgba(241, 196, 15, 0.1);
+}

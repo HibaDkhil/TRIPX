@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+
+<VBox spacing="20" xmlns="http://javafx.com/javafx/8.0.171"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.controllers.user.BookingDialogController"
+      stylesheets="@../../css/destination.css"
+      styleClass="form-section"
+      prefWidth="400">
+
+    <padding>
+        <Insets top="20" right="20" left="20" bottom="20"/>
+    </padding>
+
+    <Label text="Confirm Your Booking" styleClass="section-label"/>
+    
+    <Label fx:id="destinationLabel" text="Destination: Paris" style="-fx-font-weight: bold; -fx-text-fill: #3498db;"/>
+
+    <GridPane vgap="15" hgap="10">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="40"/>
+            <ColumnConstraints percentWidth="60"/>
+        </columnConstraints>
+
+        <Label text="Start Date:" GridPane.rowIndex="0" styleClass="form-label"/>
+        <DatePicker fx:id="startDatePicker" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="End Date:" GridPane.rowIndex="1" styleClass="form-label"/>
+        <DatePicker fx:id="endDatePicker" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Activity (Optional):" GridPane.rowIndex="2" styleClass="form-label"/>
+        <ComboBox fx:id="activityCombo" promptText="Select Activity..." GridPane.rowIndex="2" GridPane.columnIndex="1" maxWidth="Infinity"/>
+
+        <Label text="Number of Guests:" GridPane.rowIndex="3" styleClass="form-label"/>
+        <Spinner fx:id="guestsSpinner" GridPane.rowIndex="3" GridPane.columnIndex="1" maxWidth="Infinity"/>
+        
+        <Label text="Total Price:" GridPane.rowIndex="4" styleClass="form-label"/>
+        <Label fx:id="totalLabel" text="\$0.00" GridPane.rowIndex="4" GridPane.columnIndex="1" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #27ae60;"/>
+    </GridPane>
+    
+    <VBox spacing="5">
+        <Label text="Special Notes:" styleClass="form-label"/>
+        <TextArea fx:id="notesArea" prefRowCount="3" wrapText="true" styleClass="form-textarea"/>
+    </VBox>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="cancelBtn" text="Cancel" styleClass="form-button-cancel"/>
+        <Button fx:id="confirmBtn" text="Confirm Payment" styleClass="form-button-save"/>
+    </HBox>
+
+</VBox>
