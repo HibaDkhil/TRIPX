@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 public class GeminiService {
 
     // https://aistudio.google.com/app/apikey
-    private static final String API_KEY = "AIzaSyAAVIZ_IWjlK1qcbKOhGv00_5eJSGzVpf0";
+    private static final String API_KEY = "";
     private static final String API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=" + API_KEY;
 
     private final HttpClient httpClient;
