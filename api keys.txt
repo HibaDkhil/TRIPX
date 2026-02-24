@@ -1,9 +1,0 @@
-
-stripe secret key:
-sk_test_51T2vavPVlBCtS0sumOFSUdbV1AWUmoDquoC1d2dqCcZUrJhaqGO37haphQsvTNGdMNem4W9aXiS2EDNUx7XI8z0I006JCJxufs
-
-stripe publishable key:
-pk_test_51T2vavPVlBCtS0su1Ezrmk51b72n3wZGybpcEEf4CTwpulvs2QhvqjFhK3mS0wh8IB6xHReIDLFgpaFwvLH8uJnU00Mu3orRvE
-
-weather key:
-c58259a074febdf474dd8c4a1b58ad0e
