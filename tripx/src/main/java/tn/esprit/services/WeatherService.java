@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 
 public class WeatherService {
 
-    private static final String API_KEY = "4da433bc871a1550e6de79068daa7ef8";
+    private static final String API_KEY = tn.esprit.utils.Config.getWeatherKey();
     private static final String BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
 
     public WeatherInfo getWeatherForCity(String city) {

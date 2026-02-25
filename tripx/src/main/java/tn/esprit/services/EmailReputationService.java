@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class EmailReputationService {
 
-    private static final String API_KEY = "5c5156a8c7f748eea08c61365a1079b3"; // Ta clé
+    private static final String API_KEY = tn.esprit.utils.Config.getEmailKey();
     private static final String BASE_URL = "https://emailreputation.abstractapi.com/v1/";
     private final Gson gson = new Gson();
 

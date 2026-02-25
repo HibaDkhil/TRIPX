@@ -43,6 +43,8 @@ public class UserBookingsController implements Initializable {
         myBookings = FXCollections.observableArrayList();
 
         setupList();
+        
+        // Load data initially using SessionManager
         loadData();
         
         if (backBtn != null) {

@@ -314,6 +314,7 @@ public class LoginController {
         }
 
         System.out.println("Login successful!");
+        tn.esprit.utils.SessionManager.setCurrentUserId(loggedInUser.getUserId());
 
         //  GET THE FULL USER OBJECT (THIS IS THE KEY FIX)
 
@@ -634,6 +635,7 @@ public class LoginController {
 
             // SUCCESS - User exists, redirect
             System.out.println("Social login successful! Redirecting user: " + testUser.getEmail());
+            tn.esprit.utils.SessionManager.setCurrentUserId(testUser.getUserId());
             
             String role = userService.getRoleByEmail(socialEmail);
 
