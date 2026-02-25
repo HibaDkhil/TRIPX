@@ -8,10 +8,9 @@ import java.util.Properties;
 
 public class EmailService {
 
-    // ⚠️ CONFIGURE THESE WITH YOUR GMAIL CREDENTIALS
-    // Use an App Password (Google Account → Security → App passwords)
-    private static final String EMAIL_FROM = "meddeb780@gmail.com";
-    private static final String EMAIL_PASSWORD = "eicr atyh htkh niyh";
+    // Environment variables for email
+    private static final String EMAIL_FROM = System.getenv("EMAIL_FROM");
+    private static final String EMAIL_PASSWORD = System.getenv("EMAIL_PASSWORD");
 
     private static final String SMTP_HOST = "smtp.gmail.com";
     private static final int SMTP_PORT = 587;
