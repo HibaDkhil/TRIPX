@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import tn.esprit.entities.Accommodation;
+import tn.esprit.utils.EnvConfig;
 
 import java.io.IOException;
 import java.net.URI;
@@ -38,11 +39,11 @@ public class AccommodationCompareService {
             return result;
         }
 
-        String apiKey = System.getenv("GROQ_API_KEY");
+        String apiKey = EnvConfig.get("GROQ_API_KEY");
         if (apiKey == null || apiKey.isBlank()) {
             result.success = false;
-            result.errorMessage = "Missing GROQ_API_KEY environment variable.\n" +
-                    "Set it in your shell, restart the app, and try again.";
+            result.errorMessage = "Missing GROQ_API_KEY.\n" +
+                    "Set it in the project .env file, then restart the app.";
             return result;
         }
 

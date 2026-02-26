@@ -34,5 +34,11 @@ build/
 ### VS Code ###
 .vscode/
 
+### Local environment files ###
+.env
+.env.local
+config/google/credentials.json
+config/google/tokens/
+
 ### Mac OS ###
 .DS_Store

@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="tn.esprit.controllers.adminn.AccommodationDetailsController"
+      fx:controller="tn.esprit.controllers.admin.AccommodationDetailsController"
       style="-fx-background-color: white; -fx-background-radius: 15;"
       spacing="0" prefWidth="900" maxWidth="900" maxHeight="700">
 

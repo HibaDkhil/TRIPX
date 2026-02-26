@@ -1,4 +1,4 @@
-package tn.esprit.controllers.adminn;
+package tn.esprit.controllers.admin;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;

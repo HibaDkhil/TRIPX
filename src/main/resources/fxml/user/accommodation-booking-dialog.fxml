@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.controllers.user.UserAccommodationBookingController"
+      stylesheets="@/css/user-details.css"
+      spacing="14"
+      styleClass="booking-dialog-root">
+
+    <padding>
+        <Insets top="16" right="16" bottom="16" left="16"/>
+    </padding>
+
+    <HBox alignment="CENTER_LEFT">
+        <Label text="Book Accommodation" styleClass="booking-dialog-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label text="TripX Premium" styleClass="booking-dialog-chip"/>
+        <Button text="✕" onAction="#handleCancel" styleClass="booking-dialog-close-btn"/>
+    </HBox>
+
+    <HBox spacing="14">
+        <VBox spacing="10" styleClass="booking-dialog-summary-pane" HBox.hgrow="ALWAYS">
+            <VBox spacing="5" styleClass="booking-dialog-card">
+                <Label text="Accommodation" styleClass="booking-dialog-label"/>
+                <Label fx:id="accommodationNameLabel" text="-" styleClass="booking-dialog-value"/>
+                <Label text="Room" styleClass="booking-dialog-label"/>
+                <Label fx:id="roomNameLabel" text="-" styleClass="booking-dialog-value"/>
+                <Label text="Price per night" styleClass="booking-dialog-label"/>
+                <Label fx:id="pricePerNightLabel" text="-" styleClass="booking-dialog-value"/>
+            </VBox>
+
+            <VBox spacing="8" styleClass="booking-dialog-card booking-dialog-glow">
+                <Label text="Your booking summary" styleClass="booking-dialog-section-title"/>
+                <HBox spacing="10" styleClass="booking-dialog-summary">
+                    <Label text="Nights:" styleClass="booking-dialog-label"/>
+                    <Label fx:id="nightsLabel" text="-" styleClass="booking-dialog-value"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label text="Total:" styleClass="booking-dialog-label"/>
+                    <Label fx:id="totalPriceLabel" text="-" styleClass="booking-dialog-value booking-dialog-price-value"/>
+                </HBox>
+                <Label fx:id="availabilityStatusLabel" text="Availability not checked yet." styleClass="booking-dialog-status-neutral"/>
+            </VBox>
+        </VBox>
+
+        <VBox spacing="10" styleClass="booking-dialog-form-pane" HBox.hgrow="ALWAYS">
+            <Label text="Guest &amp; arrival details" styleClass="booking-dialog-section-title"/>
+
+            <HBox spacing="10">
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="Check-in" styleClass="booking-dialog-label"/>
+                    <DatePicker fx:id="checkInDatePicker"/>
+                </VBox>
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="Check-out" styleClass="booking-dialog-label"/>
+                    <DatePicker fx:id="checkOutDatePicker"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="10">
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="Number of guests" styleClass="booking-dialog-label"/>
+                    <ComboBox fx:id="numberOfGuestsCombo"/>
+                    <Label fx:id="capacityHintLabel" text="Room capacity: -" styleClass="booking-dialog-helper"/>
+                </VBox>
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="Estimated arrival time" styleClass="booking-dialog-label"/>
+                    <ComboBox fx:id="estimatedArrivalTimeCombo"/>
+                </VBox>
+            </HBox>
+
+            <VBox spacing="5">
+                <Label text="Phone number" styleClass="booking-dialog-label"/>
+                <TextField fx:id="phoneNumberField" promptText="+216 12 345 678"/>
+            </VBox>
+
+            <VBox spacing="5" VBox.vgrow="ALWAYS">
+                <Label text="Special requests (optional)" styleClass="booking-dialog-label"/>
+                <TextArea fx:id="specialRequestsArea" prefRowCount="4" wrapText="true"
+                          promptText="Late check-in, quiet room, allergies, accessibility, etc."/>
+            </VBox>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="checkAvailabilityButton" text="Check Availability" onAction="#handleCheckAvailability" styleClass="booking-dialog-btn-teal"/>
+        <Button fx:id="bookNowButton" text="Confirm Booking Request" onAction="#handleBookNow" styleClass="booking-dialog-btn-purple"/>
+        <Button fx:id="cancelButton" text="Cancel" onAction="#handleCancel" styleClass="booking-dialog-btn-soft"/>
+    </HBox>
+</VBox>

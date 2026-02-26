@@ -1810,6 +1810,377 @@
     -fx-min-height: 30px;
     -fx-padding: 5;
 }
+
+/* ================== DASHBOARD CARD REDESIGN (KPI / AI / ML) ================== */
+.kpi-card,
+.kpi-theme,
+.ai-theme,
+.ml-theme,
+.chart-card,
+.ai-strip,
+.filter-section {
+    -fx-font-family: "Inter", "Poppins", "Segoe UI", "Arial", sans-serif;
+}
+
+.kpi-card,
+.kpi-theme,
+.ai-theme,
+.ml-theme {
+    -fx-background-radius: 16;
+    -fx-border-width: 1;
+    -fx-border-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(77, 130, 153, 0.11), 20, 0.20, 0, 5);
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+}
+
+.kpi-card:hover,
+.kpi-theme:hover,
+.ai-theme:hover,
+.ml-theme:hover {
+    -fx-effect: dropshadow(gaussian, rgba(74, 153, 191, 0.22), 26, 0.25, 0, 8);
+    -fx-translate-y: -1;
+    -fx-scale-x: 1.006;
+    -fx-scale-y: 1.006;
+}
+
+.kpi-theme {
+    -fx-background-color: linear-gradient(to bottom right, #f9fdff, #f0f9ff);
+    -fx-border-color: #d5e9f4;
+}
+
+.ai-theme {
+    -fx-background-color: linear-gradient(to bottom right, #f6fcff, #edf8fc);
+    -fx-border-color: #cfe6ef;
+}
+
+.ml-theme {
+    -fx-background-color: linear-gradient(to bottom right, #f4fbff, #ebf6fb);
+    -fx-border-color: #c8e0eb;
+}
+
+.metric-badge {
+    -fx-background-color: linear-gradient(to right, #d8f1f8, #d9eefd);
+    -fx-background-radius: 999;
+    -fx-text-fill: #1f6e86;
+    -fx-font-size: 10px;
+    -fx-font-weight: 800;
+    -fx-padding: 4 9;
+    -fx-border-color: #bde0ee;
+    -fx-border-radius: 999;
+}
+
+.kpi-label {
+    -fx-text-fill: #6f8895;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.kpi-value {
+    -fx-text-fill: #2f4754;
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
+}
+
+.kpi-change {
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #68818f;
+}
+
+.chart-card {
+    -fx-background-color: linear-gradient(to bottom right, #fbfeff, #f4fafd);
+    -fx-background-radius: 16;
+    -fx-border-color: #d5e6ef;
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(76, 132, 158, 0.12), 18, 0.19, 0, 5);
+}
+
+.chart-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(67, 150, 186, 0.16), 22, 0.22, 0, 6);
+}
+
+.chart-title {
+    -fx-text-fill: #385664;
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+}
+
+.ai-strip {
+    -fx-background-color: linear-gradient(to right, #f4fbff, #edf8fd);
+    -fx-border-color: #d2e4ee;
+    -fx-border-width: 1;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(86, 152, 181, 0.14), 18, 0.20, 0, 4);
+}
+
+/* Pastel chart skin */
+.dashboard-soft-chart {
+    -fx-background-color: transparent;
+    -fx-padding: 2 0 0 0;
+}
+
+.dashboard-soft-chart .chart-plot-background {
+    -fx-background-color: linear-gradient(to bottom right, #f8fbfd, #f3f9fc);
+    -fx-background-radius: 12;
+}
+
+.dashboard-soft-chart .chart-vertical-grid-lines,
+.dashboard-soft-chart .chart-horizontal-grid-lines {
+    -fx-stroke: #dceaf2;
+    -fx-stroke-dash-array: 2 4;
+}
+
+.dashboard-soft-chart .axis,
+.dashboard-soft-chart .axis-label,
+.dashboard-soft-chart .axis .tick-label {
+    -fx-tick-label-fill: #6f8794;
+    -fx-text-fill: #6f8794;
+    -fx-font-size: 12px;
+}
+
+.dashboard-soft-chart .default-color0.chart-series-line {
+    -fx-stroke: #67b8cf;
+    -fx-stroke-width: 2.8px;
+}
+
+.dashboard-soft-chart .default-color0.chart-line-symbol {
+    -fx-background-color: #dff3fa, #67b8cf;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 7, 6;
+    -fx-padding: 6px;
+}
+
+.dashboard-soft-pie .chart-pie {
+    -fx-border-width: 0;
+    -fx-background-insets: 0;
+}
+
+.dashboard-soft-pie .default-color0.chart-pie { -fx-pie-color: #7cc6dc; }
+.dashboard-soft-pie .default-color1.chart-pie { -fx-pie-color: #9bd8e9; }
+.dashboard-soft-pie .default-color2.chart-pie { -fx-pie-color: #8dcfe0; }
+.dashboard-soft-pie .default-color3.chart-pie { -fx-pie-color: #b7e5ef; }
+.dashboard-soft-pie .default-color4.chart-pie { -fx-pie-color: #d0eef4; }
+
+.dashboard-soft-pie .chart-legend {
+    -fx-background-color: rgba(245, 251, 255, 0.95);
+    -fx-background-radius: 10;
+    -fx-border-color: #d5e6ef;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+.dashboard-soft-pie .chart-legend-item {
+    -fx-text-fill: #688290;
+    -fx-font-size: 12px;
+}
+
+/* ================== BOOKING PAGE THEME ================== */
+
+.booking-shell {
+    -fx-background-color: linear-gradient(to bottom right, #edf7f8, #f7fbff);
+}
+
+.booking-topbar {
+    -fx-background-color: linear-gradient(to right, #f5ffff, #f5fbff);
+    -fx-border-color: #d6edf0;
+    -fx-border-width: 0 0 1 0;
+}
+
+.booking-panel {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: #d5edf1;
+    -fx-border-width: 1;
+    -fx-padding: 18 18 16 18;
+    -fx-effect: dropshadow(gaussian, rgba(44, 125, 143, 0.12), 18, 0, 0, 4);
+}
+
+.booking-title {
+    -fx-text-fill: #174b57;
+    -fx-font-size: 21px;
+    -fx-font-weight: 800;
+}
+
+.booking-filter-label {
+    -fx-text-fill: #2c6470;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+}
+
+.booking-selected-text {
+    -fx-text-fill: #4e7f88;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.booking-btn-primary {
+    -fx-background-color: linear-gradient(to right, #4faec2, #66b8cf);
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-background-radius: 10;
+    -fx-padding: 9 16;
+    -fx-cursor: hand;
+}
+
+.booking-btn-primary:hover {
+    -fx-background-color: linear-gradient(to right, #3e9fb4, #58aac2);
+}
+
+.booking-btn-success {
+    -fx-background-color: linear-gradient(to right, #6dcbb3, #7ed7bf);
+    -fx-text-fill: #0c4b3f;
+    -fx-font-weight: 700;
+    -fx-background-radius: 10;
+    -fx-padding: 9 16;
+    -fx-cursor: hand;
+}
+
+.booking-btn-success:hover {
+    -fx-background-color: linear-gradient(to right, #63bfa8, #74cab3);
+}
+
+.booking-btn-danger {
+    -fx-background-color: linear-gradient(to right, #f2a8ad, #f4b4b8);
+    -fx-text-fill: #7a2f36;
+    -fx-font-weight: 700;
+    -fx-background-radius: 10;
+    -fx-padding: 9 16;
+    -fx-cursor: hand;
+}
+
+.booking-btn-danger:hover {
+    -fx-background-color: linear-gradient(to right, #e9999f, #ecaaae);
+}
+
+.booking-btn-soft {
+    -fx-background-color: linear-gradient(to right, #dceef3, #e8f5f8);
+    -fx-text-fill: #2f6370;
+    -fx-font-weight: 700;
+    -fx-background-radius: 10;
+    -fx-padding: 9 16;
+    -fx-cursor: hand;
+    -fx-border-color: #c8e4eb;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+
+.booking-btn-soft:hover {
+    -fx-background-color: linear-gradient(to right, #d1e8ef, #e0f1f5);
+}
+
+.booking-table {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-border-color: #d6edf0;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-fixed-cell-size: 44;
+}
+
+.booking-table .column-header-background {
+    -fx-background-color: linear-gradient(to right, #ebf8fb, #f2f9ff);
+    -fx-background-radius: 12 12 0 0;
+}
+
+.booking-table .column-header {
+    -fx-background-color: transparent;
+}
+
+.booking-table .column-header .label {
+    -fx-text-fill: #2a5f6b;
+    -fx-font-family: "Inter", "Segoe UI", "Poppins", "Arial";
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+}
+
+.booking-table .table-cell {
+    -fx-font-family: "Inter", "Segoe UI", "Poppins", "Arial";
+    -fx-font-size: 13px;
+    -fx-text-fill: #1b3440;
+    -fx-padding: 0 10 0 10;
+    -fx-alignment: CENTER-LEFT;
+    -fx-border-color: transparent;
+}
+
+.booking-table .table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent transparent #e9f2f4 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.booking-table .table-row-cell:odd {
+    -fx-background-color: #f8fcfd;
+}
+
+.booking-table .table-row-cell:hover {
+    -fx-background-color: #eaf7fb;
+}
+
+.booking-table .table-row-cell:filled:selected {
+    -fx-background-color: linear-gradient(to right, #dff3f7, #e9f7fb);
+}
+
+.booking-table .table-row-cell:filled:selected .table-cell {
+    -fx-text-fill: #12313b;
+    -fx-font-weight: 700;
+}
+
+.booking-table .filler {
+    -fx-background-color: #f8fcfd;
+}
+
+.booking-table .virtual-flow .clipped-container .sheet .table-row-cell:empty {
+    -fx-background-color: #f8fcfd;
+    -fx-border-color: transparent;
+}
+
+.booking-details-card {
+    -fx-background-color: linear-gradient(to bottom right, #ffffff, #f6fdff);
+    -fx-background-radius: 14;
+    -fx-border-color: #d7edf2;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-padding: 12 14;
+}
+
+.booking-actions-card {
+    -fx-background-color: linear-gradient(to bottom right, #ffffff, #f4fcff);
+    -fx-background-radius: 14;
+    -fx-border-color: #d7edf2;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-padding: 12;
+    -fx-min-width: 210;
+}
+
+.booking-details-title {
+    -fx-text-fill: #1f5561;
+    -fx-font-family: "Inter", "Segoe UI", "Poppins", "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: 800;
+}
+
+.booking-detail-key {
+    -fx-text-fill: #5f7e86;
+    -fx-font-family: "Inter", "Segoe UI", "Poppins", "Arial";
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+}
+
+.booking-detail-value {
+    -fx-text-fill: #1d3640;
+    -fx-font-family: "Inter", "Segoe UI", "Poppins", "Arial";
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+}
+
+.booking-total-value {
+    -fx-text-fill: #0f766e;
+}
 /* ================== SIDEBAR NAVIGATION ================== */
 
 /* Modern sidebar using provided blue/teal palette */

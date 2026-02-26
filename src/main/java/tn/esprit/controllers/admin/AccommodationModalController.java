@@ -1,4 +1,4 @@
-package tn.esprit.controllers.adminn;
+package tn.esprit.controllers.admin;
 
 import javafx.fxml.FXML;
 import javafx.application.Platform;
@@ -40,12 +40,19 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.regex.Pattern;
 
 /**
  * Controller for Add/Edit Accommodation Modal
  * Handles form input, validation, saving, and IMAGE UPLOAD
  */
 public class AccommodationModalController {
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    private static final Pattern DECIMAL_PATTERN =
+            Pattern.compile("-?\\d*(\\.\\d*)?");
+    private static final Pattern DIGITS_PATTERN =
+            Pattern.compile("\\d*");
 
     // ============ FXML Components ============
 
@@ -422,11 +429,33 @@ public class AccommodationModalController {
         if (nameField != null) {
             nameField.textProperty().addListener((obs, old, newVal) -> validateName());
         }
+        if (cityField != null) {
+            cityField.textProperty().addListener((obs, old, newVal) -> validateRequiredTextField(cityField));
+        }
+        if (addressField != null) {
+            addressField.textProperty().addListener((obs, old, newVal) -> validateRequiredTextField(addressField));
+        }
+        if (postalCodeField != null) {
+            postalCodeField.textProperty().addListener((obs, old, newVal) -> validatePostalCode());
+            applyDigitsOnlyFilter(postalCodeField);
+        }
         if (emailField != null) {
             emailField.textProperty().addListener((obs, old, newVal) -> validateEmail());
         }
         if (phoneField != null) {
             phoneField.textProperty().addListener((obs, old, newVal) -> validatePhone());
+            applyDigitsOnlyFilter(phoneField);
+        }
+        if (websiteField != null) {
+            websiteField.textProperty().addListener((obs, old, newVal) -> validateWebsite());
+        }
+        if (latitudeField != null) {
+            latitudeField.textProperty().addListener((obs, old, newVal) -> validateLatitude());
+            applyDecimalFilter(latitudeField);
+        }
+        if (longitudeField != null) {
+            longitudeField.textProperty().addListener((obs, old, newVal) -> validateLongitude());
+            applyDecimalFilter(longitudeField);
         }
 
         if (descriptionArea != null) {
@@ -457,29 +486,24 @@ public class AccommodationModalController {
      * Validate name field
      */
     private boolean validateName() {
-        String name = nameField.getText();
-        if (name == null || name.trim().isEmpty()) {
-            nameField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
-            return false;
-        }
-        nameField.setStyle("");
-        return true;
+        return validateRequiredTextField(nameField);
     }
 
     /**
      * Validate email field
      */
     private boolean validateEmail() {
-        String email = emailField.getText();
-        if (email == null || email.trim().isEmpty()) {
-            emailField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+        if (emailField == null) return true;
+        String email = emailField.getText() != null ? emailField.getText().trim() : "";
+        if (email.isEmpty()) {
+            markInvalid(emailField);
             return false;
         }
-        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
-            emailField.setStyle("-fx-border-color: orange; -fx-border-width: 2;");
+        if (!EMAIL_PATTERN.matcher(email).matches()) {
+            markInvalid(emailField);
             return false;
         }
-        emailField.setStyle("");
+        clearErrorStyle(emailField);
         return true;
     }
 
@@ -487,68 +511,191 @@ public class AccommodationModalController {
      * Validate phone field
      */
     private boolean validatePhone() {
-        String phone = phoneField.getText();
-        if (phone == null || phone.trim().isEmpty()) {
-            phoneField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+        if (phoneField == null) return true;
+        String phone = phoneField.getText() != null ? phoneField.getText().trim() : "";
+        if (phone.isEmpty()) {
+            markInvalid(phoneField);
             return false;
         }
-        phoneField.setStyle("");
+        if (!phone.matches("\\d{8,15}")) {
+            markInvalid(phoneField);
+            return false;
+        }
+        clearErrorStyle(phoneField);
         return true;
+    }
+
+    private boolean validateWebsite() {
+        if (websiteField == null) return true;
+        String website = websiteField.getText() != null ? websiteField.getText().trim() : "";
+        if (website.isEmpty()) {
+            clearErrorStyle(websiteField); // website is optional
+            return true;
+        }
+        if (!isValidWebsiteUrl(website)) {
+            markInvalid(websiteField);
+            return false;
+        }
+        clearErrorStyle(websiteField);
+        return true;
+    }
+
+    private boolean validatePostalCode() {
+        if (postalCodeField == null) return true;
+        String postalCode = postalCodeField.getText() != null ? postalCodeField.getText().trim() : "";
+        if (postalCode.isEmpty()) {
+            markInvalid(postalCodeField);
+            return false;
+        }
+        if (!postalCode.matches("\\d{3,10}")) {
+            markInvalid(postalCodeField);
+            return false;
+        }
+        clearErrorStyle(postalCodeField);
+        return true;
+    }
+
+    private boolean validateLatitude() {
+        if (latitudeField == null) return true;
+        String value = latitudeField.getText() != null ? latitudeField.getText().trim() : "";
+        if (value.isEmpty()) {
+            clearErrorStyle(latitudeField);
+            return true;
+        }
+        try {
+            double latitude = Double.parseDouble(value);
+            boolean ok = latitude >= -90 && latitude <= 90;
+            if (!ok) {
+                markInvalid(latitudeField);
+                return false;
+            }
+            clearErrorStyle(latitudeField);
+            return true;
+        } catch (NumberFormatException e) {
+            markInvalid(latitudeField);
+            return false;
+        }
+    }
+
+    private boolean validateLongitude() {
+        if (longitudeField == null) return true;
+        String value = longitudeField.getText() != null ? longitudeField.getText().trim() : "";
+        if (value.isEmpty()) {
+            clearErrorStyle(longitudeField);
+            return true;
+        }
+        try {
+            double longitude = Double.parseDouble(value);
+            boolean ok = longitude >= -180 && longitude <= 180;
+            if (!ok) {
+                markInvalid(longitudeField);
+                return false;
+            }
+            clearErrorStyle(longitudeField);
+            return true;
+        } catch (NumberFormatException e) {
+            markInvalid(longitudeField);
+            return false;
+        }
     }
 
     /**
      * Validate all required fields
      */
     private boolean validateForm() {
-        boolean valid = true;
+        List<String> errors = new ArrayList<>();
 
-        valid &= validateName();
-        valid &= validateEmail();
-        valid &= validatePhone();
+        if (!validateName()) errors.add("- Name is required.");
+        if (!validateRequiredTextField(addressField)) errors.add("- Address is required.");
+        if (!validateRequiredTextField(cityField)) errors.add("- City is required.");
+        if (!validatePostalCode()) errors.add("- Postal code is required and must contain only 3-10 digits.");
+        if (!validateComboRequired(typeCombo)) errors.add("- Type is required.");
+        if (!validateComboRequired(statusCombo)) errors.add("- Status is required.");
+        if (!validateComboRequired(starRatingCombo)) errors.add("- Star rating is required.");
+        if (!validateComboRequired(countryCombo)) errors.add("- Country is required.");
+        if (!validatePhone()) errors.add("- Phone is required and must contain 8-15 digits.");
+        if (!validateEmail()) errors.add("- Email is required and must be valid (example: name@domain.com).");
+        if (!validateWebsite()) errors.add("- Website URL is invalid (example: https://example.com).");
+        if (!validateLatitude()) errors.add("- Latitude must be a valid number between -90 and 90.");
+        if (!validateLongitude()) errors.add("- Longitude must be a valid number between -180 and 180.");
 
-        if (typeCombo.getValue() == null) {
-            typeCombo.setStyle("-fx-border-color: red; -fx-border-width: 2;");
-            valid = false;
-        } else {
-            typeCombo.setStyle("");
+        String lat = latitudeField != null && latitudeField.getText() != null ? latitudeField.getText().trim() : "";
+        String lng = longitudeField != null && longitudeField.getText() != null ? longitudeField.getText().trim() : "";
+        if ((lat.isEmpty() && !lng.isEmpty()) || (!lat.isEmpty() && lng.isEmpty())) {
+            markInvalid(latitudeField);
+            markInvalid(longitudeField);
+            errors.add("- Latitude and longitude must both be filled together.");
         }
 
-        if (statusCombo.getValue() == null) {
-            statusCombo.setStyle("-fx-border-color: red; -fx-border-width: 2;");
-            valid = false;
-        } else {
-            statusCombo.setStyle("");
-        }
-
-        if (starRatingCombo.getValue() == null) {
-            starRatingCombo.setStyle("-fx-border-color: red; -fx-border-width: 2;");
-            valid = false;
-        } else {
-            starRatingCombo.setStyle("");
-        }
-
-        if (cityField.getText() == null || cityField.getText().trim().isEmpty()) {
-            cityField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
-            valid = false;
-        } else {
-            cityField.setStyle("");
-        }
-
-        if (countryCombo.getValue() == null) {
-            countryCombo.setStyle("-fx-border-color: red; -fx-border-width: 2;");
-            valid = false;
-        } else {
-            countryCombo.setStyle("");
-        }
-
-        if (!valid) {
-            showError("Please fill in all required fields correctly.");
+        if (!errors.isEmpty()) {
+            showError("Please correct the following:\n\n" + String.join("\n", errors));
             if (accommodationTabs != null) {
                 accommodationTabs.getSelectionModel().select(0);
             }
+            return false;
         }
+        return true;
+    }
 
-        return valid;
+    private boolean validateRequiredTextField(TextField field) {
+        if (field == null) return true;
+        String value = field.getText() != null ? field.getText().trim() : "";
+        if (value.isEmpty()) {
+            markInvalid(field);
+            return false;
+        }
+        clearErrorStyle(field);
+        return true;
+    }
+
+    private boolean validateComboRequired(ComboBox<?> comboBox) {
+        if (comboBox == null) return true;
+        if (comboBox.getValue() == null) {
+            markInvalid(comboBox);
+            return false;
+        }
+        clearErrorStyle(comboBox);
+        return true;
+    }
+
+    private void markInvalid(Control control) {
+        if (control != null) {
+            control.setStyle("-fx-border-color: #e74c3c; -fx-border-width: 2;");
+        }
+    }
+
+    private void clearErrorStyle(Control control) {
+        if (control != null) {
+            control.setStyle("");
+        }
+    }
+
+    private void applyDigitsOnlyFilter(TextField field) {
+        if (field == null) return;
+        TextFormatter<String> formatter = new TextFormatter<>(change ->
+                DIGITS_PATTERN.matcher(change.getControlNewText()).matches() ? change : null);
+        field.setTextFormatter(formatter);
+    }
+
+    private void applyDecimalFilter(TextField field) {
+        if (field == null) return;
+        TextFormatter<String> formatter = new TextFormatter<>(change ->
+                DECIMAL_PATTERN.matcher(change.getControlNewText()).matches() ? change : null);
+        field.setTextFormatter(formatter);
+    }
+
+    private boolean isValidWebsiteUrl(String website) {
+        try {
+            String candidate = website.trim();
+            if (!candidate.matches("(?i)^https?://.*")) {
+                candidate = "https://" + candidate;
+            }
+            URI uri = URI.create(candidate);
+            String host = uri.getHost();
+            return host != null && host.contains(".") && !host.startsWith(".") && !host.endsWith(".");
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**

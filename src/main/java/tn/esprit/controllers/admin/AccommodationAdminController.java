@@ -1,19 +1,27 @@
-package tn.esprit.controllers.adminn;
+package tn.esprit.controllers.admin;
 
 import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import tn.esprit.entities.Accommodation;
 import tn.esprit.entities.Room;
+import tn.esprit.services.AccommodationDashboardAnalyticsService;
+import tn.esprit.services.AccommodationDashboardExportService;
+import tn.esprit.services.AccommodationMlInsightsService;
 import tn.esprit.services.AccommodationService;
 import tn.esprit.services.RoomService;
 import tn.esprit.utils.AccommodationCard;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -36,7 +44,15 @@ public class AccommodationAdminController {
     @FXML private Label totalAccommodationsLabel;
     @FXML private Label activeBookingsLabel;
     @FXML private Label revenueLabel;
-    @FXML private Label occupancyLabel;
+    @FXML private Label avgBookingValueLabel;
+    @FXML private Label cancellationRateLabel;
+    @FXML private Label topCityLabel;
+    @FXML private Label topTypeLabel;
+    @FXML private Label insightSummaryLabel;
+    @FXML private Label forecastOccupancyLabel;
+    @FXML private Label suggestedPriceActionLabel;
+    @FXML private Label modelConfidenceLabel;
+    @FXML private Label mlDecisionSummaryLabel;
 
     // Charts
     @FXML private LineChart<String, Number> bookingsChart;
@@ -89,6 +105,9 @@ public class AccommodationAdminController {
     // ============ Services ============
     private AccommodationService accommodationService;
     private RoomService roomService;
+    private AccommodationDashboardAnalyticsService dashboardAnalyticsService;
+    private AccommodationMlInsightsService accommodationMlInsightsService;
+    private AccommodationDashboardExportService dashboardExportService;
 
     // ============ State Variables ============
     private List<Accommodation> allAccommodations;
@@ -109,6 +128,9 @@ public class AccommodationAdminController {
         // Initialize services
         accommodationService = new AccommodationService();
         roomService = new RoomService();
+        dashboardAnalyticsService = new AccommodationDashboardAnalyticsService();
+        accommodationMlInsightsService = new AccommodationMlInsightsService();
+        dashboardExportService = new AccommodationDashboardExportService(dashboardAnalyticsService, accommodationMlInsightsService);
 
         // Initialize UI components
         initializeUI();
@@ -653,17 +675,21 @@ public class AccommodationAdminController {
      */
     private void loadDashboardData() {
         try {
-            // Get actual counts from database
-            List<Accommodation> accommodations = accommodationService.getAll();
+            AccommodationDashboardAnalyticsService.DashboardKpis kpis = dashboardAnalyticsService.getDashboardKpis();
+            totalAccommodationsLabel.setText(String.valueOf(kpis.totalAccommodations));
+            activeBookingsLabel.setText(formatInteger(kpis.activeBookings));
+            revenueLabel.setText("€" + formatCurrency(kpis.confirmedRevenue));
+            avgBookingValueLabel.setText("€" + formatCurrency(kpis.averageBookingValue));
+            cancellationRateLabel.setText(formatPercent(kpis.cancellationRatePercent));
+            topCityLabel.setText(safeText(kpis.topCity));
+            topTypeLabel.setText(safeText(kpis.topType));
+            insightSummaryLabel.setText(String.join("  |  ", dashboardAnalyticsService.getInsightHighlights()));
 
-            // Update KPI labels with real data
-            totalAccommodationsLabel.setText(String.valueOf(accommodations.size()));
-
-            // TODO: Get real booking and revenue data from database
-            // For now, use placeholders
-            activeBookingsLabel.setText("1,842");
-            revenueLabel.setText("€234,567");
-            occupancyLabel.setText("78.5%");
+            AccommodationMlInsightsService.MlInsightSnapshot mlSnapshot = accommodationMlInsightsService.computeGlobalSnapshot();
+            forecastOccupancyLabel.setText(formatPercent(mlSnapshot.forecastOccupancyPercent));
+            suggestedPriceActionLabel.setText(formatSignedPercent(mlSnapshot.suggestedPriceAdjustmentPercent));
+            modelConfidenceLabel.setText(formatPercent(mlSnapshot.modelConfidencePercent));
+            mlDecisionSummaryLabel.setText(safeText(mlSnapshot.decisionSummary));
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error loading dashboard data: " + e.getMessage(), e);
@@ -671,7 +697,15 @@ public class AccommodationAdminController {
             totalAccommodationsLabel.setText("0");
             activeBookingsLabel.setText("0");
             revenueLabel.setText("€0");
-            occupancyLabel.setText("0%");
+            avgBookingValueLabel.setText("€0");
+            cancellationRateLabel.setText("0%");
+            topCityLabel.setText("N/A");
+            topTypeLabel.setText("N/A");
+            insightSummaryLabel.setText("Analytics insights will appear once booking data is available.");
+            forecastOccupancyLabel.setText("0%");
+            suggestedPriceActionLabel.setText("0.0%");
+            modelConfidenceLabel.setText("0%");
+            mlDecisionSummaryLabel.setText("ML baseline will appear once enough booking history is available.");
         }
     }
 
@@ -680,27 +714,22 @@ public class AccommodationAdminController {
      */
     private void loadCharts() {
         try {
+            bookingsChart.getData().clear();
+            revenueChart.getData().clear();
+
             // Bookings Chart
             XYChart.Series<String, Number> bookingsSeries = new XYChart.Series<>();
             bookingsSeries.setName("Bookings");
 
-            // Sample data - replace with real data
-            bookingsSeries.getData().add(new XYChart.Data<>("Jan", 245));
-            bookingsSeries.getData().add(new XYChart.Data<>("Feb", 312));
-            bookingsSeries.getData().add(new XYChart.Data<>("Mar", 398));
-            bookingsSeries.getData().add(new XYChart.Data<>("Apr", 421));
-            bookingsSeries.getData().add(new XYChart.Data<>("May", 456));
-            bookingsSeries.getData().add(new XYChart.Data<>("Jun", 502));
+            dashboardAnalyticsService.getBookingsTrendLast6Months()
+                    .forEach((month, count) -> bookingsSeries.getData().add(new XYChart.Data<>(month, count)));
 
             bookingsChart.getData().add(bookingsSeries);
 
             // Revenue Chart
-            PieChart.Data hotels = new PieChart.Data("Hotels", 45);
-            PieChart.Data villas = new PieChart.Data("Villas", 25);
-            PieChart.Data apartments = new PieChart.Data("Apartments", 20);
-            PieChart.Data resorts = new PieChart.Data("Resorts", 10);
-
-            revenueChart.getData().addAll(hotels, villas, apartments, resorts);
+            for (AccommodationDashboardAnalyticsService.RevenueByType row : dashboardAnalyticsService.getRevenueByAccommodationType()) {
+                revenueChart.getData().add(new PieChart.Data(row.type, row.revenue));
+            }
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error loading charts: " + e.getMessage(), e);
@@ -1002,7 +1031,7 @@ public class AccommodationAdminController {
     private void showAddAccommodationModal() {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/fxml/adminn/accommodation-modal.fxml")
+                    getClass().getResource("/fxml/admin/accommodation-modal.fxml")
             );
             VBox modalContent = loader.load();
 
@@ -1025,7 +1054,7 @@ public class AccommodationAdminController {
     public void showEditAccommodationModal(Accommodation accommodation) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/fxml/adminn/accommodation-modal.fxml")
+                    getClass().getResource("/fxml/admin/accommodation-modal.fxml")
             );
             VBox modalContent = loader.load();
 
@@ -1049,7 +1078,7 @@ public class AccommodationAdminController {
     private void showAccommodationDetailsModal(Accommodation accommodation) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/fxml/adminn/accommodation-details-modal.fxml")
+                    getClass().getResource("/fxml/admin/accommodation-details-modal.fxml")
             );
             VBox modalContent = loader.load();
 
@@ -1079,7 +1108,7 @@ public class AccommodationAdminController {
     public void showRoomDetailsPage(Accommodation accommodation, Room room) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/fxml/adminn/room-details-page.fxml")
+                    getClass().getResource("/fxml/admin/room-details-page.fxml")
             );
             VBox pageContent = loader.load();
 
@@ -1163,6 +1192,8 @@ public class AccommodationAdminController {
     public void refreshAfterSave() {
         logger.log(Level.INFO, "Refreshing after save...");
         loadAccommodations();
+        loadDashboardData();
+        loadCharts();
         closeModal();
         showSuccess("Accommodation saved successfully!");
     }
@@ -1182,6 +1213,8 @@ public class AccommodationAdminController {
                     accommodationService.deleteAccommodation(accommodation.getId());
                     showSuccess("Accommodation deleted successfully!");
                     loadAccommodations(); // Reload the list
+                    loadDashboardData();
+                    loadCharts();
                 } catch (Exception e) {
                     logger.log(Level.SEVERE, "Error deleting accommodation: " + e.getMessage(), e);
                     showError("Error deleting accommodation: " + e.getMessage());
@@ -1203,6 +1236,30 @@ public class AccommodationAdminController {
         applyFilters();
     }
 
+    @FXML
+    private void handleExportDashboardStats() {
+        try {
+            FileChooser chooser = new FileChooser();
+            chooser.setTitle("Export Accommodation Dashboard Statistics");
+            chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Workbook (*.xlsx)", "*.xlsx"));
+            chooser.setInitialFileName("accommodation-dashboard-stats.xlsx");
+
+            Window owner = addAccommodationBtn != null && addAccommodationBtn.getScene() != null
+                    ? addAccommodationBtn.getScene().getWindow()
+                    : null;
+            File destination = chooser.showSaveDialog(owner);
+            if (destination == null) {
+                return;
+            }
+
+            dashboardExportService.exportDashboardExcel(destination.toPath());
+            showSuccess("Dashboard statistics exported successfully:\n" + destination.getAbsolutePath());
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error exporting dashboard statistics: " + e.getMessage(), e);
+            showError("Unable to export dashboard statistics: " + e.getMessage());
+        }
+    }
+
     /**
      * Navigation method for accommodations menu item
      */
@@ -1211,6 +1268,25 @@ public class AccommodationAdminController {
         // This is already the accommodations page
         // You can add any specific initialization here if needed
         showToast("Already on Accommodations page", "info");
+    }
+
+    /**
+     * Open dedicated Accommodation Booking management page.
+     */
+    @FXML
+    private void showAdminAccommodationBookingPage() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/admin/accommodation-booking-management.fxml")
+            );
+            Parent root = loader.load();
+            if (sidebar != null && sidebar.getScene() != null) {
+                sidebar.getScene().setRoot(root);
+            }
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Error loading booking management page: " + e.getMessage(), e);
+            showError("Error loading booking management page: " + e.getMessage());
+        }
     }
 
     /**
@@ -1233,5 +1309,28 @@ public class AccommodationAdminController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private String formatInteger(int value) {
+        return String.format("%,d", value);
+    }
+
+    private String formatCurrency(double value) {
+        DecimalFormat df = new DecimalFormat("#,##0.00");
+        return df.format(value);
+    }
+
+    private String formatPercent(double value) {
+        DecimalFormat df = new DecimalFormat("0.0");
+        return df.format(value) + "%";
+    }
+
+    private String formatSignedPercent(double value) {
+        DecimalFormat df = new DecimalFormat("0.0");
+        return (value >= 0 ? "+" : "") + df.format(value) + "%";
+    }
+
+    private String safeText(String value) {
+        return (value == null || value.isBlank()) ? "N/A" : value;
     }
 }

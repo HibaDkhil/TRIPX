@@ -312,3 +312,200 @@
     -fx-background-color: rgba(30,58,138,0.35);
     -fx-background-radius: 999;
 }
+
+.booking-dialog-root {
+    -fx-background-color: linear-gradient(to bottom right, #dff8f6 0%, #ece8ff 48%, #ffe9d6 100%);
+    -fx-min-width: 940;
+    -fx-font-family: "Poppins", "Inter", "Segoe UI", "Arial";
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-border-color: rgba(20, 184, 166, 0.45);
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(124, 58, 237, 0.23), 30, 0, 0, 9);
+}
+
+.booking-dialog-title {
+    -fx-text-fill: #0f172a;
+    -fx-font-size: 28;
+    -fx-font-weight: 900;
+}
+
+.booking-dialog-chip {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 11.5;
+    -fx-font-weight: 800;
+    -fx-background-color: linear-gradient(to right, #14b8a6, #a855f7);
+    -fx-background-radius: 999;
+    -fx-padding: 5 12;
+}
+
+.booking-dialog-close-btn {
+    -fx-background-color: linear-gradient(to right, #fecdd3, #fbcfe8);
+    -fx-text-fill: #7f1d1d;
+    -fx-font-size: 12.5;
+    -fx-font-weight: 900;
+    -fx-background-radius: 999;
+    -fx-border-radius: 999;
+    -fx-border-color: #fda4af;
+    -fx-border-width: 1;
+    -fx-padding: 4 9;
+    -fx-cursor: hand;
+}
+
+.booking-dialog-close-btn:hover {
+    -fx-background-color: linear-gradient(to right, #fda4af, #f9a8d4);
+    -fx-text-fill: #ffffff;
+}
+
+.booking-dialog-summary-pane,
+.booking-dialog-form-pane {
+    -fx-background-color: linear-gradient(to bottom right, rgba(255,255,255,0.84), rgba(255,255,255,0.72));
+    -fx-background-radius: 16;
+    -fx-border-color: rgba(167, 139, 250, 0.5);
+    -fx-border-radius: 16;
+    -fx-padding: 12;
+}
+
+.booking-dialog-card {
+    -fx-background-color: linear-gradient(to bottom right, #ffffff, #eefcff);
+    -fx-background-radius: 16;
+    -fx-border-color: #bde7f2;
+    -fx-border-radius: 14;
+    -fx-padding: 12 13;
+}
+
+.booking-dialog-glow {
+    -fx-border-color: rgba(45, 212, 191, 0.45);
+    -fx-effect: dropshadow(gaussian, rgba(20, 184, 166, 0.22), 18, 0, 0, 5);
+}
+
+.booking-dialog-section-title {
+    -fx-text-fill: #334155;
+    -fx-font-size: 14.5;
+    -fx-font-weight: 800;
+}
+
+.booking-dialog-label {
+    -fx-text-fill: #475569;
+    -fx-font-size: 12;
+    -fx-font-weight: 700;
+}
+
+.booking-dialog-value {
+    -fx-text-fill: #0f172a;
+    -fx-font-size: 14;
+    -fx-font-weight: 800;
+}
+
+.booking-dialog-price-value {
+    -fx-text-fill: #0f766e;
+    -fx-font-size: 18;
+    -fx-font-weight: 900;
+}
+
+.booking-dialog-helper {
+    -fx-text-fill: #64748b;
+    -fx-font-size: 11.5;
+    -fx-font-weight: 600;
+}
+
+.booking-dialog-summary {
+    -fx-background-color: linear-gradient(to right, #ccfbf1, #ede9fe, #ffedd5);
+    -fx-background-radius: 12;
+    -fx-border-color: #d9d6fe;
+    -fx-border-radius: 12;
+    -fx-padding: 10 12;
+}
+
+.booking-dialog-status-neutral,
+.booking-dialog-status-success,
+.booking-dialog-status-error {
+    -fx-font-size: 12.5;
+    -fx-font-weight: 700;
+    -fx-padding: 8 10;
+    -fx-background-radius: 10;
+}
+
+.booking-dialog-status-neutral {
+    -fx-text-fill: #374151;
+    -fx-background-color: #e9d5ff;
+}
+
+.booking-dialog-status-success {
+    -fx-text-fill: #166534;
+    -fx-background-color: #bbf7d0;
+}
+
+.booking-dialog-status-error {
+    -fx-text-fill: #991B1B;
+    -fx-background-color: #fecaca;
+}
+
+.booking-dialog-root .text-field,
+.booking-dialog-root .date-picker,
+.booking-dialog-root .combo-box,
+.booking-dialog-root .text-area {
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #f8fdff);
+    -fx-background-radius: 11;
+    -fx-border-color: #c7dff0;
+    -fx-border-radius: 11;
+    -fx-border-width: 1.2;
+    -fx-font-size: 12.8;
+    -fx-padding: 7 10;
+}
+
+.booking-dialog-root .date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.booking-dialog-root .text-field:focused,
+.booking-dialog-root .date-picker:focused,
+.booking-dialog-root .combo-box:focused,
+.booking-dialog-root .text-area:focused {
+    -fx-border-color: #a855f7;
+    -fx-border-width: 1.8;
+    -fx-effect: dropshadow(gaussian, rgba(168, 85, 247, 0.18), 10, 0, 0, 0);
+}
+
+.booking-dialog-btn-teal,
+.booking-dialog-btn-purple,
+.booking-dialog-btn-soft {
+    -fx-font-size: 12.5;
+    -fx-font-weight: 800;
+    -fx-background-radius: 12;
+    -fx-padding: 8 13;
+    -fx-cursor: hand;
+}
+
+.booking-dialog-btn-teal {
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to right, #0d9488, #2dd4bf);
+    -fx-effect: dropshadow(gaussian, rgba(13, 148, 136, 0.28), 12, 0, 0, 3);
+}
+
+.booking-dialog-btn-teal:hover {
+    -fx-background-color: linear-gradient(to right, #0f766e, #14b8a6);
+}
+
+.booking-dialog-btn-purple {
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to right, #7c3aed, #c084fc);
+    -fx-effect: dropshadow(gaussian, rgba(168, 85, 247, 0.35), 14, 0, 0, 4);
+}
+
+.booking-dialog-btn-purple:hover {
+    -fx-background-color: linear-gradient(to right, #6d28d9, #9333ea);
+}
+
+.booking-dialog-btn-soft {
+    -fx-text-fill: #4b5563;
+    -fx-background-color: linear-gradient(to right, #ffe8cc, #fef3c7);
+    -fx-border-color: #fed7aa;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+}
+
+.booking-dialog-btn-soft:hover {
+    -fx-background-color: linear-gradient(to right, #fed7aa, #fde68a);
+}

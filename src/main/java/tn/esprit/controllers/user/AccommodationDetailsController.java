@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -21,6 +22,10 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.scene.Scene;
 import netscape.javascript.JSObject;
 import tn.esprit.entities.Accommodation;
 import tn.esprit.entities.Room;
@@ -28,6 +33,8 @@ import tn.esprit.entities.RoomImage;
 import tn.esprit.services.NearbyAiPlannerService;
 import tn.esprit.services.RoomImageService;
 import tn.esprit.services.RoomService;
+import tn.esprit.utils.CurrentUserProvider;
+import tn.esprit.utils.DefaultCurrentUserProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,6 +47,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import javafx.util.Duration;
@@ -84,6 +92,7 @@ public class AccommodationDetailsController {
     private Timeline scrollTimeline;
     private Timeline autoCarouselTimeline;
     private Timeline galleryStripTimeline;
+    private final CurrentUserProvider currentUserProvider = new DefaultCurrentUserProvider();
 
     @FXML
     public void initialize() {
@@ -391,8 +400,10 @@ public class AccommodationDetailsController {
             priceCol.setPrefWidth(180);
             Label price = new Label(currency.format(room.getPricePerNight()));
             price.getStyleClass().add("details-room-price");
-            Button cta = new Button("Show prices");
+            Button cta = new Button("Book Accommodation");
             cta.getStyleClass().add("details-room-cta");
+            cta.setDisable(!room.isAvailable());
+            cta.setOnAction(e -> openAccommodationBookingDialog(room));
             priceCol.getChildren().addAll(price, cta);
 
             row.getChildren().addAll(roomCol, guests, status, priceCol);
@@ -539,6 +550,86 @@ public class AccommodationDetailsController {
     private String escapeJs(String value) {
         if (value == null) return "";
         return value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", " ").replace("\r", " ");
+    }
+
+    private void openAccommodationBookingDialog(Room room) {
+        if (room == null || accommodation == null) {
+            return;
+        }
+
+        if (!room.isAvailable()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Room unavailable");
+            alert.setHeaderText(null);
+            alert.setContentText("This room is marked as unavailable.");
+            alert.showAndWait();
+            return;
+        }
+
+        int bookingUserId = resolveBookingUserId();
+        if (bookingUserId <= 0) {
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    Objects.requireNonNull(getClass().getResource("/fxml/user/accommodation-booking-dialog.fxml"))
+            );
+            VBox bookingDialogRoot = loader.load();
+            UserAccommodationBookingController controller = loader.getController();
+            controller.setContext(accommodation, room, bookingUserId);
+            controller.setOnBookingCreated(this::renderRoomsTable);
+
+            Stage dialog = new Stage();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.initStyle(StageStyle.UNDECORATED);
+            if (backToListButton != null && backToListButton.getScene() != null && backToListButton.getScene().getWindow() != null) {
+                dialog.initOwner(backToListButton.getScene().getWindow());
+            }
+            dialog.setScene(new Scene(bookingDialogRoot));
+            dialog.setResizable(false);
+            dialog.centerOnScreen();
+            dialog.showAndWait();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Booking error");
+            alert.setHeaderText(null);
+            alert.setContentText("Unable to open booking dialog.\n" + e.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+    private int resolveBookingUserId() {
+        Integer fromProvider = currentUserProvider.getCurrentUserId();
+        if (fromProvider != null && fromProvider > 0) {
+            return fromProvider;
+        }
+
+        TextInputDialog userIdDialog = new TextInputDialog();
+        userIdDialog.setTitle("User Required");
+        userIdDialog.setHeaderText("Enter your user id to continue booking");
+        userIdDialog.setContentText("User ID:");
+
+        Optional<String> result = userIdDialog.showAndWait();
+        if (result.isEmpty()) {
+            return -1;
+        }
+
+        try {
+            int parsed = Integer.parseInt(result.get().trim());
+            if (parsed <= 0) {
+                throw new NumberFormatException("user id must be positive");
+            }
+            DefaultCurrentUserProvider.setCurrentUserId(parsed);
+            return parsed;
+        } catch (NumberFormatException ex) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Invalid user id");
+            alert.setHeaderText(null);
+            alert.setContentText("Please enter a valid numeric user id.");
+            alert.showAndWait();
+            return -1;
+        }
     }
 
     private static class GalleryImage {

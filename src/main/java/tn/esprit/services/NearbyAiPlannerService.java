@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import tn.esprit.entities.Accommodation;
+import tn.esprit.utils.EnvConfig;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -30,10 +31,10 @@ public class NearbyAiPlannerService {
             return result;
         }
 
-        String apiKey = System.getenv("GROQ_API_KEY");
+        String apiKey = EnvConfig.get("GROQ_API_KEY");
         if (apiKey == null || apiKey.isBlank()) {
             result.success = false;
-            result.errorMessage = "Missing GROQ_API_KEY environment variable.";
+            result.errorMessage = "Missing GROQ_API_KEY. Set it in the project .env file.";
             return result;
         }
 

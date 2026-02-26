@@ -21,7 +21,7 @@ public class Main extends Application {
 
             // Load the launcher/main menu FXML
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/fxml/user/AccommodationDetailsView.fxml")
+                    getClass().getResource("/fxml/user/AccommodationsView.fxml")
             );
 
             Parent root = loader.load();

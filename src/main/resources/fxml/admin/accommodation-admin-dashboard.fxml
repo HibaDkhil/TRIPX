@@ -16,7 +16,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 
-<StackPane prefHeight="1000.0" prefWidth="1600.0" stylesheets="@/css/admin-style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.adminn.AccommodationAdminController">
+<StackPane prefHeight="1000.0" prefWidth="1600.0" stylesheets="@/css/admin-style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.admin.AccommodationAdminController">
 
     <!-- Main Layout Container -->
     <BorderPane prefHeight="1000.0" prefWidth="1600.0" styleClass="admin-root">
@@ -105,7 +105,7 @@
                             </HBox>
                             <VBox fx:id="accommodationsMenu" spacing="0" styleClass="submenu" visible="true">
                                 <Button styleClass="menu-item" text="Manage Accommodations" />
-                                <Button styleClass="menu-item" text="Manage Bookings" />
+                                <Button styleClass="menu-item" text="Manage Bookings" onAction="#showAdminAccommodationBookingPage" />
                             </VBox>
                         </VBox>
 
@@ -249,18 +249,19 @@
                         <HBox alignment="CENTER_LEFT" spacing="14" style="-fx-background-color: linear-gradient(to right, #FFFFFF, #F8FAFC); -fx-background-radius: 12; -fx-padding: 14 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 2);">
                             <Label style="-fx-text-fill: #37474F; -fx-font-size: 17; -fx-font-weight: 700;" text="🏨 Accommodations Overview" />
                             <Region HBox.hgrow="ALWAYS" />
+                            <Button onAction="#handleExportDashboardStats" style="-fx-font-size: 13; -fx-font-weight: 700; -fx-padding: 10 16;" styleClass="btn-ai" text="⬇ Export Stats" />
                             <Button fx:id="addAccommodationBtn" onAction="#showAddAccommodationModal" style="-fx-font-size: 13; -fx-font-weight: 700; -fx-padding: 10 18;" styleClass="btn-add-primary" text="➕ Add Accommodation" />
                         </HBox>
 
                         <!-- KPI Cards Row -->
                         <HBox alignment="CENTER_LEFT" spacing="24">
                             <!-- Total Accommodations Card -->
-                            <VBox maxWidth="280" prefWidth="280" spacing="10" styleClass="kpi-card">
+                            <VBox maxWidth="380" prefWidth="380" spacing="10" styleClass="kpi-theme">
                                 <padding>
                                     <Insets bottom="20" left="20" right="20" top="20" />
                                 </padding>
                                 <HBox alignment="CENTER_LEFT" spacing="15">
-                                    <Label style="-fx-font-size: 32;" text="🏨" />
+                                    <Label styleClass="metric-badge" text="KPI" />
                                     <VBox spacing="5">
                                         <Label styleClass="kpi-label" text="Total Accommodations" />
                                         <Label fx:id="totalAccommodationsLabel" styleClass="kpi-value" text="0" />
@@ -270,12 +271,12 @@
                             </VBox>
 
                             <!-- Active Bookings Card -->
-                            <VBox maxWidth="280" prefWidth="280" spacing="10" styleClass="kpi-card">
+                            <VBox maxWidth="380" prefWidth="380" spacing="10" styleClass="kpi-theme">
                                 <padding>
                                     <Insets bottom="20" left="20" right="20" top="20" />
                                 </padding>
                                 <HBox alignment="CENTER_LEFT" spacing="15">
-                                    <Label style="-fx-font-size: 32;" text="📅" />
+                                    <Label styleClass="metric-badge" text="KPI" />
                                     <VBox spacing="5">
                                         <Label styleClass="kpi-label" text="Active Bookings" />
                                         <Label fx:id="activeBookingsLabel" styleClass="kpi-value" text="0" />
@@ -285,12 +286,12 @@
                             </VBox>
 
                             <!-- Revenue Card -->
-                            <VBox maxWidth="280" prefWidth="280" spacing="10" styleClass="kpi-card">
+                            <VBox maxWidth="380" prefWidth="380" spacing="10" styleClass="kpi-theme">
                                 <padding>
                                     <Insets bottom="20" left="20" right="20" top="20" />
                                 </padding>
                                 <HBox alignment="CENTER_LEFT" spacing="15">
-                                    <Label style="-fx-font-size: 32;" text="💰" />
+                                    <Label styleClass="metric-badge" text="KPI" />
                                     <VBox spacing="5">
                                         <Label styleClass="kpi-label" text="Monthly Revenue" />
                                         <Label fx:id="revenueLabel" styleClass="kpi-value" text="€0" />
@@ -298,18 +299,93 @@
                                     </VBox>
                                 </HBox>
                             </VBox>
+                        </HBox>
 
-                            <!-- Occupancy Rate Card -->
-                            <VBox maxWidth="280" prefWidth="280" spacing="10" styleClass="kpi-card">
+                        <!-- Smart Analytics Row -->
+                        <HBox alignment="CENTER_LEFT" spacing="24">
+                            <VBox maxWidth="380" prefWidth="380" spacing="10" styleClass="ai-theme">
                                 <padding>
                                     <Insets bottom="20" left="20" right="20" top="20" />
                                 </padding>
                                 <HBox alignment="CENTER_LEFT" spacing="15">
-                                    <Label style="-fx-font-size: 32;" text="📊" />
+                                    <Label styleClass="metric-badge" text="ANL" />
                                     <VBox spacing="5">
-                                        <Label styleClass="kpi-label" text="Occupancy Rate" />
-                                        <Label fx:id="occupancyLabel" styleClass="kpi-value" text="0%" />
-                                        <Label styleClass="kpi-change negative" text="↓ 2% from last month" />
+                                        <Label styleClass="kpi-label" text="Avg Booking Value" />
+                                        <Label fx:id="avgBookingValueLabel" styleClass="kpi-value" text="€0" />
+                                        <Label styleClass="kpi-change positive" text="Data-driven value indicator" />
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+
+                            <VBox maxWidth="380" prefWidth="380" spacing="10" styleClass="ai-theme">
+                                <padding>
+                                    <Insets bottom="20" left="20" right="20" top="20" />
+                                </padding>
+                                <HBox alignment="CENTER_LEFT" spacing="15">
+                                    <Label styleClass="metric-badge" text="ANL" />
+                                    <VBox spacing="5">
+                                        <Label styleClass="kpi-label" text="Cancellation Rate" />
+                                        <Label fx:id="cancellationRateLabel" styleClass="kpi-value" text="0%" />
+                                        <Label styleClass="kpi-change negative" text="Quality and friction signal" />
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+
+                            <VBox maxWidth="380" prefWidth="380" spacing="10" styleClass="ai-theme">
+                                <padding>
+                                    <Insets bottom="20" left="20" right="20" top="20" />
+                                </padding>
+                                <HBox alignment="CENTER_LEFT" spacing="15">
+                                    <Label styleClass="metric-badge" text="ANL" />
+                                    <VBox spacing="5">
+                                        <Label styleClass="kpi-label" text="Top City / Top Type" />
+                                        <Label fx:id="topCityLabel" styleClass="kpi-value" text="N/A" />
+                                        <Label fx:id="topTypeLabel" styleClass="kpi-change positive" text="N/A" />
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+
+                        <!-- ML Forecast & Pricing Row -->
+                        <HBox alignment="CENTER_LEFT" spacing="24">
+                            <VBox maxWidth="380" prefWidth="380" spacing="10" styleClass="ml-theme">
+                                <padding>
+                                    <Insets bottom="20" left="20" right="20" top="20" />
+                                </padding>
+                                <HBox alignment="CENTER_LEFT" spacing="15">
+                                    <Label styleClass="metric-badge" text="ML" />
+                                    <VBox spacing="5">
+                                        <Label styleClass="kpi-label" text="Forecast Occupancy (Next 30d)" />
+                                        <Label fx:id="forecastOccupancyLabel" styleClass="kpi-value" text="0%" />
+                                        <Label styleClass="kpi-change positive" text="ML baseline using historic occupancy" />
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+
+                            <VBox maxWidth="380" prefWidth="380" spacing="10" styleClass="ml-theme">
+                                <padding>
+                                    <Insets bottom="20" left="20" right="20" top="20" />
+                                </padding>
+                                <HBox alignment="CENTER_LEFT" spacing="15">
+                                    <Label styleClass="metric-badge" text="ML" />
+                                    <VBox spacing="5">
+                                        <Label styleClass="kpi-label" text="Suggested Price Action" />
+                                        <Label fx:id="suggestedPriceActionLabel" styleClass="kpi-value" text="+0.0%" />
+                                        <Label styleClass="kpi-change positive" text="Demand-sensitive adjustment" />
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+
+                            <VBox maxWidth="380" prefWidth="380" spacing="10" styleClass="ml-theme">
+                                <padding>
+                                    <Insets bottom="20" left="20" right="20" top="20" />
+                                </padding>
+                                <HBox alignment="CENTER_LEFT" spacing="15">
+                                    <Label styleClass="metric-badge" text="ML" />
+                                    <VBox spacing="5">
+                                        <Label styleClass="kpi-label" text="ML Confidence" />
+                                        <Label fx:id="modelConfidenceLabel" styleClass="kpi-value" text="0%" />
+                                        <Label styleClass="kpi-change positive" text="Depends on booking data volume" />
                                     </VBox>
                                 </HBox>
                             </VBox>
@@ -322,8 +398,8 @@
                                 <padding>
                                     <Insets bottom="20" left="20" right="20" top="20" />
                                 </padding>
-                                <Label styleClass="chart-title" text="📈 Bookings Trend (Last 6 Months)" />
-                                <LineChart fx:id="bookingsChart" legendVisible="false" prefHeight="250">
+                                <Label styleClass="chart-title" text="Bookings Trend (Last 6 Months)" />
+                                <LineChart fx:id="bookingsChart" legendVisible="false" prefHeight="250" styleClass="dashboard-soft-chart">
                                     <xAxis>
                                         <CategoryAxis label="Month" />
                                     </xAxis>
@@ -338,10 +414,20 @@
                                 <padding>
                                     <Insets bottom="20" left="20" right="20" top="20" />
                                 </padding>
-                                <Label styleClass="chart-title" text="💵 Revenue by Type" />
-                                <PieChart fx:id="revenueChart" legendVisible="true" prefHeight="250" />
+                                <Label styleClass="chart-title" text="Revenue by Type" />
+                                <PieChart fx:id="revenueChart" legendVisible="true" prefHeight="250" styleClass="dashboard-soft-chart dashboard-soft-pie" />
                             </VBox>
                         </HBox>
+
+                        <!-- AI Insight Strip -->
+                        <VBox spacing="10" styleClass="ai-strip">
+                            <padding>
+                                <Insets bottom="14" left="20" right="20" top="14" />
+                            </padding>
+                            <Label styleClass="chart-title" text="Smart Insight Highlights" />
+                            <Label fx:id="insightSummaryLabel" style="-fx-text-fill: #455A64; -fx-font-size: 13.5; -fx-font-weight: 600;" text="Analytics insights will appear once booking data is available." wrapText="true" />
+                            <Label fx:id="mlDecisionSummaryLabel" style="-fx-text-fill: #5E35B1; -fx-font-size: 13; -fx-font-weight: 700;" text="ML baseline will appear once enough booking history is available." wrapText="true" />
+                        </VBox>
 
                         <!-- Advanced Search & Filter Section -->
                         <VBox spacing="15" styleClass="filter-section">

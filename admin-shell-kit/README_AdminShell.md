@@ -26,7 +26,7 @@ Reusable template extracted from the admin dashboard for teammates working on ot
 ## How To Integrate (Teammates)
 
 1. Copy `AdminShell.fxml` to your resources path, for example:
-   - `src/main/resources/fxml/adminn/AdminShell.fxml`
+   - `src/main/resources/fxml/admin/AdminShell.fxml`
 2. Copy `admin-shell.css` to:
    - `src/main/resources/css/admin-shell.css`
 3. Copy `AdminShellController.java` to your Java package and update:
@@ -42,11 +42,11 @@ Reusable template extracted from the admin dashboard for teammates working on ot
 ## Minimal Integration Example
 
 ```java
-FXMLLoader shellLoader = new FXMLLoader(getClass().getResource("/fxml/adminn/AdminShell.fxml"));
+FXMLLoader shellLoader = new FXMLLoader(getClass().getResource("/fxml/admin/AdminShell.fxml"));
 Parent shellRoot = shellLoader.load();
 AdminShellController shellController = shellLoader.getController();
 
-FXMLLoader moduleLoader = new FXMLLoader(getClass().getResource("/fxml/adminn/your-module-view.fxml"));
+FXMLLoader moduleLoader = new FXMLLoader(getClass().getResource("/fxml/admin/your-module-view.fxml"));
 Node moduleNode = moduleLoader.load();
 
 shellController.setCenterContent(moduleNode);
