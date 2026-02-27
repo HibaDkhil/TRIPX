@@ -5,7 +5,7 @@ import tn.esprit.entities.Schedule;
 import tn.esprit.entities.Transport;
 import tn.esprit.services.ScheduleService;
 import tn.esprit.services.TransportService;
-import tn.esprit.utils.MyDatabase;
+import tn.esprit.utils.MyDB;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -30,7 +30,7 @@ public class ScheduleServiceTest {
 
         scheduleService = new ScheduleService();
         transportService = new TransportService();
-        conx = MyDatabase.getInstance().getConx();
+        conx = MyDB.getInstance().getConx();
 
         // 1️⃣ Create transport
         Transport t = new Transport(

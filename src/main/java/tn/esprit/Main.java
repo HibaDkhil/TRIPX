@@ -14,7 +14,7 @@ public class Main extends Application {
 
         // USER WINDOW
         FXMLLoader userLoader =
-                new FXMLLoader(Main.class.getResource("/fxml.user/TransportUserInterface.fxml"));
+                new FXMLLoader(Main.class.getResource("/fxml/user/TransportUserInterface.fxml"));
         Stage userStage = new Stage();
         userStage.setScene(new Scene(userLoader.load()));
         userStage.setTitle("User Interface");

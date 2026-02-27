@@ -32,7 +32,7 @@
             fx:controller="tn.esprit.controllers.admin.TransportAdminDashboardController"
             styleClass="root-pane">
     <stylesheets>
-        <String fx:value="@../../tn/esprit/css/transport-dark.css"/>
+        <String fx:value="@../../css/transport-dark.css"/>
     </stylesheets>
 
     <!-- ═══════════════════════════════════════════════

@@ -2,11 +2,11 @@
  * transport-dark.css
  *
  * MAVEN PROJECT PLACEMENT:
- *   src/main/resources/tn/esprit/css/transport-dark.css
+ *   src/main/resources/css/transport-dark.css
  *
  * FXML reference (add inside <BorderPane> tag):
  *   <stylesheets>
- *       <URL value="@/tn/esprit/css/transport-dark.css"/>
+ *       <URL value="@/css/transport-dark.css"/>
  *   </stylesheets>
  *
  * The controller adds/removes "dark-mode" class on the root BorderPane.

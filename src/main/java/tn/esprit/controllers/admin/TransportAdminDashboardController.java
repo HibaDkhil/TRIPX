@@ -20,7 +20,7 @@ import tn.esprit.entities.Transport;
 import tn.esprit.services.BookingtransService;
 import tn.esprit.services.ScheduleService;
 import tn.esprit.services.TransportService;
-import tn.esprit.utils.MyDatabase;
+import tn.esprit.utils.MyDB;
 
 import java.io.File;
 import java.sql.*;
@@ -467,6 +467,10 @@ public class TransportAdminDashboardController {
     private void buildScheduleView() {
         Map<Integer, Transport> tMap = new HashMap<>();
         transportService.getAllTransports().forEach(t -> tMap.put(t.getTransportId(), t));
+        Map<Integer, Bookingtrans> bookingBySchedule = new LinkedHashMap<>();
+        bookingService.getAllBookings().stream()
+                .filter(b -> b.getScheduleId() > 0)
+                .forEach(b -> bookingBySchedule.putIfAbsent(b.getScheduleId(), b));
 
         TableView<Schedule> table = new TableView<>();
         styleTable(table);
@@ -485,6 +489,34 @@ public class TransportAdminDashboardController {
             return new javafx.beans.property.SimpleStringProperty(t != null ? t.getProviderName() : "-");
         });
 
+        TableColumn<Schedule, String> pickupAddrCol = new TableColumn<>("Pickup Address");
+        pickupAddrCol.setPrefWidth(190);
+        pickupAddrCol.setCellValueFactory(d -> {
+            Schedule s = d.getValue();
+            Transport t = tMap.get(s.getTransportId());
+            if (t == null || !"VEHICLE".equals(t.getTransportType())) {
+                return new javafx.beans.property.SimpleStringProperty("-");
+            }
+            Bookingtrans b = bookingBySchedule.get(s.getScheduleId());
+            String value = (b != null && b.getPickupAddress() != null && !b.getPickupAddress().isBlank())
+                    ? b.getPickupAddress() : "-";
+            return new javafx.beans.property.SimpleStringProperty(value);
+        });
+
+        TableColumn<Schedule, String> dropoffAddrCol = new TableColumn<>("Drop-off Address");
+        dropoffAddrCol.setPrefWidth(190);
+        dropoffAddrCol.setCellValueFactory(d -> {
+            Schedule s = d.getValue();
+            Transport t = tMap.get(s.getTransportId());
+            if (t == null || !"VEHICLE".equals(t.getTransportType())) {
+                return new javafx.beans.property.SimpleStringProperty("-");
+            }
+            Bookingtrans b = bookingBySchedule.get(s.getScheduleId());
+            String value = (b != null && b.getDropoffAddress() != null && !b.getDropoffAddress().isBlank())
+                    ? b.getDropoffAddress() : "-";
+            return new javafx.beans.property.SimpleStringProperty(value);
+        });
+
         TableColumn<Schedule, LocalDateTime> depCol = new TableColumn<>("Departure");
         depCol.setCellValueFactory(new PropertyValueFactory<>("departureDatetime"));
         depCol.setCellFactory(tc -> new TableCell<>() {
@@ -498,6 +530,7 @@ public class TransportAdminDashboardController {
                 col("ID","scheduleId",55), col("Trans.ID","transportId",70),
                 typeDispCol, provDispCol, depCol,
                 col("Class","travelClass",90), col("Status","status",100),
+                pickupAddrCol, dropoffAddrCol,
                 col("Delay(min)","delayMinutes",85), col("Price*","priceMultiplier",70),
                 col("AI Score","aiDemandScore",80));
         table.setItems(FXCollections.observableArrayList(scheduleService.getAllSchedules()));
@@ -842,7 +875,8 @@ public class TransportAdminDashboardController {
                 col("ID","bookingId",55), col("User","userId",65),
                 col("Transport","transportId",90), col("Schedule","scheduleId",80),
                 col("Seats","totalSeats",65), col("Total (EUR)","totalPrice",90),
-                statusCol, col("Payment","paymentStatus",100), col("Insurance","insuranceIncluded",90));
+                statusCol, col("Payment","paymentStatus",100), col("Insurance","insuranceIncluded",90),
+                col("Pickup","pickupAddress",180), col("Drop-off","dropoffAddress",180));
         table.setItems(FXCollections.observableArrayList(bookingService.getAllBookings()));
 
         Button confBtn  = btn(t("btn.confirm"),  BTN_GREEN);
@@ -938,8 +972,7 @@ public class TransportAdminDashboardController {
         grid.addRow(r++, fl("Insurance"),      lbl(sel.isInsuranceIncluded() ? "Yes" : "No"));
         //grid.addRow(r++, fl("AI Price Pred."), lbl(String.valueOf(sel.getAiPricePrediction())));
         //grid.addRow(r++, fl("Comp. Score"),    lbl(String.valueOf(sel.getComparisonScore())));
-        grid.addRow(r++, fl("Cancel Reason"),  lbl(sel.getCancellationReason() == null ? "-" : sel.getCancellationReason()));
-        grid.addRow(r++, fl("QR Code"),        lbl(sel.getQrCode()      == null ? "-" : sel.getQrCode()));
+        // Cancel reason and QR code intentionally hidden in booking details popup.
         //grid.addRow(r++, fl("Voucher"),        lbl(sel.getVoucherPath() == null ? "-" : sel.getVoucherPath()));
 
         if (isVehicle) {
@@ -947,12 +980,16 @@ public class TransportAdminDashboardController {
             Label mapHdr = new Label("Pickup / Drop-off Coordinates");
             mapHdr.setStyle("-fx-font-weight: bold; -fx-text-fill: #4FB3B5; -fx-font-size: 13px;");
             grid.add(mapHdr, 0, r++, 2, 1);
-            Label pickupLbl  = new Label("Map API pending — pickup coordinates will appear here once integrated.");
-            Label dropoffLbl = new Label("Map API pending — drop-off coordinates will appear here once integrated.");
-            pickupLbl .setStyle("-fx-text-fill: #999; -fx-font-size: 11px; -fx-font-style: italic;");
-            dropoffLbl.setStyle("-fx-text-fill: #999; -fx-font-size: 11px; -fx-font-style: italic;");
-            grid.addRow(r++, fl("Pickup point"),  pickupLbl);
-            grid.addRow(r++, fl("Drop-off point"),dropoffLbl);
+            String pickupCoords = sel.getPickupLatitude() != null && sel.getPickupLongitude() != null
+                    ? String.format("%.6f, %.6f", sel.getPickupLatitude(), sel.getPickupLongitude())
+                    : "-";
+            String dropoffCoords = sel.getDropoffLatitude() != null && sel.getDropoffLongitude() != null
+                    ? String.format("%.6f, %.6f", sel.getDropoffLatitude(), sel.getDropoffLongitude())
+                    : "-";
+            grid.addRow(r++, fl("Pickup coords"),  lbl(pickupCoords));
+            grid.addRow(r++, fl("Pickup address"), lbl(sel.getPickupAddress() == null ? "-" : sel.getPickupAddress()));
+            grid.addRow(r++, fl("Drop-off coords"),lbl(dropoffCoords));
+            grid.addRow(r++, fl("Drop-off address"), lbl(sel.getDropoffAddress() == null ? "-" : sel.getDropoffAddress()));
         }
 
         Button closeBtn = btn("Close", BTN_DARK); closeBtn.setOnAction(e -> popup.close());

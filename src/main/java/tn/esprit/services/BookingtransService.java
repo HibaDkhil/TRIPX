@@ -1,7 +1,7 @@
 package tn.esprit.services;
 
 import tn.esprit.entities.Bookingtrans;
-import tn.esprit.utils.MyDatabase;
+import tn.esprit.utils.MyDB;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,12 +12,42 @@ public class BookingtransService {
     private Connection conx;
 
     public BookingtransService() {
-        conx = MyDatabase.getInstance().getConx();
+        conx = MyDB.getInstance().getConx();
+        ensurePickupDropoffColumns();
+    }
+
+    private void ensurePickupDropoffColumns() {
+        String[] ddl = new String[]{
+                "ALTER TABLE bookingtrans ADD COLUMN IF NOT EXISTS pickup_latitude DOUBLE NULL",
+                "ALTER TABLE bookingtrans ADD COLUMN IF NOT EXISTS pickup_longitude DOUBLE NULL",
+                "ALTER TABLE bookingtrans ADD COLUMN IF NOT EXISTS pickup_address VARCHAR(255) NULL",
+                "ALTER TABLE bookingtrans ADD COLUMN IF NOT EXISTS dropoff_latitude DOUBLE NULL",
+                "ALTER TABLE bookingtrans ADD COLUMN IF NOT EXISTS dropoff_longitude DOUBLE NULL",
+                "ALTER TABLE bookingtrans ADD COLUMN IF NOT EXISTS dropoff_address VARCHAR(255) NULL"
+        };
+        try (Statement st = conx.createStatement()) {
+            for (String sql : ddl) {
+                st.execute(sql);
+            }
+        } catch (SQLException e) {
+            System.out.println("Schema migration warning: " + e.getMessage());
+        }
+    }
+
+    private void setNullableDouble(PreparedStatement ps, int index, Double value) throws SQLException {
+        if (value == null) ps.setNull(index, Types.DOUBLE);
+        else ps.setDouble(index, value);
+    }
+
+    private Double getNullableDouble(ResultSet rs, String column) throws SQLException {
+        Object value = rs.getObject(column);
+        if (value == null) return null;
+        return ((Number) value).doubleValue();
     }
 
     // Create
     public String addBookingtrans(Bookingtrans b) {
-        String sql = "INSERT INTO bookingtrans (user_id, transport_id, schedule_id, booking_date, adults_count, children_count, total_seats, total_price, booking_status, payment_status, insurance_included, qr_code, voucher_path, ai_price_prediction, comparison_score, cancellation_reason) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO bookingtrans (user_id, transport_id, schedule_id, booking_date, adults_count, children_count, total_seats, total_price, booking_status, payment_status, insurance_included, qr_code, voucher_path, ai_price_prediction, comparison_score, cancellation_reason, pickup_latitude, pickup_longitude, pickup_address, dropoff_latitude, dropoff_longitude, dropoff_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conx.prepareStatement(sql)) {
             ps.setInt(1, b.getUserId());
             ps.setInt(2, b.getTransportId());
@@ -36,6 +66,12 @@ public class BookingtransService {
             ps.setDouble(14, b.getAiPricePrediction());
             ps.setDouble(15, b.getComparisonScore());
             ps.setString(16, b.getCancellationReason());
+            setNullableDouble(ps, 17, b.getPickupLatitude());
+            setNullableDouble(ps, 18, b.getPickupLongitude());
+            ps.setString(19, b.getPickupAddress());
+            setNullableDouble(ps, 20, b.getDropoffLatitude());
+            setNullableDouble(ps, 21, b.getDropoffLongitude());
+            ps.setString(22, b.getDropoffAddress());
             ps.executeUpdate();
             System.out.println("Booking added successfully!");
         } catch (SQLException e) {
@@ -69,6 +105,12 @@ public class BookingtransService {
                 b.setAiPricePrediction(rs.getDouble("ai_price_prediction"));
                 b.setComparisonScore(rs.getDouble("comparison_score"));
                 b.setCancellationReason(rs.getString("cancellation_reason"));
+                b.setPickupLatitude(getNullableDouble(rs, "pickup_latitude"));
+                b.setPickupLongitude(getNullableDouble(rs, "pickup_longitude"));
+                b.setPickupAddress(rs.getString("pickup_address"));
+                b.setDropoffLatitude(getNullableDouble(rs, "dropoff_latitude"));
+                b.setDropoffLongitude(getNullableDouble(rs, "dropoff_longitude"));
+                b.setDropoffAddress(rs.getString("dropoff_address"));
                 list.add(b);
             }
         } catch (SQLException e) {
@@ -79,7 +121,7 @@ public class BookingtransService {
 
     // Update
     public void updateBookingtrans(Bookingtrans b) {
-        String sql = "UPDATE bookingtrans SET user_id=?, transport_id=?, schedule_id=?, booking_date=?, adults_count=?, children_count=?, total_seats=?, total_price=?, booking_status=?, payment_status=?, insurance_included=?, qr_code=?, voucher_path=?, ai_price_prediction=?, comparison_score=?, cancellation_reason=? WHERE booking_id=?";
+        String sql = "UPDATE bookingtrans SET user_id=?, transport_id=?, schedule_id=?, booking_date=?, adults_count=?, children_count=?, total_seats=?, total_price=?, booking_status=?, payment_status=?, insurance_included=?, qr_code=?, voucher_path=?, ai_price_prediction=?, comparison_score=?, cancellation_reason=?, pickup_latitude=?, pickup_longitude=?, pickup_address=?, dropoff_latitude=?, dropoff_longitude=?, dropoff_address=? WHERE booking_id=?";
         try (PreparedStatement ps = conx.prepareStatement(sql)) {
             ps.setInt(1, b.getUserId());
             ps.setInt(2, b.getTransportId());
@@ -98,7 +140,13 @@ public class BookingtransService {
             ps.setDouble(14, b.getAiPricePrediction());
             ps.setDouble(15, b.getComparisonScore());
             ps.setString(16, b.getCancellationReason());
-            ps.setInt(17, b.getBookingId());
+            setNullableDouble(ps, 17, b.getPickupLatitude());
+            setNullableDouble(ps, 18, b.getPickupLongitude());
+            ps.setString(19, b.getPickupAddress());
+            setNullableDouble(ps, 20, b.getDropoffLatitude());
+            setNullableDouble(ps, 21, b.getDropoffLongitude());
+            ps.setString(22, b.getDropoffAddress());
+            ps.setInt(23, b.getBookingId());
             ps.executeUpdate();
             System.out.println("Booking updated successfully!");
         } catch (SQLException e) {
@@ -141,6 +189,12 @@ public class BookingtransService {
                 b.setVoucherPath(rs.getString("voucher_path"));
                 b.setAiPricePrediction(rs.getDouble("ai_price_prediction"));
                 b.setComparisonScore(rs.getDouble("comparison_score"));
+                b.setPickupLatitude(getNullableDouble(rs, "pickup_latitude"));
+                b.setPickupLongitude(getNullableDouble(rs, "pickup_longitude"));
+                b.setPickupAddress(rs.getString("pickup_address"));
+                b.setDropoffLatitude(getNullableDouble(rs, "dropoff_latitude"));
+                b.setDropoffLongitude(getNullableDouble(rs, "dropoff_longitude"));
+                b.setDropoffAddress(rs.getString("dropoff_address"));
 
                 Timestamp bookingDate = rs.getTimestamp("booking_date");
                 if (bookingDate != null)

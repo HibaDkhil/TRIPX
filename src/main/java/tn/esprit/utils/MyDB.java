@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MyDatabase {
+public class MyDB {
 
     private final String URL ="jdbc:mysql://127.0.0.1:3306/tripx_db";
     private final String USERNAME ="root";
@@ -12,20 +12,20 @@ public class MyDatabase {
 
     private Connection conx;
 
-    public static MyDatabase instance;
+    public static MyDB instance;
 
-    private MyDatabase(){
+    private MyDB(){
         try {
             conx = DriverManager.getConnection(URL,USERNAME,PWD);
-            System.out.println("Connexion établie!");
+            System.out.println("Connexion etablie!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public static MyDatabase getInstance(){
+    public static MyDB getInstance(){
         if (instance == null){
-            instance = new MyDatabase();
+            instance = new MyDB();
         }
         return instance;
 

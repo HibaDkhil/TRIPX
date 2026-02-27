@@ -1,7 +1,7 @@
 package tn.esprit.services;
 
 import tn.esprit.entities.Transport;
-import tn.esprit.utils.MyDatabase;
+import tn.esprit.utils.MyDB;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ public class TransportService {
     private Connection conx;
 
     public TransportService() {
-        conx = MyDatabase.getInstance().getConx();
+        conx = MyDB.getInstance().getConx();
     }
 
     // Create

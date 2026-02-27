@@ -7,22 +7,37 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.concurrent.Worker;
+import javafx.application.Platform;
+import netscape.javascript.JSObject;
 import tn.esprit.entities.Bookingtrans;
 import tn.esprit.entities.Schedule;
 import tn.esprit.entities.Transport;
 import tn.esprit.services.BookingtransService;
+import tn.esprit.services.TransportOptimalRouteService;
 import tn.esprit.services.ScheduleService;
 import tn.esprit.services.TransportService;
-import tn.esprit.utils.MyDatabase;
+import tn.esprit.utils.MyDB;
 
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TransportUserInterfaceController {
 
@@ -35,12 +50,53 @@ public class TransportUserInterfaceController {
     private final TransportService    transportService = new TransportService();
     private final ScheduleService     scheduleService  = new ScheduleService();
     private final BookingtransService bookingService   = new BookingtransService();
+    private final TransportOptimalRouteService transportRouteService = new TransportOptimalRouteService();
 
     private int currentUserId = 1;
     private Map<Long, String> destinationNames = null;
 
     private static final DateTimeFormatter DT_FMT  = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("dd MMM yyyy");
+    private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(8))
+            .build();
+    private static final Pattern DISPLAY_NAME_PATTERN = Pattern.compile("\"display_name\"\\s*:\\s*\"(.*?)\"");
+    private static final String TRANSPORT_MAP_PICK_EVENT_PREFIX = "TRIPX_TRANSPORT_PICK:";
+    private static final String TRANSPORT_VEHICLE_PICKER_HTML =
+            "<!doctype html><html><head><meta charset='utf-8'/>"
+                    + "<meta name='viewport' content='width=device-width, initial-scale=1'/>"
+                    + "<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css'/>"
+                    + "<style>"
+                    + "html,body{height:100%;margin:0;background:#f0f0f0;overflow:hidden;}"
+                    + "#map{position:absolute;inset:0;}"
+                    + "#hint{position:absolute;z-index:9999;top:10px;left:10px;background:#1f294c;color:#fff;"
+                    + "padding:8px 10px;border-radius:6px;font:12px sans-serif;max-width:340px;}"
+                    + "</style>"
+                    + "</head><body>"
+                    + "<div id='hint'>Single click: select point | Double click: zoom + select | Mouse wheel: zoom | Drag: pan</div>"
+                    + "<div id='map'></div>"
+                    + "<script>window.L_DISABLE_3D=true;</script>"
+                    + "<script src='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js'></script>"
+                    + "<script>"
+                    + "L.Map.mergeOptions({zoomAnimation:false,fadeAnimation:false,markerZoomAnimation:false});"
+                    + "var map=L.map('map',{center:[36.8065,10.1815],zoom:12,zoomControl:true,doubleClickZoom:true,"
+                    + "scrollWheelZoom:true,dragging:true,boxZoom:true,keyboard:true,preferCanvas:true});"
+                    + "L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',"
+                    + "{maxZoom:19,minZoom:2,updateWhenIdle:true,keepBuffer:3,attribution:'&copy; OpenStreetMap'}).addTo(map);"
+                    + "var marker=null;"
+                    + "function notifyJava(lat,lng){"
+                    + "alert('" + TRANSPORT_MAP_PICK_EVENT_PREFIX + "'+lat+','+lng);"
+                    + "if(window.javaBridge&&window.javaBridge.onPointSelected){"
+                    + "window.javaBridge.onPointSelected(String(lat),String(lng));}}"
+                    + "function selectPoint(latlng){"
+                    + "if(marker){marker.setLatLng(latlng);}else{marker=L.marker(latlng,{keyboard:false}).addTo(map);}notifyJava(latlng.lat,latlng.lng);}"
+                    + "map.on('click',function(e){selectPoint(e.latlng);});"
+                    + "map.on('dblclick',function(e){selectPoint(e.latlng); map.zoomIn();});"
+                    + "setTimeout(function(){map.invalidateSize(true);},180);"
+                    + "window.addEventListener('resize',function(){map.invalidateSize(false);});"
+                    + "window.map=map;"
+                    + "</script>"
+                    + "</body></html>";
 
     /* ═══════════ STYLES ═══════════ */
     private static final String TAB_ACTIVE =
@@ -113,7 +169,7 @@ public class TransportUserInterfaceController {
         if (destinationNames != null) return destinationNames;
         destinationNames = new LinkedHashMap<>();
         try {
-            Connection con = MyDatabase.getInstance().getConx();
+            Connection con = MyDB.getInstance().getConx();
             // ↓↓↓  UPDATE THESE 3 IDENTIFIERS WHEN YOUR TEAMMATE'S TABLE IS READY  ↓↓↓
             String sql = "SELECT id, name FROM destinations ORDER BY name";
             // Example after update:  "SELECT destination_id, destination_name FROM destinations ORDER BY destination_name"
@@ -384,12 +440,6 @@ public class TransportUserInterfaceController {
         DatePicker startDp = dp("Rental start (optional)");
         DatePicker endDp   = dp("Rental end (optional)");
 
-        Label mapNote = new Label(
-                "Pickup & Drop-off map selection coming soon\n(Map API integration pending)");
-        mapNote.setStyle("-fx-text-fill:#888;-fx-font-size:11px;-fx-font-style:italic;" +
-                "-fx-background-color:#F1EAE7;-fx-padding:8 12 8 12;-fx-background-radius:5;");
-        mapNote.setWrapText(true);
-
         Label errLbl = errLabel();
         Button searchBtn = mkBtn("Search Vehicles", BTN_TEAL);
         Button clearBtn  = mkBtn("Clear",           BTN_DARK);
@@ -449,7 +499,6 @@ public class TransportUserInterfaceController {
         g.addRow(r++, fl("Your Location"),  placeBox);
         g.addRow(r++, fl("Rental Start"),   startDp);
         g.addRow(r++, fl("Rental End"),     endDp);
-        g.addRow(r++, fl("Pickup/Drop-off"),mapNote);
 
         HBox btnRow = new HBox(10, searchBtn, clearBtn); btnRow.setAlignment(Pos.CENTER_LEFT);
         VBox p = new VBox(10, hdr, g, btnRow, errLbl);
@@ -1000,9 +1049,19 @@ public class TransportUserInterfaceController {
         g.addRow(r++, fl("Booking Status"), dv(b.getBookingStatus()));
         g.addRow(r++, fl("Payment"),        dv(b.getPaymentStatus()));
         g.addRow(r++, fl("Insurance"),      dv(b.isInsuranceIncluded() ? "Yes (+25 EUR/seat)" : "No"));
-        if (b.getCancellationReason()!=null && !b.getCancellationReason().isEmpty())
-            g.addRow(r++, fl("Cancellation"), dv(b.getCancellationReason()));
-        if (b.getQrCode()!=null) g.addRow(r++, fl("QR Code"), dv(b.getQrCode()));
+        if ("VEHICLE".equals(ttype)) {
+            String pickupCoords = b.getPickupLatitude() != null && b.getPickupLongitude() != null
+                    ? String.format("%.6f, %.6f", b.getPickupLatitude(), b.getPickupLongitude())
+                    : "-";
+            String dropoffCoords = b.getDropoffLatitude() != null && b.getDropoffLongitude() != null
+                    ? String.format("%.6f, %.6f", b.getDropoffLatitude(), b.getDropoffLongitude())
+                    : "-";
+            g.addRow(r++, fl("Pickup Coords"), dv(pickupCoords));
+            g.addRow(r++, fl("Pickup Address"), dv(b.getPickupAddress() != null ? b.getPickupAddress() : "-"));
+            g.addRow(r++, fl("Drop-off Coords"), dv(dropoffCoords));
+            g.addRow(r++, fl("Drop-off Address"), dv(b.getDropoffAddress() != null ? b.getDropoffAddress() : "-"));
+        }
+        // Cancellation reason and QR code intentionally hidden in booking details popup.
 
         Button cb = mkBtn("Close", BTN_DARK); cb.setOnAction(e -> popup.close());
         HBox br = new HBox(cb); br.setAlignment(Pos.CENTER_RIGHT); br.setPadding(new Insets(10,0,0,0));
@@ -1202,6 +1261,96 @@ public class TransportUserInterfaceController {
         prev.setStyle("-fx-text-fill:#1F294C;-fx-font-weight:bold;-fx-font-size:13px;" +
                 "-fx-background-color:white;-fx-padding:10 14 10 14;-fx-background-radius:5;");
 
+        TextField pickupLatField = new TextField();
+        pickupLatField.setPromptText("e.g. 36.8065");
+        pickupLatField.setStyle(FORM_FIELD);
+        pickupLatField.setMaxWidth(Double.MAX_VALUE);
+
+        TextField pickupLonField = new TextField();
+        pickupLonField.setPromptText("e.g. 10.1815");
+        pickupLonField.setStyle(FORM_FIELD);
+        pickupLonField.setMaxWidth(Double.MAX_VALUE);
+
+        Label pickupAddressLbl = new Label("Address not resolved yet.");
+        pickupAddressLbl.setWrapText(true);
+        pickupAddressLbl.setStyle("-fx-text-fill:#666;-fx-font-size:11px;");
+
+        Button pickupReverseBtn = mkBtn("Resolve Pickup Address", BTN_DARK);
+        pickupReverseBtn.setOnAction(ev -> {
+            Double lat = parseTransportCoordinate(pickupLatField.getText(), true);
+            Double lon = parseTransportCoordinate(pickupLonField.getText(), false);
+            if (lat == null || lon == null) {
+                showAlert("Pickup coordinates are invalid.\nLatitude must be between -90 and 90.\nLongitude must be between -180 and 180.");
+                return;
+            }
+            String addr = reverseGeocodeWithTransportOpenStreetMap(lat, lon);
+            if (addr == null || addr.isBlank()) {
+                showAlert("Could not resolve pickup address from OpenStreetMap.");
+                return;
+            }
+            pickupAddressLbl.setText(addr);
+        });
+        Button pickupMapBtn = mkBtn("Pick on Map", BTN_TEAL);
+        pickupMapBtn.setOnAction(ev -> openTransportMapPicker(pickupLatField, pickupLonField, pickupAddressLbl));
+
+        TextField dropoffLatField = new TextField();
+        dropoffLatField.setPromptText("e.g. 36.8999");
+        dropoffLatField.setStyle(FORM_FIELD);
+        dropoffLatField.setMaxWidth(Double.MAX_VALUE);
+
+        TextField dropoffLonField = new TextField();
+        dropoffLonField.setPromptText("e.g. 10.1890");
+        dropoffLonField.setStyle(FORM_FIELD);
+        dropoffLonField.setMaxWidth(Double.MAX_VALUE);
+
+        Label dropoffAddressLbl = new Label("Address not resolved yet.");
+        dropoffAddressLbl.setWrapText(true);
+        dropoffAddressLbl.setStyle("-fx-text-fill:#666;-fx-font-size:11px;");
+
+        Button dropoffReverseBtn = mkBtn("Resolve Drop-off Address", BTN_DARK);
+        dropoffReverseBtn.setOnAction(ev -> {
+            Double lat = parseTransportCoordinate(dropoffLatField.getText(), true);
+            Double lon = parseTransportCoordinate(dropoffLonField.getText(), false);
+            if (lat == null || lon == null) {
+                showAlert("Drop-off coordinates are invalid.\nLatitude must be between -90 and 90.\nLongitude must be between -180 and 180.");
+                return;
+            }
+            String addr = reverseGeocodeWithTransportOpenStreetMap(lat, lon);
+            if (addr == null || addr.isBlank()) {
+                showAlert("Could not resolve drop-off address from OpenStreetMap.");
+                return;
+            }
+            dropoffAddressLbl.setText(addr);
+        });
+        Button dropoffMapBtn = mkBtn("Pick on Map", BTN_TEAL);
+        dropoffMapBtn.setOnAction(ev -> openTransportMapPicker(dropoffLatField, dropoffLonField, dropoffAddressLbl));
+        Button routeAiBtn = mkBtn("Find Optimal Route (AI)", BTN_DARK);
+        routeAiBtn.setOnAction(ev -> {
+            Double pickupLat = parseTransportCoordinate(pickupLatField.getText(), true);
+            Double pickupLon = parseTransportCoordinate(pickupLonField.getText(), false);
+            Double dropoffLat = parseTransportCoordinate(dropoffLatField.getText(), true);
+            Double dropoffLon = parseTransportCoordinate(dropoffLonField.getText(), false);
+            if (pickupLat == null || pickupLon == null || dropoffLat == null || dropoffLon == null) {
+                showAlert("Enter valid pickup/drop-off coordinates first.");
+                return;
+            }
+            routeAiBtn.setDisable(true);
+            routeAiBtn.setText("Analyzing...");
+            try {
+                showTransportOptimalRoutePopup(
+                        pickupLat, pickupLon, dropoffLat, dropoffLon,
+                        pickupAddressLbl.getText(), dropoffAddressLbl.getText(), popup
+                );
+            } catch (Exception ex) {
+                showAlert("Route assistant failed to start:\n" + ex.getClass().getSimpleName() + " - " + ex.getMessage());
+            } finally {
+                Platform.runLater(() -> {
+                    routeAiBtn.setDisable(false);
+                    routeAiBtn.setText("Find Optimal Route (AI)");
+                });
+            }
+        });
+
         // FIX: price updater uses fresh references only — no stale closures
         Runnable upd = () -> {
             int    seats = adSpin.getValue() + chSpin.getValue();
@@ -1229,6 +1378,19 @@ public class TransportUserInterfaceController {
         g.addRow(r++, fl("Adults"),          adSpin);
         g.addRow(r++, fl("Children (0-11)"), chSpin);
         g.addRow(r++, fl("Insurance"),       ins);
+        if (!fl) {
+            Label geoHint = new Label("Vehicle booking: choose pickup/drop-off coordinates, then resolve address with OpenStreetMap.");
+            geoHint.setWrapText(true);
+            geoHint.setStyle("-fx-text-fill:#666;-fx-font-size:11px;-fx-font-style:italic;");
+            g.addRow(r++, fl("Location Capture"), geoHint);
+            g.addRow(r++, fl("Pickup Latitude"), pickupLatField);
+            g.addRow(r++, fl("Pickup Longitude"), pickupLonField);
+            g.addRow(r++, fl("Pickup Address"), new VBox(6, new HBox(8, pickupMapBtn, pickupReverseBtn), pickupAddressLbl));
+            g.addRow(r++, fl("Drop-off Latitude"), dropoffLatField);
+            g.addRow(r++, fl("Drop-off Longitude"), dropoffLonField);
+            g.addRow(r++, fl("Drop-off Address"), new VBox(6, new HBox(8, dropoffMapBtn, dropoffReverseBtn), dropoffAddressLbl));
+            g.addRow(r++, fl("Route Assistant"), routeAiBtn);
+        }
         g.addRow(r++, fl("Price Estimate"),  prev);
 
         Button conf = mkBtn("Confirm Booking", BTN_TEAL);
@@ -1262,6 +1424,32 @@ public class TransportUserInterfaceController {
                 double insV  = ins.isSelected() ? 25.0 * seats : 0;
                 double total = basePrice * schedMult * cm * seats + insV;
 
+                Double pickupLat = null;
+                Double pickupLon = null;
+                Double dropoffLat = null;
+                Double dropoffLon = null;
+                String pickupAddress = null;
+                String dropoffAddress = null;
+
+                if (!fl) {
+                    pickupLat = parseTransportCoordinate(pickupLatField.getText(), true);
+                    pickupLon = parseTransportCoordinate(pickupLonField.getText(), false);
+                    dropoffLat = parseTransportCoordinate(dropoffLatField.getText(), true);
+                    dropoffLon = parseTransportCoordinate(dropoffLonField.getText(), false);
+
+                    if (pickupLat == null || pickupLon == null || dropoffLat == null || dropoffLon == null) {
+                        showAlert("Please provide valid pickup and drop-off coordinates for vehicle booking.");
+                        return;
+                    }
+
+                    pickupAddress = reverseGeocodeWithTransportOpenStreetMap(pickupLat, pickupLon);
+                    dropoffAddress = reverseGeocodeWithTransportOpenStreetMap(dropoffLat, dropoffLon);
+                    if (pickupAddress == null || dropoffAddress == null) {
+                        showAlert("Could not resolve pickup/drop-off addresses from OpenStreetMap. Please retry.");
+                        return;
+                    }
+                }
+
                 Bookingtrans bk = new Bookingtrans();
                 bk.setUserId(currentUserId);
                 bk.setTransportId(preTransId);
@@ -1274,6 +1462,12 @@ public class TransportUserInterfaceController {
                 bk.setInsuranceIncluded(ins.isSelected());
                 bk.setBookingDate(LocalDateTime.now());
                 bk.setTotalPrice(total);
+                bk.setPickupLatitude(pickupLat);
+                bk.setPickupLongitude(pickupLon);
+                bk.setPickupAddress(pickupAddress);
+                bk.setDropoffLatitude(dropoffLat);
+                bk.setDropoffLongitude(dropoffLon);
+                bk.setDropoffAddress(dropoffAddress);
                 bookingService.addBookingtrans(bk);
                 popup.close();
 
@@ -1286,7 +1480,9 @@ public class TransportUserInterfaceController {
                                 "Class:         " + clsBox.getValue() + "\n" +
                                 "Seats:         " + seats + "  (" + adults + " adults, " + children + " children)\n" +
                                 "Insurance:     " + (ins.isSelected() ? "Yes (+25 EUR x " + seats + " seats)" : "No") + "\n" +
-                                "Total:         " + String.format("%.2f EUR", total) + "\n\n" +
+                                "Total:         " + String.format("%.2f EUR", total) +
+                                (!fl ? "\nPickup:       " + pickupAddress + "\nDrop-off:     " + dropoffAddress : "") +
+                                "\n\n" +
                                 "Status:  PENDING  -  awaiting admin confirmation";
 
                 showSuccess(successMsg);
@@ -1299,9 +1495,15 @@ public class TransportUserInterfaceController {
         HBox br = new HBox(12, conf, canc);
         br.setAlignment(Pos.CENTER_RIGHT); br.setPadding(new Insets(10,0,0,0));
 
-        VBox content = new VBox(12, banner, typeInfoLbl, g, br);
+        ScrollPane formScroll = new ScrollPane(g);
+        formScroll.setFitToWidth(true);
+        formScroll.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+        formScroll.setPrefViewportHeight(fl ? 220 : 430);
+        VBox.setVgrow(formScroll, Priority.ALWAYS);
+
+        VBox content = new VBox(12, banner, typeInfoLbl, formScroll, br);
         content.setPadding(new Insets(20)); content.setStyle("-fx-background-color:#F1EAE7;");
-        popup.setScene(new Scene(new VBox(hb, content), 510, 460));
+        popup.setScene(new Scene(new VBox(hb, content), 620, fl ? 470 : 730));
         popup.show();   // use show() instead of showAndWait() to avoid nested-modal blocking
     }
 
@@ -1374,6 +1576,175 @@ public class TransportUserInterfaceController {
             if (e.getValue().equals(val)) return e.getKey();
         try { return Long.parseLong(val.replace("Destination #","").trim()); }
         catch (NumberFormatException ex) { return null; }
+    }
+
+    private Double parseTransportCoordinate(String text, boolean latitude) {
+        if (text == null || text.isBlank()) return null;
+        try {
+            double value = Double.parseDouble(text.trim());
+            if (latitude && (value < -90 || value > 90)) return null;
+            if (!latitude && (value < -180 || value > 180)) return null;
+            return value;
+        } catch (NumberFormatException ex) {
+            return null;
+        }
+    }
+
+    private String reverseGeocodeWithTransportOpenStreetMap(Double lat, Double lon) {
+        try {
+            String url = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat="
+                    + URLEncoder.encode(String.valueOf(lat), StandardCharsets.UTF_8)
+                    + "&lon="
+                    + URLEncoder.encode(String.valueOf(lon), StandardCharsets.UTF_8)
+                    + "&zoom=18&addressdetails=1";
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .timeout(Duration.ofSeconds(10))
+                    .header("User-Agent", "tripx-javafx/1.0")
+                    .header("Accept", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() < 200 || response.statusCode() >= 300) return null;
+
+            Matcher matcher = DISPLAY_NAME_PATTERN.matcher(response.body());
+            if (!matcher.find()) return null;
+            return matcher.group(1)
+                    .replace("\\\"", "\"")
+                    .replace("\\\\", "\\");
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    private void openTransportMapPicker(TextField latField, TextField lonField, Label addressLabel) {
+        Stage picker = new Stage();
+        picker.initModality(Modality.APPLICATION_MODAL);
+        picker.initOwner(contentArea.getScene().getWindow());
+        picker.setTitle("OpenStreetMap Picker");
+        picker.setResizable(true);
+
+        WebView webView = new WebView();
+        webView.setPrefSize(760, 520);
+        WebEngine engine = webView.getEngine();
+        engine.setJavaScriptEnabled(true);
+        engine.setOnAlert(event -> {
+            String msg = event.getData();
+            if (msg == null || !msg.startsWith(TRANSPORT_MAP_PICK_EVENT_PREFIX)) return;
+            String payload = msg.substring(TRANSPORT_MAP_PICK_EVENT_PREFIX.length());
+            String[] parts = payload.split(",", 2);
+            if (parts.length != 2) return;
+            Platform.runLater(() -> {
+                latField.setText(parts[0]);
+                lonField.setText(parts[1]);
+                Double parsedLat = parseTransportCoordinate(parts[0], true);
+                Double parsedLon = parseTransportCoordinate(parts[1], false);
+                if (parsedLat != null && parsedLon != null) {
+                    String addr = reverseGeocodeWithTransportOpenStreetMap(parsedLat, parsedLon);
+                    if (addr != null && !addr.isBlank()) addressLabel.setText(addr);
+                }
+                if (picker.isShowing()) picker.close();
+            });
+        });
+
+        engine.getLoadWorker().stateProperty().addListener((obs, old, state) -> {
+            if (state == Worker.State.SUCCEEDED) {
+                try {
+                    JSObject window = (JSObject) engine.executeScript("window");
+                    window.setMember("javaBridge", new Object() {
+                        public void onPointSelected(String lat, String lon) {
+                            Platform.runLater(() -> {
+                                latField.setText(lat);
+                                lonField.setText(lon);
+                                Double parsedLat = parseTransportCoordinate(lat, true);
+                                Double parsedLon = parseTransportCoordinate(lon, false);
+                                if (parsedLat != null && parsedLon != null) {
+                                    String addr = reverseGeocodeWithTransportOpenStreetMap(parsedLat, parsedLon);
+                                    if (addr != null && !addr.isBlank()) addressLabel.setText(addr);
+                                }
+                            });
+                        }
+                    });
+                    engine.executeScript("if(window.map){window.map.invalidateSize(true);}");
+                } catch (Exception ex) {
+                    showAlert("Map initialization failed. Please reopen map picker.");
+                }
+            }
+        });
+
+        engine.loadContent(TRANSPORT_VEHICLE_PICKER_HTML);
+
+        Button closeBtn = mkBtn("Done", BTN_DARK);
+        closeBtn.setOnAction(e -> picker.close());
+        HBox closeRow = new HBox(closeBtn);
+        closeRow.setAlignment(Pos.CENTER_RIGHT);
+        VBox root = new VBox(8, webView, closeRow);
+        root.setPadding(new Insets(10));
+        picker.setScene(new Scene(root, 780, 580));
+        picker.showAndWait();
+    }
+
+    private void showTransportOptimalRoutePopup(
+            double pickupLat, double pickupLon, double dropoffLat, double dropoffLon,
+            String pickupAddress, String dropoffAddress, Stage ownerStage
+    ) {
+        Stage popup = new Stage();
+        // Keep this popup independent from nested modal ownership issues.
+        popup.initModality(Modality.NONE);
+        popup.setTitle("AI Route Assistant");
+        popup.setResizable(true);
+
+        Label title = new Label("Optimal Route Recommendation");
+        title.setStyle("-fx-font-size:16px;-fx-font-weight:bold;-fx-text-fill:#1F294C;");
+
+        ProgressIndicator loading = new ProgressIndicator();
+        loading.setPrefSize(42, 42);
+
+        Label status = new Label("Analyzing route with routing engine + Groq AI...");
+        status.setStyle("-fx-text-fill:#666;-fx-font-size:12px;");
+
+        TextArea output = new TextArea();
+        output.setEditable(false);
+        output.setWrapText(true);
+        output.setPrefRowCount(14);
+        output.setStyle("-fx-font-size:12px;");
+        output.setText("Please wait...");
+
+        Button closeBtn = mkBtn("Close", BTN_DARK);
+        closeBtn.setOnAction(e -> popup.close());
+        HBox closeRow = new HBox(closeBtn);
+        closeRow.setAlignment(Pos.CENTER_RIGHT);
+
+        VBox root = new VBox(12, title, loading, status, output, closeRow);
+        root.setPadding(new Insets(16));
+        root.setStyle("-fx-background-color:#F1EAE7;");
+
+        popup.setScene(new Scene(root, 560, 520));
+        popup.show();
+        popup.toFront();
+        popup.requestFocus();
+
+        Thread worker = new Thread(() -> {
+            String report;
+            try {
+                report = transportRouteService.generateTransportOptimalRouteReport(
+                        pickupLat, pickupLon, dropoffLat, dropoffLon, pickupAddress, dropoffAddress
+                );
+            } catch (Exception ex) {
+                report = "AI route analysis failed: " + ex.getMessage();
+            }
+            String finalReport = report;
+            Platform.runLater(() -> {
+                loading.setVisible(false);
+                loading.setManaged(false);
+                status.setText("Recommendation ready.");
+                output.setText(finalReport);
+            });
+        });
+        worker.setDaemon(true);
+        worker.start();
     }
 
     private void showAlert(String msg) {

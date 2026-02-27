@@ -20,6 +20,12 @@ public class Bookingtrans {
     private double aiPricePrediction;
     private double comparisonScore;
     private String cancellationReason;
+    private Double pickupLatitude;
+    private Double pickupLongitude;
+    private String pickupAddress;
+    private Double dropoffLatitude;
+    private Double dropoffLongitude;
+    private String dropoffAddress;
 
     // Default constructor
     public Bookingtrans() {
@@ -180,6 +186,54 @@ public class Bookingtrans {
         this.cancellationReason = cancellationReason;
     }
 
+    public Double getPickupLatitude() {
+        return pickupLatitude;
+    }
+
+    public void setPickupLatitude(Double pickupLatitude) {
+        this.pickupLatitude = pickupLatitude;
+    }
+
+    public Double getPickupLongitude() {
+        return pickupLongitude;
+    }
+
+    public void setPickupLongitude(Double pickupLongitude) {
+        this.pickupLongitude = pickupLongitude;
+    }
+
+    public String getPickupAddress() {
+        return pickupAddress;
+    }
+
+    public void setPickupAddress(String pickupAddress) {
+        this.pickupAddress = pickupAddress;
+    }
+
+    public Double getDropoffLatitude() {
+        return dropoffLatitude;
+    }
+
+    public void setDropoffLatitude(Double dropoffLatitude) {
+        this.dropoffLatitude = dropoffLatitude;
+    }
+
+    public Double getDropoffLongitude() {
+        return dropoffLongitude;
+    }
+
+    public void setDropoffLongitude(Double dropoffLongitude) {
+        this.dropoffLongitude = dropoffLongitude;
+    }
+
+    public String getDropoffAddress() {
+        return dropoffAddress;
+    }
+
+    public void setDropoffAddress(String dropoffAddress) {
+        this.dropoffAddress = dropoffAddress;
+    }
+
     @Override
     public String toString() {
         return "Booking{" +
@@ -200,6 +254,12 @@ public class Bookingtrans {
                 ", aiPricePrediction=" + aiPricePrediction +
                 ", comparisonScore=" + comparisonScore +
                 ", cancellationReason='" + cancellationReason + '\'' +
+                ", pickupLatitude=" + pickupLatitude +
+                ", pickupLongitude=" + pickupLongitude +
+                ", pickupAddress='" + pickupAddress + '\'' +
+                ", dropoffLatitude=" + dropoffLatitude +
+                ", dropoffLongitude=" + dropoffLongitude +
+                ", dropoffAddress='" + dropoffAddress + '\'' +
                 '}';
     }
 }

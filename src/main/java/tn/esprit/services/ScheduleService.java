@@ -1,7 +1,7 @@
 package tn.esprit.services;
 
 import tn.esprit.entities.Schedule;
-import tn.esprit.utils.MyDatabase;
+import tn.esprit.utils.MyDB;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -13,7 +13,7 @@ public class ScheduleService {
     private Connection conx;
 
     public ScheduleService() {
-        conx = MyDatabase.getInstance().getConx();
+        conx = MyDB.getInstance().getConx();
     }
 
     // ── helper: null-safe Timestamp setter ──
