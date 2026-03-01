@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.controllers.user.UserPackDetailsController"
+      spacing="24" style="-fx-background-color: #F5F7FA;">
+    
+    <padding>
+        <Insets top="24" right="24" bottom="24" left="24"/>
+    </padding>
+
+    <!-- Back Button -->
+    <Button fx:id="btnBack" text="← Back to Packs" 
+            style="-fx-background-color: transparent; -fx-text-fill: #49769F; -fx-font-weight: 600; -fx-cursor: hand; -fx-underline: true;"/>
+
+    <!-- Main Content -->
+    <HBox spacing="24" VBox.vgrow="ALWAYS">
+        
+        <!-- Left: Pack Details -->
+        <VBox spacing="20" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 16; -fx-padding: 32; -fx-border-color: #E8EAF6; -fx-border-radius: 16;">
+            
+            <Label fx:id="lblTitle" text="Pack Title" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #063154;"/>
+            
+            <HBox spacing="12">
+                <Label text="📍" style="-fx-font-size: 18px;"/>
+                <Label fx:id="lblDestination" text="Destination" style="-fx-font-size: 16px; -fx-text-fill: #49769F;"/>
+                <Separator orientation="VERTICAL"/>
+                <Label text="📅" style="-fx-font-size: 18px;"/>
+                <Label fx:id="lblDuration" text="X days" style="-fx-font-size: 16px; -fx-text-fill: #49769F;"/>
+                <Separator orientation="VERTICAL"/>
+                <Label text="🏷️" style="-fx-font-size: 18px;"/>
+                <Label fx:id="lblCategory" text="Category" style="-fx-font-size: 16px; -fx-text-fill: #49769F;"/>
+            </HBox>
+            
+            <Separator/>
+            
+            <Label text="Description" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #063154;"/>
+            <Label fx:id="lblDescription" text="Pack description will appear here..." 
+                   wrapText="true" style="-fx-font-size: 14px; -fx-text-fill: #64748B; -fx-line-spacing: 1.5em;"/>
+            
+            <Separator/>
+            
+            <Label text="Includes" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #063154;"/>
+            <VBox spacing="8">
+                <HBox spacing="8">
+                    <Label text="🏨" style="-fx-font-size: 16px;"/>
+                    <Label fx:id="lblAccommodation" text="Accommodation" style="-fx-font-size: 14px; -fx-text-fill: #64748B;"/>
+                </HBox>
+                <HBox spacing="8">
+                    <Label text="🎯" style="-fx-font-size: 16px;"/>
+                    <Label fx:id="lblActivity" text="Activity" style="-fx-font-size: 14px; -fx-text-fill: #64748B;"/>
+                </HBox>
+                <HBox spacing="8">
+                    <Label text="🚗" style="-fx-font-size: 16px;"/>
+                    <Label fx:id="lblTransport" text="Transport" style="-fx-font-size: 14px; -fx-text-fill: #64748B;"/>
+                </HBox>
+            </VBox>
+        </VBox>
+        
+        <!-- Right: Pricing & Booking -->
+        <VBox spacing="20" prefWidth="350" style="-fx-background-color: white; -fx-background-radius: 16; -fx-padding: 32; -fx-border-color: #E8EAF6; -fx-border-radius: 16;">
+            
+            <Label text="Pricing" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #063154;"/>
+            
+            <VBox spacing="12" style="-fx-background-color: #F5F7FA; -fx-background-radius: 12; -fx-padding: 16;">
+                <HBox alignment="CENTER_LEFT" spacing="8">
+                    <Label text="Base Price:" style="-fx-font-size: 14px; -fx-text-fill: #64748B;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblBasePrice" text="0.00 TND" style="-fx-font-size: 14px; -fx-text-fill: #64748B; -fx-strikethrough: true;"/>
+                </HBox>
+                
+                <HBox alignment="CENTER_LEFT" spacing="8" fx:id="offerRow" visible="false" managed="false">
+                    <Label text="Offer Discount:" style="-fx-font-size: 14px; -fx-text-fill: #2F9D94; -fx-font-weight: 600;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblOfferDiscount" text="-0%" style="-fx-font-size: 14px; -fx-text-fill: #2F9D94; -fx-font-weight: 600;"/>
+                </HBox>
+                
+                <HBox alignment="CENTER_LEFT" spacing="8">
+                    <Label text="Your Loyalty Discount:" style="-fx-font-size: 14px; -fx-text-fill: #FFD700; -fx-font-weight: 600;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblLoyaltyDiscount" text="-0%" style="-fx-font-size: 14px; -fx-text-fill: #FFD700; -fx-font-weight: 600;"/>
+                </HBox>
+                
+                <Separator/>
+                
+                <HBox alignment="CENTER_LEFT" spacing="8">
+                    <Label text="Final Price:" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #063154;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblFinalPrice" text="0.00 TND" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0A4174;"/>
+                </HBox>
+            </VBox>
+            
+            <Button fx:id="btnBook" text="🎫 Book This Pack" 
+                    maxWidth="Infinity"
+                    style="-fx-background-color: linear-gradient(to right, #0A4174, #2F9D94); -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 16; -fx-cursor: hand;"/>
+            
+            <Label fx:id="lblUserLevel" text="🥉 Bronze Member" 
+                   style="-fx-font-size: 12px; -fx-text-fill: #94A3B8; -fx-alignment: center;" maxWidth="Infinity"/>
+        </VBox>
+    </HBox>
+
+</VBox>

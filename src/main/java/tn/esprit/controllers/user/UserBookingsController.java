@@ -1,398 +1,376 @@
 package tn.esprit.controllers.user;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.ButtonType; // Correct import
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import tn.esprit.entities.Booking;
-import tn.esprit.entities.User;
-import tn.esprit.services.BookingService;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import tn.esprit.entities.*;
+import tn.esprit.services.*;
 import tn.esprit.utils.SessionManager;
-import tn.esprit.utils.ThemeManager;
 
-import java.net.URL;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
-public class UserBookingsController implements Initializable {
+public class UserBookingsController {
 
-    @FXML private ListView<Booking> bookingsList;
-    @FXML private Button backBtn;
-    @FXML private Button refreshBtn; // Added
-    @FXML private Button themeBtn;
-    @FXML private Label statusLabel;
+    // Top bar
+    @FXML private Label avatarInitials;
+    @FXML private Label userNameLabel;
 
-    private BookingService bookingService;
-    private tn.esprit.services.DestinationService destinationService; // Added
-    private ObservableList<Booking> myBookings;
+    // Count / refresh
+    @FXML private Label lblTotalCount;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        bookingService = new BookingService();
-        destinationService = new tn.esprit.services.DestinationService(); // Init
-        myBookings = FXCollections.observableArrayList();
+    // Section grids
+    @FXML private FlowPane gridAccommodations;
+    @FXML private FlowPane gridDestinations;
+    @FXML private FlowPane gridTransport;
+    @FXML private FlowPane gridPacks;
 
-        setupList();
-        loadData();
-        
-        if (backBtn != null) {
-            backBtn.setOnAction(e -> navigateBack());
-        }
-    }
+    // Empty labels
+    @FXML private Label lblNoAccommodations;
+    @FXML private Label lblNoDestinations;
+    @FXML private Label lblNoTransport;
+    @FXML private Label lblNoPacks;
 
-    // Add this field with the other fields
+    // Services
+    private final AccommodationBookingService accomService = new AccommodationBookingService();
+    private final BookingService destService = new BookingService();
+    private final BookingtransService transService = new BookingtransService();
+    private final PackBookingService packService = new PackBookingService();
+    private final RoomService roomService = new RoomService();
+    private final LookupService lookupService = new LookupService();
+
     private User currentUser;
 
-    // Add this method after initialize()
-    public void setCurrentUser(User user) {
-        this.currentUser = user;
-        if (this.currentUser != null && this.currentUser.getUserId() > 0) {
-            SessionManager.setCurrentUserId(this.currentUser.getUserId());
-        }
-        System.out.println("✅ User set in BookingsController: " +
-                (user != null ? user.getEmail() : "null"));
+    // ── Style constants (packs & offers palette) ───────────────────────────────
+    private static final String CARD_STYLE =
+            "-fx-background-color: white; -fx-background-radius: 16; -fx-padding: 20; " +
+            "-fx-border-radius: 16; -fx-min-width: 300; -fx-max-width: 300; " +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 12, 0, 0, 3);";
+
+    private static final String HEADER_ACCOM =
+            "-fx-background-color: linear-gradient(to right, #0A4174, #2F9D94); " +
+            "-fx-background-radius: 10 10 0 0; -fx-padding: 14 16;";
+    private static final String HEADER_DEST =
+            "-fx-background-color: linear-gradient(to right, #1565C0, #42A5F5); " +
+            "-fx-background-radius: 10 10 0 0; -fx-padding: 14 16;";
+    private static final String HEADER_TRANS =
+            "-fx-background-color: linear-gradient(to right, #6D83F2, #4CCCAD); " +
+            "-fx-background-radius: 10 10 0 0; -fx-padding: 14 16;";
+    private static final String HEADER_PACKS =
+            "-fx-background-color: linear-gradient(to right, #E65100, #FF8F00); " +
+            "-fx-background-radius: 10 10 0 0; -fx-padding: 14 16;";
+
+    private static final String BADGE_CONFIRMED =
+            "-fx-background-color: #E8F5E9; -fx-text-fill: #2E7D32; -fx-font-weight: bold; " +
+            "-fx-font-size: 11px; -fx-background-radius: 20; -fx-padding: 4 12;";
+    private static final String ROW_LABEL =
+            "-fx-font-size: 12px; -fx-text-fill: #64748B;";
+    private static final String ROW_VALUE =
+            "-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #063154;";
+    private static final String PRICE_STYLE =
+            "-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0A4174;";
+
+    // ───────────────────────────────────────────────────────────────────────────
+
+    @FXML
+    public void initialize() {
+        loadAllBookings();
     }
 
-    private void setupList() {
-        bookingsList.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(Booking item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                    setGraphic(null);
-                } else {
-                    // ... (Card creation code same as before) ...
-                    // --- Card Container ---
-                    VBox card = new VBox(8);
-                    card.setStyle("-fx-padding: 15; -fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3, 0, 0, 1); -fx-border-color: #eee; -fx-border-radius: 8;");
-                    
-                    if (ThemeManager.isDarkMode()) {
-                        card.setStyle("-fx-padding: 15; -fx-background-color: #363636; -fx-background-radius: 8; -fx-border-color: #444; -fx-border-radius: 8;");
-                    }
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+        if (user != null && user.getUserId() > 0) {
+            SessionManager.setCurrentUserId(user.getUserId());
+        }
+        if (user != null) {
+            if (userNameLabel != null) {
+                userNameLabel.setText(safe(user.getFirstName()) + " " + safe(user.getLastName()));
+            }
+            if (avatarInitials != null) {
+                String f = user.getFirstName() != null && !user.getFirstName().isBlank()
+                        ? user.getFirstName().substring(0, 1).toUpperCase() : "";
+                String l = user.getLastName() != null && !user.getLastName().isBlank()
+                        ? user.getLastName().substring(0, 1).toUpperCase() : "";
+                avatarInitials.setText((f + l).isBlank() ? "U" : (f + l));
+            }
+        }
+        loadAllBookings();
+    }
 
-                    // --- Header: Destination & Cost ---
-                    HBox header = new HBox(10);
-                    header.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                    
-                    Label destLbl = new Label("✈ " + item.getDestinationName());
-                    destLbl.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #2c3e50;");
-                    if (ThemeManager.isDarkMode()) destLbl.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #ecf0f1;");
-                    
-                    Region spacer = new Region();
-                    HBox.setHgrow(spacer, Priority.ALWAYS);
-                    
-                    Label amountLbl = new Label(String.format("$%.2f", item.getTotalAmount()));
-                    amountLbl.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #27ae60;");
+    @FXML
+    private void handleRefresh() {
+        loadAllBookings();
+    }
 
-                    header.getChildren().addAll(destLbl, spacer, amountLbl);
+    // ── Load & render all sections ─────────────────────────────────────────────
 
-                    // --- Details Row ---
-                    HBox details = new HBox(15);
-                    Label refLbl = new Label("Ref: " + item.getBookingReference());
-                    refLbl.setStyle("-fx-font-size: 11px; -fx-text-fill: #95a5a6;");
-                    
-                    Label dateLbl = new Label("📅 " + item.getStartAt().toString().substring(0, 10));
-                    dateLbl.setStyle("-fx-font-size: 12px; -fx-text-fill: #7f8c8d;");
-                    
-                    details.getChildren().addAll(refLbl, dateLbl);
+    private void loadAllBookings() {
+        int uid = SessionManager.getCurrentUserId();
+        int total = 0;
 
-                    // --- Status & Actions Row ---
-                    HBox actions = new HBox(10);
-                    actions.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                    
-                    Label statusLbl = new Label();
-                    statusLbl.setStyle("-fx-font-weight: bold; -fx-padding: 3 8; -fx-background-radius: 4;");
-                    
-                    // Button declarations
-                    Button editBtn = new Button("✏");
-                    editBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #3498db; -fx-cursor: hand; -fx-font-size: 14px;");
-                    editBtn.setTooltip(new Tooltip("Edit Booking Details"));
-                    editBtn.setOnAction(e -> handleEdit(item));
+        // ── 1. Accommodations (shown first) ──
+        gridAccommodations.getChildren().clear();
+        List<AccommodationBooking> accomList = accomService.getAccommodationBookingsByUserId(uid)
+                .stream()
+                .filter(b -> "CONFIRMED".equalsIgnoreCase(b.getStatus()))
+                .toList();
+        for (AccommodationBooking b : accomList) {
+            gridAccommodations.getChildren().add(buildAccomCard(b));
+        }
+        boolean noAccom = accomList.isEmpty();
+        lblNoAccommodations.setVisible(noAccom);
+        lblNoAccommodations.setManaged(noAccom);
+        total += accomList.size();
 
-                    Button deleteBtn = new Button("🗑");
-                    deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #95a5a6; -fx-cursor: hand; -fx-font-size: 14px;");
-                    deleteBtn.setTooltip(new Tooltip("Delete Booking History"));
-                    deleteBtn.setOnAction(e -> handleDelete(item));
+        // ── 2. Destinations ──
+        gridDestinations.getChildren().clear();
+        List<Booking> destList = destService.getBookingsByUser(uid)
+                .stream()
+                .filter(b -> b.getStatus() == Booking.BookingStatus.CONFIRMED)
+                .toList();
+        for (Booking b : destList) {
+            gridDestinations.getChildren().add(buildDestCard(b));
+        }
+        boolean noDest = destList.isEmpty();
+        lblNoDestinations.setVisible(noDest);
+        lblNoDestinations.setManaged(noDest);
+        total += destList.size();
 
-                    // Status Logic
-                    switch (item.getStatus()) {
-                        case CONFIRMED:
-                            statusLbl.setText("✅ CONFIRMED");
-                            statusLbl.setStyle(statusLbl.getStyle() + "-fx-background-color: #d5f5e3; -fx-text-fill: #2ecc71;");
-                            if (ThemeManager.isDarkMode()) statusLbl.setStyle("-fx-font-weight: bold; -fx-padding: 3 8; -fx-background-radius: 4; -fx-background-color: #1e3a2a; -fx-text-fill: #2ecc71;");
-                            
-                            if (item.getPaymentStatus() == Booking.PaymentStatus.PAID) {
-                                // Show paid badge instead of pay button
-                                Label paidBadge = new Label("💳 PAID");
-                                paidBadge.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5 12; -fx-background-radius: 4; -fx-font-size: 12px;");
-                                actions.getChildren().add(paidBadge);
-                            } else {
-                                // Show pay button for unpaid confirmed bookings
-                                Button payBtn = new Button("💳 Proceed to Payment");
-                                payBtn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 5; -fx-padding: 5 12;");
-                                payBtn.setOnAction(e -> handlePayment(item));
-                                actions.getChildren().add(payBtn);
-                            }
-                            break;
-                            
-                        case CANCELLED:
-                            statusLbl.setText("❌ CANCELLED");
-                            statusLbl.setStyle(statusLbl.getStyle() + "-fx-background-color: #fadbd8; -fx-text-fill: #e74c3c;");
-                            if (ThemeManager.isDarkMode()) statusLbl.setStyle("-fx-font-weight: bold; -fx-padding: 3 8; -fx-background-radius: 4; -fx-background-color: #4a2323; -fx-text-fill: #e74c3c;");
-                            editBtn.setDisable(true); // Cannot edit cancelled
-                            break;
-                            
-                        case COMPLETED:
-                            statusLbl.setText("🏁 COMPLETED");
-                             // Style...
-                             editBtn.setDisable(true); // Cannot edit completed
-                            break;
+        // ── 3. Transport ──
+        gridTransport.getChildren().clear();
+        List<Bookingtrans> transList = transService.getBookingsByUserId(uid)
+                .stream()
+                .filter(b -> "CONFIRMED".equalsIgnoreCase(b.getBookingStatus()))
+                .toList();
+        for (Bookingtrans b : transList) {
+            gridTransport.getChildren().add(buildTransCard(b));
+        }
+        boolean noTrans = transList.isEmpty();
+        lblNoTransport.setVisible(noTrans);
+        lblNoTransport.setManaged(noTrans);
+        total += transList.size();
 
-                        default: // PENDING
-                            statusLbl.setText("⏳ PENDING");
-                            statusLbl.setStyle(statusLbl.getStyle() + "-fx-background-color: #fce8d2; -fx-text-fill: #e67e22;");
-                            if (ThemeManager.isDarkMode()) statusLbl.setStyle("-fx-font-weight: bold; -fx-padding: 3 8; -fx-background-radius: 4; -fx-background-color: #4a3820; -fx-text-fill: #e67e22;");
-                            break;
-                    }
-                    
-                    // Spacer
-                    Region actionSpacer = new Region();
-                    HBox.setHgrow(actionSpacer, Priority.ALWAYS);
-                    
-                    actions.getChildren().add(0, statusLbl); 
-                    actions.getChildren().addAll(actionSpacer, editBtn, deleteBtn); 
+        // ── 4. Packs ──
+        gridPacks.getChildren().clear();
+        try {
+            List<PacksBooking> packList = packService.getByUserId(uid)
+                    .stream()
+                    .filter(b -> b.getStatus() == PacksBooking.Status.CONFIRMED)
+                    .toList();
+            for (PacksBooking b : packList) {
+                gridPacks.getChildren().add(buildPackCard(b));
+            }
+            boolean noPacks = packList.isEmpty();
+            lblNoPacks.setVisible(noPacks);
+            lblNoPacks.setManaged(noPacks);
+            total += packList.size();
+        } catch (SQLException e) {
+            lblNoPacks.setVisible(true);
+            lblNoPacks.setManaged(true);
+        }
 
-                    card.getChildren().addAll(header, details, new Separator(), actions);
-                    setGraphic(card);
-                }
+        lblTotalCount.setText(total + " confirmed booking" + (total != 1 ? "s" : ""));
+    }
+
+    // ── Card builders ──────────────────────────────────────────────────────────
+
+    private VBox buildAccomCard(AccommodationBooking b) {
+        String accomName = "Accommodation";
+        String roomType  = "Room";
+        try {
+            Room room = roomService.getRoomById(b.getRoomId());
+            if (room != null) {
+                roomType = room.getRoomType();
+                Accommodation acc = lookupService.getAccommodationById(room.getAccommodationId());
+                if (acc != null) accomName = acc.getName();
+            }
+        } catch (Exception ignored) {}
+
+        VBox header = headerBox(HEADER_ACCOM, "🏨", accomName, roomType + " Room");
+        VBox body = bodyBox(
+            row("Check-in",  fmt(b.getCheckIn())),
+            row("Check-out", fmt(b.getCheckOut())),
+            row("Guests",    b.getNumberOfGuests() > 0 ? b.getNumberOfGuests() + " guest(s)" : "—"),
+            row("Total",     String.format("%.2f TND", b.getTotalPrice()))
+        );
+        Label price = new Label(String.format("%.2f TND", b.getTotalPrice()));
+        price.setStyle(PRICE_STYLE);
+
+        return card(header, body, price);
+    }
+
+    private VBox buildDestCard(Booking b) {
+        VBox header = headerBox(HEADER_DEST, "✈️", b.getDestinationName(), "Destination Booking");
+        VBox body = bodyBox(
+            row("Ref",    b.getBookingReference()),
+            row("Date",   b.getStartAt() != null ? b.getStartAt().toString().substring(0, 10) : "—"),
+            row("Total",  String.format("$%.2f %s", b.getTotalAmount(), b.getCurrency()))
+        );
+        Label price = new Label(String.format("$%.2f", b.getTotalAmount()));
+        price.setStyle(PRICE_STYLE);
+
+        return card(header, body, price);
+    }
+
+    private VBox buildTransCard(Bookingtrans b) {
+        String transportName = "Transport #" + b.getTransportId();
+        try {
+            Transport t = lookupService.getTransportById(b.getTransportId());
+            if (t != null) transportName = t.getProviderName() + " (" + t.getTransportType() + ")";
+        } catch (Exception ignored) {}
+
+        VBox header = headerBox(HEADER_TRANS, "🚀", transportName, "Transport Booking");
+        VBox body = bodyBox(
+            row("Seats",   b.getTotalSeats() + " seat(s)"),
+            row("Date",    b.getBookingDate() != null ? b.getBookingDate().toString().substring(0, 10) : "—"),
+            row("Payment", b.getPaymentStatus()),
+            row("Total",   String.format("%.2f TND", b.getTotalPrice()))
+        );
+        Label price = new Label(String.format("%.2f TND", b.getTotalPrice()));
+        price.setStyle(PRICE_STYLE);
+
+        return card(header, body, price);
+    }
+
+    private VBox buildPackCard(PacksBooking b) {
+        String packName = "Pack #" + b.getPackId();
+        try {
+            Pack p = new PackService().getById(b.getPackId());
+            if (p != null) packName = p.getTitle();
+        } catch (Exception ignored) {}
+
+        VBox header = headerBox(HEADER_PACKS, "🎒", packName, "Pack Booking");
+        VBox body = bodyBox(
+            row("Travel",    fmt(b.getTravelStartDate()) + " → " + fmt(b.getTravelEndDate())),
+            row("Travelers", b.getNumTravelers() + " person(s)"),
+            row("Discount",  b.getDiscountApplied() != null ? b.getDiscountApplied() + "%" : "0%"),
+            row("Final",     String.format("%.2f TND", b.getFinalPrice().doubleValue()))
+        );
+        Label price = new Label(String.format("%.2f TND", b.getFinalPrice().doubleValue()));
+        price.setStyle(PRICE_STYLE);
+
+        return card(header, body, price);
+    }
+
+    // ── UI helpers ─────────────────────────────────────────────────────────────
+
+    private VBox headerBox(String headerStyle, String icon, String title, String subtitle) {
+        Label iconLbl = new Label(icon);
+        iconLbl.setStyle("-fx-font-size: 22px;");
+
+        Label titleLbl = new Label(title);
+        titleLbl.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: white;");
+        titleLbl.setWrapText(true);
+
+        Label subLbl = new Label(subtitle);
+        subLbl.setStyle("-fx-font-size: 11px; -fx-text-fill: rgba(255,255,255,0.80);");
+
+        VBox texts = new VBox(2, titleLbl, subLbl);
+        HBox hb = new HBox(10, iconLbl, texts);
+        hb.setAlignment(Pos.CENTER_LEFT);
+        hb.setStyle(headerStyle);
+
+        return new VBox(hb);
+    }
+
+    private VBox bodyBox(HBox... rows) {
+        VBox box = new VBox(8);
+        box.setStyle("-fx-background-color: #F5F7FA; -fx-background-radius: 8; -fx-padding: 12;");
+        box.getChildren().addAll(rows);
+        return box;
+    }
+
+    private HBox row(String label, String value) {
+        Label k = new Label(label + ":");
+        k.setStyle(ROW_LABEL);
+        Region sp = new Region();
+        HBox.setHgrow(sp, Priority.ALWAYS);
+        Label v = new Label(value);
+        v.setStyle(ROW_VALUE);
+        HBox hb = new HBox(k, sp, v);
+        hb.setAlignment(Pos.CENTER_LEFT);
+        return hb;
+    }
+
+    private VBox card(VBox header, VBox body, Label price) {
+        Label badge = new Label("✅  CONFIRMED");
+        badge.setStyle(BADGE_CONFIRMED);
+
+        HBox footer = new HBox(badge, new Region(), price);
+        HBox.setHgrow(footer.getChildren().get(1), Priority.ALWAYS);
+        footer.setAlignment(Pos.CENTER_LEFT);
+
+        VBox card = new VBox(0, header.getChildren().get(0), body, footer);
+        card.setSpacing(12);
+        card.setStyle(CARD_STYLE);
+        return card;
+    }
+
+    // ── Navigation handlers ────────────────────────────────────────────────────
+
+    @FXML private void handleHomeNav(MouseEvent e)          { navigateTo("/fxml/user/home.fxml"); }
+    @FXML private void handleDestinationsNav(MouseEvent e)  { navigateTo("/fxml/user/user_destinations.fxml"); }
+    @FXML private void handleAccommodationsNav(MouseEvent e){ navigateTo("/fxml/user/AccommodationsView.fxml"); }
+    @FXML private void handleActivitiesNav(MouseEvent e)    { navigateTo("/fxml/user/user_activities.fxml"); }
+    @FXML private void handleTransportNav(MouseEvent e)     { navigateTo("/fxml/user/TransportUserInterface.fxml"); }
+    @FXML private void handlePacksOffersNav(MouseEvent e)   { navigateTo("/fxml/user/UserPacksOffersView.fxml"); }
+    @FXML private void handleBlogNav(MouseEvent e)          { showAlert("Blog page coming soon!"); }
+    @FXML private void handleProfile(MouseEvent e)          { navigateTo("/fxml/user/profile.fxml"); }
+
+    @FXML
+    private void handleLogout(javafx.event.ActionEvent e) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to logout?");
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+        alert.showAndWait().ifPresent(r -> {
+            if (r == ButtonType.YES) {
+                SessionManager.setCurrentUserId(-1);
+                navigateTo("/fxml/user/login.fxml");
             }
         });
     }
-    
-    private void handleDelete(Booking b) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete Booking");
-        alert.setHeaderText("Remove " + b.getDestinationName() + "?");
-        alert.setContentText("Are you sure you want to remove this booking from your history?");
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            if (bookingService.deleteBooking(b.getBookingId())) {
-                loadData();
-            } else {
-                statusLabel.setText("Failed to delete booking.");
-            }
-        }
-    }
-
-    private void handlePayment(Booking b) {
-        // Check if already paid
-        if (b.getPaymentStatus() == Booking.PaymentStatus.PAID) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Already Paid");
-            alert.setHeaderText("Payment Complete");
-            alert.setContentText("This booking has already been paid. Stripe ID: " + b.getStripePaymentId());
-            alert.showAndWait();
-            return;
-        }
-
+    private void navigateTo(String path) {
         try {
-            tn.esprit.services.StripePaymentService stripeService = new tn.esprit.services.StripePaymentService();
-            String checkoutUrl = stripeService.createCheckoutSession(b);
-
-            if (checkoutUrl == null) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Payment Error");
-                alert.setHeaderText("Could not create payment session");
-                alert.setContentText("Please check your Stripe API key in ApiConfig.java and try again.");
-                alert.showAndWait();
-                return;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
+            Parent root = loader.load();
+            Object ctrl = loader.getController();
+            if (currentUser != null) {
+                if (ctrl instanceof HomeController c)                    c.setUser(currentUser);
+                else if (ctrl instanceof UserDestinationsController c)   c.setCurrentUser(currentUser);
+                else if (ctrl instanceof UserActivitiesController c)     c.setCurrentUser(currentUser);
+                else if (ctrl instanceof AccommodationsController c)     c.setCurrentUser(currentUser);
+                else if (ctrl instanceof TransportUserInterfaceController c) c.setCurrentUser(currentUser);
+                else if (ctrl instanceof UserPacksOffersController c)    c.setCurrentUser(currentUser);
+                else if (ctrl instanceof ProfileController c)            c.setUser(currentUser);
             }
-
-            // Open Stripe Checkout in a WebView
-            javafx.stage.Stage paymentStage = new javafx.stage.Stage();
-            paymentStage.setTitle("💳 Secure Payment - " + b.getBookingReference());
-
-            javafx.scene.web.WebView webView = new javafx.scene.web.WebView();
-            javafx.scene.web.WebEngine webEngine = webView.getEngine();
-
-            // Progress indicator while loading
-            javafx.scene.control.ProgressBar progressBar = new javafx.scene.control.ProgressBar();
-            progressBar.prefWidthProperty().bind(webView.widthProperty());
-            progressBar.progressProperty().bind(webEngine.getLoadWorker().progressProperty());
-            progressBar.visibleProperty().bind(webEngine.getLoadWorker().runningProperty());
-            progressBar.setStyle("-fx-accent: #27ae60;");
-
-            Label headerLabel = new Label("💳 Secure Payment — $" + String.format("%.2f", b.getTotalAmount()) + " " + b.getCurrency());
-            headerLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-padding: 10 15;");
-
-            javafx.scene.layout.VBox paymentLayout = new javafx.scene.layout.VBox();
-            paymentLayout.getChildren().addAll(headerLabel, progressBar, webView);
-            javafx.scene.layout.VBox.setVgrow(webView, javafx.scene.layout.Priority.ALWAYS);
-
-            // Monitor URL changes to detect success/cancel
-            webEngine.locationProperty().addListener((obs, oldUrl, newUrl) -> {
-                if (newUrl != null) {
-                    if (newUrl.startsWith(tn.esprit.utils.ApiConfig.PAYMENT_SUCCESS_URL)) {
-                        // Extract session_id from URL
-                        String sessionId = null;
-                        try {
-                            java.net.URI uri = new java.net.URI(newUrl);
-                            String query = uri.getQuery();
-                            if (query != null) {
-                                for (String param : query.split("&")) {
-                                    String[] pair = param.split("=");
-                                    if (pair.length == 2 && "session_id".equals(pair[0])) {
-                                        sessionId = pair[1];
-                                        break;
-                                    }
-                                }
-                            }
-                        } catch (Exception ignored) {}
-
-                        // Update payment status
-                        final String finalSessionId = sessionId;
-                        javafx.application.Platform.runLater(() -> {
-                            boolean verified = false;
-                            if (finalSessionId != null) {
-                                verified = stripeService.isSessionPaid(finalSessionId);
-                            }
-
-                            if (verified || finalSessionId != null) {
-                                // Update booking in DB
-                                bookingService.updatePaymentStatus(b.getBookingId(), Booking.PaymentStatus.PAID);
-                                if (finalSessionId != null) {
-                                    bookingService.updateStripePaymentId(b.getBookingId(), finalSessionId);
-                                }
-
-                                paymentStage.close();
-
-                                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                                successAlert.setTitle("Payment Successful! ✅");
-                                successAlert.setHeaderText("Payment Confirmed");
-                                successAlert.setContentText(
-                                    "Your payment of $" + String.format("%.2f", b.getTotalAmount()) +
-                                    " for booking " + b.getBookingReference() + " has been processed successfully!" +
-                                    (finalSessionId != null ? "\n\nStripe Session: " + finalSessionId : "")
-                                );
-                                successAlert.showAndWait();
-
-                                loadData(); // Refresh list
-                            } else {
-                                paymentStage.close();
-                                Alert failAlert = new Alert(Alert.AlertType.WARNING);
-                                failAlert.setTitle("Payment Unverified");
-                                failAlert.setHeaderText("Could not verify payment");
-                                failAlert.setContentText("The payment could not be verified. Please contact support.");
-                                failAlert.showAndWait();
-                            }
-                        });
-
-                    } else if (newUrl.startsWith(tn.esprit.utils.ApiConfig.PAYMENT_CANCEL_URL)) {
-                        javafx.application.Platform.runLater(() -> {
-                            paymentStage.close();
-                            Alert cancelAlert = new Alert(Alert.AlertType.INFORMATION);
-                            cancelAlert.setTitle("Payment Cancelled");
-                            cancelAlert.setHeaderText("Payment was cancelled");
-                            cancelAlert.setContentText("You can try again anytime from your bookings.");
-                            cancelAlert.showAndWait();
-                        });
-                    }
-                }
-            });
-
-            // Load the Stripe Checkout URL
-            webEngine.load(checkoutUrl);
-
-            javafx.scene.Scene paymentScene = new javafx.scene.Scene(paymentLayout, 650, 700);
-            paymentStage.setScene(paymentScene);
-            paymentStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
-            paymentStage.showAndWait();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Payment Error");
-            alert.setHeaderText("Payment Failed");
-            alert.setContentText("An error occurred while processing payment: " + e.getMessage());
-            alert.showAndWait();
+            Stage stage = (Stage) lblTotalCount.getScene().getWindow();
+            stage.setScene(new Scene(root, stage.getWidth(), stage.getHeight()));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            showAlert("Navigation error: " + ex.getMessage());
         }
     }
 
-    private void handleEdit(Booking b) {
-        try {
-            // Fetch full destination for context
-            tn.esprit.entities.Destination dest = destinationService.getDestinationById(b.getDestinationId()); // Fixed cast
-            if (dest == null) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Could not find destination info.");
-                alert.showAndWait();
-                return;
-            }
+    // ── Utilities ──────────────────────────────────────────────────────────────
 
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/fxml/user/booking_dialog.fxml"));
-            javafx.scene.Parent root = loader.load();
-
-            BookingDialogController controller = loader.getController();
-            
-            // Determine restriction mode
-            boolean restricted = (b.getStatus() == Booking.BookingStatus.CONFIRMED);
-            
-            controller.setBooking(b, dest, restricted);
-
-            javafx.stage.Stage stage = new javafx.stage.Stage();
-            stage.setTitle("Edit Booking: " + b.getBookingReference());
-            stage.setScene(new javafx.scene.Scene(root));
-            
-            if (ThemeManager.isDarkMode()) {
-                ThemeManager.applyTheme(stage.getScene());
-            }
-
-            stage.showAndWait();
-            loadData(); // Refresh after edit
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Could not open edit dialog: " + e.getMessage());
-            alert.showAndWait();
-        }
+    private String fmt(java.sql.Date d) {
+        return d != null ? d.toString() : "—";
     }
 
-    private void loadData() {
-        myBookings.setAll(bookingService.getBookingsByUser(SessionManager.getCurrentUserId()));
-        bookingsList.setItems(myBookings);
-        statusLabel.setText("You have " + myBookings.size() + " bookings.");
+    private String safe(String s) {
+        return s == null ? "" : s;
     }
 
-    private void navigateBack() {
-        try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/fxml/user/user_destinations.fxml"));
-            javafx.scene.Parent root = loader.load();
-            UserDestinationsController controller = loader.getController();
-            if (controller != null) {
-                controller.setCurrentUser(currentUser);
-            }
-            backBtn.getScene().setRoot(root);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void updateThemeButtonText() {
-        if (themeBtn != null) {
-            themeBtn.setText(ThemeManager.isDarkMode() ? "☀" : "🌙");
-            themeBtn.getStyleClass().removeAll("action-button", "action-button-secondary");
-            if (!themeBtn.getStyleClass().contains("theme-toggle-btn")) {
-                themeBtn.getStyleClass().add("theme-toggle-btn");
-            }
-        }
+    private void showAlert(String msg) {
+        new Alert(Alert.AlertType.INFORMATION, msg).show();
     }
 }

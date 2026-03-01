@@ -162,6 +162,20 @@ public class UserActivitiesController implements Initializable {
     }
 
     @FXML
+    private void handlePacksOffersNav(javafx.scene.input.MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/UserPacksOffersView.fxml"));
+            Parent root = loader.load();
+            UserPacksOffersController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+            searchBtn.getScene().setRoot(root);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Could not load Packs & Offers view.");
+        }
+    }
+
+    @FXML
     private void handleBlogNav(javafx.scene.input.MouseEvent event) {
         showError("Blog page coming soon!");
     }

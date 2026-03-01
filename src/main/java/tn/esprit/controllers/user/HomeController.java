@@ -1561,6 +1561,31 @@ public class HomeController {
         }
     }
 
+    private void navigateToPacksOffers() {
+        try {
+            String path = "/fxml/user/UserPacksOffersView.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
+            if (loader.getLocation() == null) {
+                showAlert("Packs & Offers page not found!");
+                return;
+            }
+            Parent root = loader.load();
+            UserPacksOffersController ctrl = loader.getController();
+            if (ctrl != null && currentUser != null) {
+                ctrl.setCurrentUser(currentUser);
+            }
+            Stage stage = getStage();
+            if (stage != null) {
+                stage.setScene(new Scene(root, stage.getWidth(), stage.getHeight()));
+            } else if (chatPanel != null && chatPanel.getScene() != null) {
+                chatPanel.getScene().setRoot(root);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Could not load Packs & Offers: " + e.getMessage());
+        }
+    }
+
     /**
      * Navigate to Blog page
      */
@@ -1627,6 +1652,11 @@ public class HomeController {
     @FXML
     private void handleTransportNav(MouseEvent mouseEvent) {
         navigateToTransport();
+    }
+
+    @FXML
+    private void handlePacksOffersNav(MouseEvent mouseEvent) {
+        navigateToPacksOffers();
     }
 
     @FXML

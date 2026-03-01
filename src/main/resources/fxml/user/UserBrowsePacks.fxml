@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.controllers.user.UserBrowsePacksController"
+      spacing="20" style="-fx-background-color: #F5F7FA;">
+    
+    <padding>
+        <Insets top="24" right="24" bottom="24" left="24"/>
+    </padding>
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="16">
+        <Label text="Discover Packs" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #063154;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblPackCount" text="0 packs found" style="-fx-font-size: 14px; -fx-text-fill: #94A3B8;"/>
+    </HBox>
+
+    <!-- Filters -->
+    <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16; -fx-border-color: #E8EAF6; -fx-border-radius: 12;">
+        <Label text="🔍" style="-fx-font-size: 18px;"/>
+        <TextField fx:id="searchField" promptText="Search packs..." 
+                   prefWidth="250"
+                   style="-fx-background-color: #F5F7FA; -fx-background-radius: 8; -fx-border-color: transparent; -fx-padding: 10;"/>
+        
+        <Separator orientation="VERTICAL"/>
+        
+        <Label text="Category:" style="-fx-font-weight: 600; -fx-text-fill: #49769F;"/>
+        <ComboBox fx:id="categoryFilter" prefWidth="150"
+                  style="-fx-background-color: #F5F7FA; -fx-background-radius: 8;"/>
+        
+        <Label text="Destination:" style="-fx-font-weight: 600; -fx-text-fill: #49769F;"/>
+        <ComboBox fx:id="destinationFilter" prefWidth="150"
+                  style="-fx-background-color: #F5F7FA; -fx-background-radius: 8;"/>
+        
+        <CheckBox fx:id="chkHasOffer" text="🎉 Has Offer" 
+                  style="-fx-font-weight: 600; -fx-text-fill: #E53E3E;"/>
+        
+        <Label text="Max Price:" style="-fx-font-weight: 600; -fx-text-fill: #49769F;"/>
+        <Slider fx:id="priceSlider" min="0" max="2000" value="2000" prefWidth="150" showTickLabels="false"/>
+        <Label fx:id="lblMaxPrice" text="2000 TND" style="-fx-font-weight: 600; -fx-text-fill: #063154;"/>
+        
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button fx:id="btnClearFilters" text="Clear" 
+                style="-fx-background-color: #EF5350; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 10 20; -fx-cursor: hand;"/>
+    </HBox>
+
+    <!-- Packs Grid -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+        <FlowPane fx:id="packsGrid" hgap="16" vgap="16" 
+                  style="-fx-background-color: transparent; -fx-padding: 8;"/>
+    </ScrollPane>
+
+</VBox>

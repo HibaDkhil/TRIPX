@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" fitToHeight="true"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.user.UserExchangeController"
+            style="-fx-background-color: #F5F7FA; -fx-background: #F5F7FA;">
+
+    <VBox spacing="32" alignment="TOP_CENTER" style="-fx-padding: 48 0;">
+
+        <!-- Header -->
+        <VBox alignment="CENTER" spacing="8">
+            <Label text="💱 Currency Exchange"
+                   style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #063154;"/>
+            <Label text="Convert any amount to your preferred currency in real-time"
+                   style="-fx-font-size: 14px; -fx-text-fill: #94A3B8;"/>
+        </VBox>
+
+        <!-- Main Card -->
+        <VBox spacing="24" alignment="CENTER"
+              style="-fx-background-color: white; -fx-background-radius: 20;
+                     -fx-padding: 40; -fx-max-width: 520;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 20, 0, 0, 4);
+                     -fx-border-color: #E8EAF6; -fx-border-radius: 20;">
+
+            <!-- Amount Input -->
+            <VBox spacing="8">
+                <Label text="Amount (TND)" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                <TextField fx:id="txtAmount" promptText="e.g. 1200.00"
+                           style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #063154;
+                                  -fx-background-color: #F5F7FA; -fx-background-radius: 12;
+                                  -fx-padding: 14 18; -fx-border-color: #E2E8F0;
+                                  -fx-border-radius: 12; -fx-pref-width: 440;"/>
+            </VBox>
+
+            <!-- Arrow -->
+            <Label text="↕" style="-fx-font-size: 24px; -fx-text-fill: #764ba2;"/>
+
+            <!-- Currency Selector -->
+            <VBox spacing="8">
+                <Label text="Convert To" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                <ComboBox fx:id="currencyPicker"
+                          style="-fx-font-size: 15px; -fx-background-color: #F5F7FA;
+                                 -fx-border-color: #E2E8F0; -fx-border-radius: 12;
+                                 -fx-background-radius: 12; -fx-padding: 10 14;
+                                 -fx-pref-width: 440;"/>
+            </VBox>
+
+            <!-- Convert Button -->
+            <Button fx:id="btnConvert" text="Convert Now"
+                    onAction="#handleConvert"
+                    maxWidth="Infinity"
+                    style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2);
+                           -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;
+                           -fx-background-radius: 12; -fx-padding: 14; -fx-cursor: hand;"/>
+
+            <!-- Result Box -->
+            <VBox fx:id="resultBox" spacing="6" alignment="CENTER"
+                  style="-fx-background-color: linear-gradient(to right, #e8f5e9, #e3f2fd);
+                         -fx-background-radius: 14; -fx-padding: 24; -fx-min-height: 90;"
+                  visible="false" managed="false">
+                <Label text="Converted Amount" style="-fx-font-size: 12px; -fx-text-fill: #64748B;"/>
+                <Label fx:id="lblResult"
+                       style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #0A4174;"/>
+                <Label fx:id="lblRate"
+                       style="-fx-font-size: 12px; -fx-text-fill: #94A3B8;"/>
+            </VBox>
+
+            <!-- Error Label -->
+            <Label fx:id="lblError" text=""
+                   style="-fx-text-fill: #E53E3E; -fx-font-size: 13px;"
+                   visible="false" managed="false"/>
+
+        </VBox>
+
+        <!-- Footer note -->
+        <Label text="Powered by Open Exchange Rates • Rates updated hourly"
+               style="-fx-font-size: 11px; -fx-text-fill: #CBD5E1;"/>
+
+    </VBox>
+</ScrollPane>

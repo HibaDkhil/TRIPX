@@ -3,42 +3,132 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.171"
+<BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="tn.esprit.controllers.user.UserBookingsController"
-            stylesheets="/css/style.css, /css/home.css, /css/user-destinations.css"
-            prefWidth="1200" prefHeight="800"
-            style="-fx-background-color: #F8FAFC;">
+            stylesheets="/css/style.css, /css/home.css"
+            prefWidth="1280" prefHeight="760"
+            style="-fx-background-color: #F5F7FA; -fx-font-family: 'Poppins', 'Inter', 'Segoe UI', 'Arial';">
 
     <top>
-        <VBox spacing="15" styleClass="header-section">
-            <padding>
-                <Insets top="20" right="25" left="25" bottom="15"/>
-            </padding>
-            <HBox alignment="CENTER_LEFT" spacing="10">
-                <Label text="🎫 My Bookings" styleClass="page-title"/>
-                <Button fx:id="themeBtn" text="🌙" styleClass="theme-toggle-btn"/>
-                <Region HBox.hgrow="ALWAYS" />
-                <Button fx:id="backBtn" text="⬅ Back to Explore" styleClass="action-button"/>
+        <!-- Common top bar -->
+        <HBox alignment="CENTER_LEFT" prefHeight="100.0" spacing="20.0" styleClass="top-bar">
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="top-logo">
+                <image>
+                    <Image url="@../../images/logo.png" />
+                </image>
+            </ImageView>
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <HBox alignment="CENTER" spacing="25.0" styleClass="nav-links-container">
+                <Label onMouseClicked="#handleHomeNav" styleClass="nav-link" text="Home" />
+                <Label onMouseClicked="#handleDestinationsNav" styleClass="nav-link" text="Destinations" />
+                <Label onMouseClicked="#handleAccommodationsNav" styleClass="nav-link" text="Accommodations" />
+                <Label onMouseClicked="#handleActivitiesNav" styleClass="nav-link" text="Activities" />
+                <Label onMouseClicked="#handleTransportNav" styleClass="nav-link" text="Transport" />
+                <Label onMouseClicked="#handlePacksOffersNav" styleClass="nav-link" text="Packs &amp; Offers" />
+                <Label onMouseClicked="#handleBlogNav" styleClass="nav-link" text="Blog" />
             </HBox>
-        </VBox>
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <HBox alignment="CENTER" spacing="15.0">
+                <HBox alignment="CENTER" onMouseClicked="#handleProfile" spacing="10.0" styleClass="user-display-container" style="-fx-cursor: hand;">
+                    <StackPane styleClass="home-avatar-circle" prefHeight="40" prefWidth="40" style="-fx-background-color: #4cccad; -fx-background-radius: 20; -fx-alignment: center;">
+                        <Label fx:id="avatarInitials" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;" text="" />
+                    </StackPane>
+                    <Label fx:id="userNameLabel" styleClass="home-user-name" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="" />
+                </HBox>
+                <Button onAction="#handleLogout" styleClass="logout-button" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8 15;" text="Logout" />
+            </HBox>
+        </HBox>
     </top>
 
     <center>
-        <VBox spacing="20" styleClass="content-scroll">
-            <padding>
-                <Insets top="20" right="100" left="100" bottom="25"/>
-            </padding>
-            
-            <Label fx:id="statusLabel" text="Your upcoming trips" styleClass="page-subtitle" style="-fx-text-fill: #7f8c8d;"/>
-            
-            <ListView fx:id="bookingsList" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-control-inner-background: transparent;"/>
-        </VBox>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: #F5F7FA; -fx-background: #F5F7FA; -fx-border-color: transparent;">
+            <VBox spacing="32" style="-fx-background-color: #F5F7FA;">
+                <padding>
+                    <Insets top="32" right="40" bottom="40" left="40"/>
+                </padding>
+
+                <!-- Page Header -->
+                <HBox alignment="CENTER_LEFT" spacing="16">
+                    <Label text="🎫 My Confirmed Bookings"
+                           style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #063154;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblTotalCount" text=""
+                           style="-fx-font-size: 14px; -fx-text-fill: #94A3B8;"/>
+                    <Button onAction="#handleRefresh" text="↻  Refresh"
+                            style="-fx-background-color: linear-gradient(to right, #6D83F2, #4CCCAD);
+                                   -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;
+                                   -fx-padding: 10 20; -fx-cursor: hand;"/>
+                </HBox>
+
+                <!-- Accommodations Section -->
+                <VBox fx:id="sectionAccommodations" spacing="16">
+                    <Label text="🏨  Accommodations"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0A4174;
+                                  -fx-border-color: transparent transparent #0A4174 transparent;
+                                  -fx-border-width: 0 0 2 0; -fx-padding: 0 0 6 0;"/>
+                    <FlowPane fx:id="gridAccommodations" hgap="20" vgap="20"
+                              style="-fx-background-color: transparent;"/>
+                    <Label fx:id="lblNoAccommodations" text="No confirmed accommodation bookings."
+                           style="-fx-font-size: 14px; -fx-text-fill: #94A3B8; -fx-font-style: italic;"
+                           visible="false" managed="false"/>
+                </VBox>
+
+                <!-- Destinations Section -->
+                <VBox fx:id="sectionDestinations" spacing="16">
+                    <Label text="✈️  Destinations"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0A4174;
+                                  -fx-border-color: transparent transparent #0A4174 transparent;
+                                  -fx-border-width: 0 0 2 0; -fx-padding: 0 0 6 0;"/>
+                    <FlowPane fx:id="gridDestinations" hgap="20" vgap="20"
+                              style="-fx-background-color: transparent;"/>
+                    <Label fx:id="lblNoDestinations" text="No confirmed destination bookings."
+                           style="-fx-font-size: 14px; -fx-text-fill: #94A3B8; -fx-font-style: italic;"
+                           visible="false" managed="false"/>
+                </VBox>
+
+                <!-- Transport Section -->
+                <VBox fx:id="sectionTransport" spacing="16">
+                    <Label text="🚀  Transport"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0A4174;
+                                  -fx-border-color: transparent transparent #0A4174 transparent;
+                                  -fx-border-width: 0 0 2 0; -fx-padding: 0 0 6 0;"/>
+                    <FlowPane fx:id="gridTransport" hgap="20" vgap="20"
+                              style="-fx-background-color: transparent;"/>
+                    <Label fx:id="lblNoTransport" text="No confirmed transport bookings."
+                           style="-fx-font-size: 14px; -fx-text-fill: #94A3B8; -fx-font-style: italic;"
+                           visible="false" managed="false"/>
+                </VBox>
+
+                <!-- Packs Section -->
+                <VBox fx:id="sectionPacks" spacing="16">
+                    <Label text="🎒  Packs &amp; Offers"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0A4174;
+                                  -fx-border-color: transparent transparent #0A4174 transparent;
+                                  -fx-border-width: 0 0 2 0; -fx-padding: 0 0 6 0;"/>
+                    <FlowPane fx:id="gridPacks" hgap="20" vgap="20"
+                              style="-fx-background-color: transparent;"/>
+                    <Label fx:id="lblNoPacks" text="No confirmed pack bookings."
+                           style="-fx-font-size: 14px; -fx-text-fill: #94A3B8; -fx-font-style: italic;"
+                           visible="false" managed="false"/>
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
     </center>
+
 </BorderPane>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.controllers.user.UserLoyaltyController"
+      spacing="24" style="-fx-background-color: #F5F7FA;">
+    
+    <padding>
+        <Insets top="24" right="24" bottom="24" left="24"/>
+    </padding>
+
+    <!-- Header -->
+    <Label text="My Loyalty Status" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #063154;"/>
+
+    <!-- Main Content -->
+    <HBox spacing="24" VBox.vgrow="ALWAYS">
+        
+        <!-- Left: Current Status Card -->
+        <VBox spacing="20" HBox.hgrow="ALWAYS" alignment="CENTER" 
+              style="-fx-background-color: linear-gradient(to bottom right, #0A4174, #2F9D94); -fx-background-radius: 20; -fx-padding: 40;">
+            
+            <StackPane>
+                <Circle radius="60" style="-fx-fill: rgba(255,255,255,0.2);"/>
+                <Label fx:id="lblLevelIcon" text="🥉" style="-fx-font-size: 64px;"/>
+            </StackPane>
+            
+            <Label fx:id="lblLevel" text="BRONZE" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label fx:id="lblPoints" text="0 Points" style="-fx-font-size: 20px; -fx-text-fill: rgba(255,255,255,0.9);"/>
+            
+            <VBox spacing="4" alignment="CENTER">
+                <Label text="Current Discount" style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.7);"/>
+                <Label fx:id="lblDiscount" text="4%" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #FFD700;"/>
+            </VBox>
+            
+            <Separator style="-fx-background-color: rgba(255,255,255,0.3);"/>
+            
+            <VBox spacing="8" alignment="CENTER">
+                <Label text="Next Level Progress" style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.7);"/>
+                <ProgressBar fx:id="progressBar" progress="0.0" prefWidth="250"
+                             style="-fx-accent: #FFD700;"/>
+                <Label fx:id="lblProgressText" text="0 / 200 points" style="-fx-font-size: 12px; -fx-text-fill: rgba(255,255,255,0.7);"/>
+            </VBox>
+        </VBox>
+        
+        <!-- Right: Level Info -->
+        <VBox spacing="16" prefWidth="400">
+            
+            <Label text="Level Benefits" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #063154;"/>
+            
+            <!-- Bronze -->
+            <VBox spacing="8" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16; -fx-border-color: #CD7F32; -fx-border-width: 2; -fx-border-radius: 12;">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Label text="🥉" style="-fx-font-size: 24px;"/>
+                    <Label text="Bronze" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #CD7F32;"/>
+                </HBox>
+                <Label text="• 0-199 points" style="-fx-font-size: 12px; -fx-text-fill: #64748B;"/>
+                <Label text="• 4% discount on all packs" style="-fx-font-size: 14px; -fx-text-fill: #063154; -fx-font-weight: 600;"/>
+                <Label text="• Earn 50 points per trip" style="-fx-font-size: 12px; -fx-text-fill: #64748B;"/>
+            </VBox>
+            
+            <!-- Silver -->
+            <VBox spacing="8" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16; -fx-border-color: #C0C0C0; -fx-border-width: 2; -fx-border-radius: 12;">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Label text="🥈" style="-fx-font-size: 24px;"/>
+                    <Label text="Silver" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #C0C0C0;"/>
+                </HBox>
+                <Label text="• 200-399 points" style="-fx-font-size: 12px; -fx-text-fill: #64748B;"/>
+                <Label text="• 9% discount on all packs" style="-fx-font-size: 14px; -fx-text-fill: #063154; -fx-font-weight: 600;"/>
+                <Label text="• Priority support" style="-fx-font-size: 12px; -fx-text-fill: #64748B;"/>
+            </VBox>
+            
+            <!-- Gold -->
+            <VBox spacing="8" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16; -fx-border-color: #FFD700; -fx-border-width: 2; -fx-border-radius: 12;">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Label text="🥇" style="-fx-font-size: 24px;"/>
+                    <Label text="Gold" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #FFD700;"/>
+                </HBox>
+                <Label text="• 400+ points" style="-fx-font-size: 12px; -fx-text-fill: #64748B;"/>
+                <Label text="• 15% discount on all packs" style="-fx-font-size: 14px; -fx-text-fill: #063154; -fx-font-weight: 600;"/>
+                <Label text="• VIP perks &amp; exclusive offers" style="-fx-font-size: 12px; -fx-text-fill: #64748B;"/>
+            </VBox>
+            
+        </VBox>
+    </HBox>
+
+</VBox>

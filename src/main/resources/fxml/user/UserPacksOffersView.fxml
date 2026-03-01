@@ -10,21 +10,17 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
 
 <BorderPane prefWidth="1280" prefHeight="760"
             xmlns="http://javafx.com/javafx/17"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="tn.esprit.controllers.user.TransportUserInterfaceController"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.user.UserPacksOffersController"
             stylesheets="/css/style.css, /css/home.css, /css/transport-pastel.css"
             style="-fx-background-color: #F8FAFC; -fx-font-family: 'Poppins', 'Inter', 'Segoe UI', 'Arial';">
 
-    <!-- ══════════════════════════════════════════════════════
-         TOP SECTION - MATCHING HOME & ACCOMMODATIONS PAGES
-         ══════════════════════════════════════════════════════ -->
     <top>
         <VBox>
-            <!-- Main nav row - EXACTLY like Home and Accommodations -->
+            <!-- Common top bar - identical to other modules -->
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" spacing="20.0" styleClass="top-bar">
                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="top-logo">
                     <image>
@@ -34,20 +30,18 @@
 
                 <Region HBox.hgrow="ALWAYS" />
 
-                <!-- Nav links -->
                 <HBox alignment="CENTER" spacing="25.0" styleClass="nav-links-container">
                     <Label onMouseClicked="#handleHomeNav" styleClass="nav-link" text="Home" />
                     <Label onMouseClicked="#handleDestinationsNav" styleClass="nav-link" text="Destinations" />
                     <Label onMouseClicked="#handleAccommodationsNav" styleClass="nav-link" text="Accommodations" />
                     <Label onMouseClicked="#handleActivitiesNav" styleClass="nav-link" text="Activities" />
-                    <Label styleClass="nav-link" style="-fx-text-fill: #4FB3B5; -fx-border-color: transparent transparent #4FB3B5 transparent; -fx-border-width: 0 0 2 0;" text="Transport" />
-                    <Label onMouseClicked="#handlePacksOffersNav" styleClass="nav-link" text="Packs &amp; Offers" />
+                    <Label onMouseClicked="#handleTransportNav" styleClass="nav-link" text="Transport" />
+                    <Label styleClass="nav-link" style="-fx-text-fill: #4FB3B5; -fx-border-color: transparent transparent #4FB3B5 transparent; -fx-border-width: 0 0 2 0;" text="Packs &amp; Offers" />
                     <Label onMouseClicked="#handleBlogNav" styleClass="nav-link" text="Blog" />
                 </HBox>
 
                 <Region HBox.hgrow="ALWAYS" />
 
-                <!-- User profile section - EXACTLY like Home and Accommodations -->
                 <HBox alignment="CENTER" spacing="15.0">
                     <HBox alignment="CENTER" onMouseClicked="#handleProfile" spacing="10.0" styleClass="user-display-container" style="-fx-cursor: hand;">
                         <StackPane styleClass="home-avatar-circle" prefHeight="40" prefWidth="40" style="-fx-background-color: #4cccad; -fx-background-radius: 20; -fx-alignment: center;">
@@ -56,38 +50,45 @@
                         </StackPane>
                         <Label fx:id="userNameLabel" styleClass="home-user-name" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="" />
                     </HBox>
-                    <Button onAction="#handleMyBookings" styleClass="profile-button" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8 15;" text="My Bookings" />
+                    <Button onAction="#handleMyBookingsNav" styleClass="profile-button" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8 15;" text="My Bookings" />
                     <Button onAction="#handleLogout" styleClass="logout-button" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8 15;" text="Logout" />
                 </HBox>
             </HBox>
 
-            <!-- Transport module tab bar (keep this as is) -->
+            <!-- Module sub-tab bar -->
             <HBox alignment="CENTER_LEFT" spacing="0"
                   style="-fx-background-color: rgba(255,255,255,0.92);
                          -fx-border-color: transparent transparent rgba(59,130,246,0.18) transparent;
                          -fx-border-width: 0 0 1 0;
                          -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.10), 10, 0, 0, 2);">
 
-                <!-- ACTIVE by default = Schedules (controller sets active style in initialize) -->
-                <Button fx:id="btnSchedules"
-                        text="🗓   Schedules"
-                        onAction="#showSchedulesTab"
+                <Button fx:id="btnBrowsePacks"
+                        text="🎒   Browse Packs"
+                        onAction="#showBrowsePacksTab"
                         style="-fx-background-color: linear-gradient(to right, #6D83F2, #4CCCAD); -fx-text-fill: white;
                                -fx-font-weight: bold; -fx-font-size: 13px;
                                -fx-padding: 12 32 12 32; -fx-cursor: hand;
                                -fx-background-radius: 0; -fx-border-color: transparent;" />
 
-                <Button fx:id="btnTransport"
-                        text="✈   Transport"
-                        onAction="#showTransportTab"
+                <Button fx:id="btnOffers"
+                        text="🎉   Offers"
+                        onAction="#showOffersTab"
                         style="-fx-background-color: transparent; -fx-text-fill: #0A153A;
                                -fx-font-size: 13px; -fx-padding: 12 32 12 32;
                                -fx-cursor: hand; -fx-background-radius: 0;
                                -fx-border-color: transparent;" />
 
-                <Button fx:id="btnMyBookings"
-                        text="📋   My Bookings"
-                        onAction="#showMyBookingsTab"
+                <Button fx:id="btnLoyalty"
+                        text="⭐   Loyalty"
+                        onAction="#showLoyaltyTab"
+                        style="-fx-background-color: transparent; -fx-text-fill: #0A153A;
+                               -fx-font-size: 13px; -fx-padding: 12 32 12 32;
+                               -fx-cursor: hand; -fx-background-radius: 0;
+                               -fx-border-color: transparent;" />
+
+                <Button fx:id="btnExchange"
+                        text="💱   Exchange"
+                        onAction="#showExchangeTab"
                         style="-fx-background-color: transparent; -fx-text-fill: #0A153A;
                                -fx-font-size: 13px; -fx-padding: 12 32 12 32;
                                -fx-cursor: hand; -fx-background-radius: 0;
@@ -98,15 +99,8 @@
         </VBox>
     </top>
 
-    <!-- ══════════════════════════════════════════════════════
-         CENTER CONTENT AREA
-         ══════════════════════════════════════════════════════ -->
     <center>
-        <StackPane fx:id="contentArea">
-            <padding>
-                <Insets top="22" right="26" bottom="22" left="26" />
-            </padding>
-        </StackPane>
+        <StackPane fx:id="contentArea" style="-fx-background-color: #F8FAFC;" />
     </center>
 
 </BorderPane>

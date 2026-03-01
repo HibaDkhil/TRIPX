@@ -769,8 +769,13 @@ public class AccommodationsController {
     }
 
     @FXML
+    private void handlePacksOffersNav(MouseEvent event) {
+        navigate("/fxml/user/UserPacksOffersView.fxml");
+    }
+
+    @FXML
     private void handleOffersNav(ActionEvent event) {
-        showWarning("Coming soon", "Offers module navigation is not available yet.");
+        navigate("/fxml/user/UserPacksOffersView.fxml");
     }
 
     @FXML
@@ -813,6 +818,8 @@ public class AccommodationsController {
                     profileController.setUser(currentUser);
                 } else if (targetController instanceof TransportUserInterfaceController transportController) {
                     transportController.setCurrentUser(currentUser);
+                } else if (targetController instanceof UserPacksOffersController packsOffersController) {
+                    packsOffersController.setCurrentUser(currentUser);
                 }
             }
 

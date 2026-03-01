@@ -270,6 +270,11 @@ public class TransportUserInterfaceController {
     }
 
     @FXML
+    private void handlePacksOffersNav(MouseEvent event) {
+        navigateTo("/fxml/user/UserPacksOffersView.fxml");
+    }
+
+    @FXML
     private void handleBlogNav(MouseEvent event) {
         showAlert("Blog page coming soon!");
     }
@@ -323,6 +328,8 @@ public class TransportUserInterfaceController {
                     ((UserBookingsController) controller).setCurrentUser(currentUser);
                 } else if (controller instanceof ProfileController) {
                     ((ProfileController) controller).setUser(currentUser);
+                } else if (controller instanceof UserPacksOffersController) {
+                    ((UserPacksOffersController) controller).setCurrentUser(currentUser);
                 }
             }
 

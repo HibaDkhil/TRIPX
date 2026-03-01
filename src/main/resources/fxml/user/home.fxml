@@ -41,6 +41,7 @@
                         <Label onMouseClicked="#handleAccommodationsNav" styleClass="nav-link" text="Accommodations" />
                         <Label onMouseClicked="#handleActivitiesNav" styleClass="nav-link" text="Activities" />
                         <Label onMouseClicked="#handleTransportNav" styleClass="nav-link" text="Transport" />
+                        <Label onMouseClicked="#handlePacksOffersNav" styleClass="nav-link" text="Packs &amp; Offers" />
                         <Label onMouseClicked="#handleBlogNav" styleClass="nav-link" text="Blog" />
                     </HBox>
                     

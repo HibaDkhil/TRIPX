@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.user.UserDashboardController"
+            stylesheets="@../../css/user-dashboard.css"
+            style="-fx-background-color: #F5F7FA;">
+
+    <!-- Top Navbar -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="24" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-padding: 16 32;">
+            
+            <!-- Logo -->
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <Label text="✈️" style="-fx-font-size: 28px;"/>
+                <VBox spacing="0">
+                    <Label text="TripX" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    <Label text="Explore the World" style="-fx-font-size: 10px; -fx-text-fill: rgba(255,255,255,0.8);"/>
+                </VBox>
+            </HBox>
+            
+            <Region HBox.hgrow="ALWAYS"/>
+            
+            <!-- Navigation Buttons -->
+            <Button fx:id="btnBrowsePacks" text="🗺️ Browse Packs" styleClass="nav-btn"/>
+            <Button fx:id="btnMyBookings" text="📋 My Bookings" styleClass="nav-btn"/>
+            <Button fx:id="btnLoyalty" text="⭐ Loyalty" styleClass="nav-btn"/>
+            <Button fx:id="btnExchange" text="💱 Exchange" styleClass="nav-btn"/>
+            
+            <Separator orientation="VERTICAL" style="-fx-background-color: rgba(255,255,255,0.3);"/>
+            
+            <!-- User Info -->
+            <MenuButton fx:id="menuUser" styleClass="user-menu">
+                <graphic>
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <StackPane style="-fx-background-color: rgba(255,255,255,0.3); -fx-background-radius: 20; -fx-padding: 8 12;">
+                            <Label text="👤" style="-fx-font-size: 16px;"/>
+                        </StackPane>
+                        <Label fx:id="lblUsername" text="User" style="-fx-text-fill: white; -fx-font-weight: 600;"/>
+                    </HBox>
+                </graphic>
+                <items>
+                    <MenuItem fx:id="menuProfile" text="👤 My Profile"/>
+                    <MenuItem fx:id="menuSettings" text="⚙️ Settings"/>
+                    <SeparatorMenuItem/>
+                    <MenuItem fx:id="menuLogout" text="🚪 Logout"/>
+                </items>
+            </MenuButton>
+            
+        </HBox>
+    </top>
+
+    <!-- Content Area -->
+    <center>
+        <StackPane fx:id="contentArea" style="-fx-background-color: #F5F7FA;"/>
+    </center>
+
+</BorderPane>

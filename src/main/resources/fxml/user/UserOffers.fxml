@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.controllers.user.UserOffersController"
+      spacing="20" style="-fx-background-color: #F5F7FA;">
+    
+    <padding>
+        <Insets top="24" right="24" bottom="24" left="24"/>
+    </padding>
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="16">
+        <Label text="🎉 Active Offers" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #063154;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblOfferCount" text="0 offers" style="-fx-font-size: 14px; -fx-text-fill: #94A3B8;"/>
+    </HBox>
+
+    <!-- Offers Grid -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+        <FlowPane fx:id="offersGrid" hgap="16" vgap="16" 
+                  style="-fx-background-color: transparent; -fx-padding: 8;"/>
+    </ScrollPane>
+
+</VBox>

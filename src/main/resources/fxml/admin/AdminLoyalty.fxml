@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.controllers.admin.AdminLoyaltyController"
+      spacing="24" style="-fx-background-color: #F5F7FA;">
+    
+    <padding>
+        <Insets top="32" right="32" bottom="32" left="32"/>
+    </padding>
+
+    <!-- Header -->
+    <VBox spacing="8">
+        <Label text="Loyalty Program" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #1A202C;"/>
+        <Label text="Track customer loyalty and rewards" style="-fx-font-size: 14px; -fx-text-fill: #718096;"/>
+    </VBox>
+
+    <!-- Level Stats Cards -->
+    <HBox spacing="20">
+        <VBox spacing="3" style="-fx-background-color: linear-gradient(to bottom right, #CD7F32, #B87333); -fx-background-radius: 16; -fx-padding: 24; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 4);" HBox.hgrow="ALWAYS">
+            <Label text="🥉" style="-fx-font-size: 32px;"/>
+            <Label fx:id="bronzeCount" text="0" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label text="Bronze Members" style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.9); -fx-font-weight: 600;"/>
+            <Label text="4% discount" style="-fx-font-size: 12px; -fx-text-fill: rgba(255,255,255,0.6);"/>
+        </VBox>
+        
+        <VBox spacing="3" style="-fx-background-color: linear-gradient(to bottom right, #C0C0C0, #A8A8A8); -fx-background-radius: 16; -fx-padding: 24; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 4);" HBox.hgrow="ALWAYS">
+            <Label text="🥈" style="-fx-font-size: 32px;"/>
+            <Label fx:id="silverCount" text="0" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label text="Silver Members" style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.9); -fx-font-weight: 600;"/>
+            <Label text="9% discount" style="-fx-font-size: 12px; -fx-text-fill: rgba(255,255,255,0.6);"/>
+        </VBox>
+        
+        <VBox spacing="3" style="-fx-background-color: linear-gradient(to bottom right, #FFD700, #FFA500); -fx-background-radius: 16; -fx-padding: 24; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 4);" HBox.hgrow="ALWAYS">
+            <Label text="🥇" style="-fx-font-size: 32px;"/>
+            <Label fx:id="goldCount" text="0" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label text="Gold Members" style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.9); -fx-font-weight: 600;"/>
+            <Label text="15% discount" style="-fx-font-size: 12px; -fx-text-fill: rgba(255,255,255,0.6);"/>
+        </VBox>
+    </HBox>
+
+    <!-- Filters -->
+    <HBox spacing="16" alignment="CENTER_LEFT" style="-fx-background-color: white; -fx-background-radius: 16; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 2);">
+        <Label text="🔍" style="-fx-font-size: 20px;"/>
+        <TextField fx:id="searchField" promptText="Search by username or user ID..." 
+                   prefWidth="300"
+                   style="-fx-background-color: #F7FAFC; -fx-border-color: #E2E8F0; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 12; -fx-font-size: 13px;"/>
+        
+        <Separator orientation="VERTICAL" style="-fx-background-color: #E2E8F0;"/>
+        
+        <VBox spacing="4">
+            <Label text="Level" style="-fx-font-size: 11px; -fx-text-fill: #718096; -fx-font-weight: 600;"/>
+            <ComboBox fx:id="levelFilter" prefWidth="150"
+                      style="-fx-background-color: #F7FAFC; -fx-background-radius: 10;"/>
+        </VBox>
+        
+        <Region HBox.hgrow="ALWAYS"/>
+        
+        <Button fx:id="btnClearFilters" text="↻ Reset"
+                style="-fx-background-color: #EDF2F7; -fx-text-fill: #4A5568; -fx-font-weight: 600; -fx-background-radius: 10; -fx-padding: 12 20; -fx-cursor: hand;"/>
+    </HBox>
+
+    <!-- Users Grid -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+        <FlowPane fx:id="loyaltyGrid" hgap="40" vgap="70"
+                  style="-fx-background-color: transparent; -fx-padding: 4;"/>
+    </ScrollPane>
+
+</VBox>

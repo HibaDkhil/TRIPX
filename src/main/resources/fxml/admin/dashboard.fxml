@@ -83,7 +83,6 @@
                             </HBox>
                             <VBox fx:id="usersMenu" spacing="0" styleClass="submenu">
                                 <Button fx:id="usersBtn" text="Manage Users" styleClass="menu-item"/>
-                                <Button text="Roles &amp; Permissions" styleClass="menu-item"/>
                             </VBox>
                         </VBox>
 
@@ -116,7 +115,7 @@
                             </VBox>
                         </VBox>
 
-                        <!-- TRANSPORT SECTION - UPDATED WITH THREE SUBMENU BUTTONS -->
+                        <!-- TRANSPORT SECTION -->
                         <VBox spacing="0" styleClass="menu-section">
                             <HBox fx:id="transportHeader" alignment="CENTER_LEFT" spacing="10" styleClass="menu-header" onMouseClicked="#toggleTransportMenu">
                                 <Label text="🚗" styleClass="menu-icon"/>
@@ -131,16 +130,20 @@
                             </VBox>
                         </VBox>
 
-                        <!-- OFFERS SECTION -->
+                        <!-- PACKS & OFFERS SECTION - NEW -->
                         <VBox spacing="0" styleClass="menu-section">
-                            <HBox fx:id="offersHeader" alignment="CENTER_LEFT" spacing="10" styleClass="menu-header" onMouseClicked="#toggleOffersMenu">
-                                <Label text="🎯" styleClass="menu-icon"/>
-                                <Label text="Offers" styleClass="menu-title"/>
+                            <HBox fx:id="packsHeader" alignment="CENTER_LEFT" spacing="10" styleClass="menu-header" onMouseClicked="#togglePacksMenu">
+                                <Label text="📦" styleClass="menu-icon"/>
+                                <Label text="Packs &amp; Offers" styleClass="menu-title"/>
                                 <Region HBox.hgrow="ALWAYS"/>
-                                <Button fx:id="offersToggle" text="▶" styleClass="menu-toggle" mouseTransparent="true"/>
+                                <Button fx:id="packsToggle" text="▶" styleClass="menu-toggle" mouseTransparent="true"/>
                             </HBox>
-                            <VBox fx:id="offersMenu" spacing="0" styleClass="submenu">
-                                <Button fx:id="offersBtn" text="Manage Offers" styleClass="menu-item"/>
+                            <VBox fx:id="packsMenu" spacing="0" styleClass="submenu">
+                                <Button fx:id="btnManagePacks" text="Manage Packs" styleClass="menu-item" onAction="#showManagePacks"/>
+                                <Button fx:id="btnManageOffers" text="Manage Offers" styleClass="menu-item" onAction="#showManageOffers"/>
+                                <Button fx:id="btnManageCategories" text="Manage Categories" styleClass="menu-item" onAction="#showManageCategories"/>
+                                <Button fx:id="btnLoyaltyPoints" text="Loyalty Points" styleClass="menu-item" onAction="#showLoyaltyPoints"/>
+                                <Button fx:id="btnBookedPacks" text="Pack Bookings" styleClass="menu-item" onAction="#showBookedPacks"/>
                             </VBox>
                         </VBox>
 
@@ -217,12 +220,6 @@
                     </HBox>
                     <Region HBox.hgrow="ALWAYS"/>
                     <HBox alignment="CENTER_RIGHT" spacing="12" styleClass="header-actions">
-                        <TextField promptText="Search across modules..." styleClass="global-search"/>
-                        <StackPane styleClass="notification-badge">
-                            <Button text="🔔" styleClass="notification-btn"/>
-                            <Circle radius="5" styleClass="notification-dot"/>
-                        </StackPane>
-
                         <!-- SETTINGS BUTTON -->
                         <Button fx:id="headerSettingsBtn" text="⚙️" styleClass="header-settings-btn"/>
 

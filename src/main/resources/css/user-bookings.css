@@ -1,0 +1,24 @@
+/* User Bookings Filter Toggles */
+.filter-toggle {
+    -fx-background-color: transparent;
+    -fx-text-fill: #64748B;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-padding: 10 20;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+}
+
+.filter-toggle:hover {
+    -fx-background-color: #F7FAFC;
+}
+
+.filter-toggle:selected {
+    -fx-background-color: #667eea;
+    -fx-text-fill: white;
+}
+
+.filter-toggle:selected:hover {
+    -fx-background-color: #5568d3;
+}

@@ -42,3 +42,5 @@ build/
 .env.local
 *.env
 config/google/credentials.json
+config/google/tokens/
+config/google/tokens/StoredCredential

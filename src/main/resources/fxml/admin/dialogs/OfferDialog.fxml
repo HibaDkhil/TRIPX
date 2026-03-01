@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.controllers.admin.OfferDialogController"
+      spacing="16" style="-fx-background-color: white; -fx-padding: 24;">
+
+    <Label fx:id="dialogTitle" text="Add New Offer" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #063154;"/>
+    
+    <Separator/>
+    
+    <GridPane hgap="16" vgap="12">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="35"/>
+            <ColumnConstraints percentWidth="65"/>
+        </columnConstraints>
+        
+        <!-- Row 0: Title -->
+        <Label text="Offer Title:" style="-fx-font-weight: 600;" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="txtTitle" promptText="e.g., Summer Sale" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                   style="-fx-background-color: #F5F7FA; -fx-background-radius: 8; -fx-padding: 10;"/>
+        
+        <!-- Row 1: Description -->
+        <Label text="Description:" style="-fx-font-weight: 600;" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextArea fx:id="txtDescription" promptText="Describe the offer..." prefRowCount="2"
+                  GridPane.columnIndex="1" GridPane.rowIndex="1"
+                  style="-fx-background-color: #F5F7FA; -fx-background-radius: 8;"/>
+        
+        <!-- Row 2: Discount Type -->
+        <Label text="Discount Type:" style="-fx-font-weight: 600;" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <ComboBox fx:id="cmbDiscountType" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                  style="-fx-background-color: #F5F7FA; -fx-background-radius: 8;"/>
+        
+        <!-- Row 3: Discount Value -->
+        <Label text="Discount Value:" style="-fx-font-weight: 600;" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <TextField fx:id="txtDiscountValue" promptText="10 or 10.5" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                   style="-fx-background-color: #F5F7FA; -fx-background-radius: 8; -fx-padding: 10;"/>
+        
+        <!-- Row 4: Applies To (Radio buttons) -->
+        <Label text="Applies To:" style="-fx-font-weight: 600;" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <fx:define>
+                <ToggleGroup fx:id="appliesTo"/>
+            </fx:define>
+            <RadioButton fx:id="rbPack" text="Specific Pack" toggleGroup="$appliesTo"/>
+            <RadioButton fx:id="rbDestination" text="All Packs to a Destination" toggleGroup="$appliesTo"/>
+            <RadioButton fx:id="rbAccommodation" text="All Packs with an Accommodation" toggleGroup="$appliesTo"/>
+        </VBox>
+        
+        <!-- Row 5: Selection ComboBox (changes based on radio) -->
+        <Label text="Select:" style="-fx-font-weight: 600;" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <ComboBox fx:id="cmbSelection" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="5"
+                  style="-fx-background-color: #F5F7FA; -fx-background-radius: 8;"/>
+        
+        <!-- Row 6: Start Date -->
+        <Label text="Start Date:" style="-fx-font-weight: 600;" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+        <DatePicker fx:id="dpStartDate" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="6"
+                    style="-fx-background-color: #F5F7FA; -fx-background-radius: 8;"/>
+        
+        <!-- Row 7: End Date -->
+        <Label text="End Date:" style="-fx-font-weight: 600;" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+        <DatePicker fx:id="dpEndDate" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="7"
+                    style="-fx-background-color: #F5F7FA; -fx-background-radius: 8;"/>
+        
+        <!-- Row 8: Active -->
+        <Label text="Active:" style="-fx-font-weight: 600;" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+        <CheckBox fx:id="chkActive" text="Offer is active" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+    </GridPane>
+    
+    <Separator/>
+    
+    <!-- Buttons -->
+    <HBox spacing="12" alignment="CENTER_RIGHT">
+        <Button fx:id="btnCancel" text="Cancel" 
+                style="-fx-background-color: #E8EAF6; -fx-text-fill: #063154; -fx-font-weight: 600; -fx-background-radius: 8; -fx-padding: 10 24; -fx-cursor: hand;"/>
+        <Button fx:id="btnSave" text="Save Offer" 
+                style="-fx-background-color: #0A4174; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 10 24; -fx-cursor: hand;"/>
+    </HBox>
+
+</VBox>

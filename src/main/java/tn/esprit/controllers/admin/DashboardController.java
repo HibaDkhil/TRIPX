@@ -36,9 +36,9 @@ public class DashboardController {
     @FXML private HBox accommodationsHeader;
     @FXML private HBox destinationsHeader;
     @FXML private HBox transportHeader;
-    @FXML private HBox offersHeader;
     @FXML private HBox blogHeader;
     @FXML private HBox profileHeaderSection;
+    @FXML private HBox packsHeader; // Added for Packs section
 
     // Menu toggles (triangles)
     @FXML private Button dashboardToggle;
@@ -46,8 +46,8 @@ public class DashboardController {
     @FXML private Button accommodationsToggle;
     @FXML private Button destinationsToggle;
     @FXML private Button transportToggle;
-    @FXML private Button offersToggle;
     @FXML private Button blogToggle;
+    @FXML private Button packsToggle; // Added for Packs section
 
     // Menu containers
     @FXML private VBox dashboardMenu;
@@ -55,8 +55,8 @@ public class DashboardController {
     @FXML private VBox accommodationsMenu;
     @FXML private VBox destinationsMenu;
     @FXML private VBox transportMenu;
-    @FXML private VBox offersMenu;
     @FXML private VBox blogMenu;
+    @FXML private VBox packsMenu; // Added for Packs section
 
     // Menu buttons (for navigation)
     @FXML private Button overviewBtn;
@@ -71,7 +71,13 @@ public class DashboardController {
     @FXML private Button manageSchedulesBtn;
     @FXML private Button manageBookingsBtn;
 
-    @FXML private Button offersBtn;
+    // Packs & Offers submenu buttons
+    @FXML private Button btnManagePacks;
+    @FXML private Button btnManageOffers;
+    @FXML private Button btnManageCategories;
+    @FXML private Button btnLoyaltyPoints;
+    @FXML private Button btnBookedPacks;
+
     @FXML private Button blogBtn;
     @FXML private Button sidebarBookingBtn;
 
@@ -138,8 +144,8 @@ public class DashboardController {
         setMenuLocked(destinationsHeader,    destinationsMenu,    !superAdmin && !hasAccess("destinations"));
         setMenuLocked(accommodationsHeader,  accommodationsMenu,  !superAdmin && !hasAccess("accommodations"));
         setMenuLocked(transportHeader,       transportMenu,       !superAdmin && !hasAccess("transport"));
-        setMenuLocked(offersHeader,          offersMenu,          !superAdmin && !hasAccess("offers"));
         setMenuLocked(blogHeader,            blogMenu,            !superAdmin && !hasAccess("blog"));
+        setMenuLocked(packsHeader,            packsMenu,          !superAdmin && !hasAccess("packs"));
     }
 
     /** Dim and block interaction on a menu section if locked. */
@@ -169,7 +175,7 @@ public class DashboardController {
             case "adminaccomodation" -> module.equals("accommodations");
             case "admintransport"   -> module.equals("transport");
             case "adminblog"        -> module.equals("blog");
-            case "adminoffers"      -> module.equals("offers");
+            case "adminoffers"      -> module.equals("offers") || module.equals("packs");
             default -> false;
         };
     }
@@ -292,13 +298,13 @@ public class DashboardController {
     }
 
     @FXML
-    private void toggleOffersMenu(MouseEvent event) {
-        toggleMenu(offersMenu, offersToggle);
+    private void toggleBlogMenu(MouseEvent event) {
+        toggleMenu(blogMenu, blogToggle);
     }
 
     @FXML
-    private void toggleBlogMenu(MouseEvent event) {
-        toggleMenu(blogMenu, blogToggle);
+    private void togglePacksMenu(MouseEvent event) {
+        toggleMenu(packsMenu, packsToggle);
     }
 
     private void toggleMenu(VBox menu, Button toggleButton) {
@@ -323,7 +329,13 @@ public class DashboardController {
         if (manageSchedulesBtn != null) manageSchedulesBtn.setOnAction(e -> showTransportSchedules());
         if (manageBookingsBtn != null) manageBookingsBtn.setOnAction(e -> showTransportBookings());
 
-        offersBtn.setOnAction(e -> showOffers());
+        // Packs & Offers navigation
+        if (btnManagePacks != null) btnManagePacks.setOnAction(e -> showManagePacks());
+        if (btnManageOffers != null) btnManageOffers.setOnAction(e -> showManageOffers());
+        if (btnManageCategories != null) btnManageCategories.setOnAction(e -> showManageCategories());
+        if (btnLoyaltyPoints != null) btnLoyaltyPoints.setOnAction(e -> showLoyaltyPoints());
+        if (btnBookedPacks != null) btnBookedPacks.setOnAction(e -> showBookedPacks());
+
         blogBtn.setOnAction(e -> showBlog());
         if (sidebarBookingBtn != null) sidebarBookingBtn.setOnAction(e -> showBookings());
     }
@@ -362,7 +374,8 @@ public class DashboardController {
     private void resetAllMenuItems() {
         Button[] allButtons = {overviewBtn, usersBtn, destinationsBtn, activitiesBtn,
                 accommodationsBtn, accommodationBookingsBtn, manageTransportBtn,
-                manageSchedulesBtn, manageBookingsBtn, offersBtn, blogBtn, sidebarBookingBtn};
+                manageSchedulesBtn, manageBookingsBtn, btnManagePacks, btnManageOffers,
+                btnManageCategories, btnLoyaltyPoints, btnBookedPacks, blogBtn, sidebarBookingBtn};
         for (Button btn : allButtons) {
             if (btn != null) btn.getStyleClass().remove("active");
         }
@@ -393,9 +406,21 @@ public class DashboardController {
         } else if (button == manageBookingsBtn) {
             breadcrumb1.setText("Transport");
             breadcrumb2.setText("Manage Bookings");
-        } else if (button == offersBtn) {
+        } else if (button == btnManagePacks) {
+            breadcrumb1.setText("Packs");
+            breadcrumb2.setText("Manage Packs");
+        } else if (button == btnManageOffers) {
             breadcrumb1.setText("Offers");
             breadcrumb2.setText("Manage Offers");
+        } else if (button == btnManageCategories) {
+            breadcrumb1.setText("Categories");
+            breadcrumb2.setText("Manage Categories");
+        } else if (button == btnLoyaltyPoints) {
+            breadcrumb1.setText("Loyalty");
+            breadcrumb2.setText("Points Management");
+        } else if (button == btnBookedPacks) {
+            breadcrumb1.setText("Packs");
+            breadcrumb2.setText("Pack Bookings");
         } else if (button == blogBtn) {
             breadcrumb1.setText("Blog");
             breadcrumb2.setText("Blog & Community");
@@ -615,6 +640,103 @@ public class DashboardController {
         }
     }
 
+    // ============ PACKS & OFFERS NAVIGATION METHODS ============
+
+    /**
+     * Show Manage Packs view
+     */
+    @FXML
+    private void showManagePacks() {
+        if (!hasAccess("packs")) { showAccessDenied("Packs"); return; }
+        setActiveButton(btnManagePacks);
+        loadPacksView("/fxml/admin/AdminPacks.fxml", "Packs", "Manage Packs");
+    }
+
+    /**
+     * Show Manage Offers view
+     */
+    @FXML
+    private void showManageOffers() {
+        if (!hasAccess("offers")) { showAccessDenied("Offers"); return; }
+        setActiveButton(btnManageOffers);
+        loadPacksView("/fxml/admin/AdminOffers.fxml", "Offers", "Manage Offers");
+    }
+
+    /**
+     * Show Manage Categories view
+     */
+    @FXML
+    private void showManageCategories() {
+        if (!hasAccess("packs")) { showAccessDenied("Categories"); return; }
+        setActiveButton(btnManageCategories);
+        loadPacksView("/fxml/admin/AdminCategories.fxml", "Categories", "Manage Categories");
+    }
+
+    /**
+     * Show Loyalty Points view
+     */
+    @FXML
+    private void showLoyaltyPoints() {
+        if (!hasAccess("packs")) { showAccessDenied("Loyalty Points"); return; }
+        setActiveButton(btnLoyaltyPoints);
+        loadPacksView("/fxml/admin/AdminLoyalty.fxml", "Loyalty", "Points Management");
+    }
+
+    /**
+     * Show Booked Packs view
+     */
+    @FXML
+    private void showBookedPacks() {
+        if (!hasAccess("packs")) { showAccessDenied("Pack Bookings"); return; }
+        setActiveButton(btnBookedPacks);
+        loadPacksView("/fxml/admin/AdminPacksBookings.fxml", "Packs", "Pack Bookings");
+    }
+
+    /**
+     * Load a packs module view into the main content area
+     */
+    private void loadPacksView(String fxmlPath, String breadcrumb1Text, String breadcrumb2Text) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Node view = loader.load();
+
+            // If the controller needs the current user/role, set it here
+            Object controller = loader.getController();
+
+            // Use reflection to call setCurrentUser and setUserRole if they exist
+            try {
+                java.lang.reflect.Method setUserMethod = controller.getClass().getMethod("setCurrentUser", User.class);
+                setUserMethod.invoke(controller, currentUser);
+            } catch (NoSuchMethodException e) {
+                // Method doesn't exist, ignore
+            } catch (Exception e) {
+                logger.warning("Could not set user on controller: " + e.getMessage());
+            }
+
+            try {
+                java.lang.reflect.Method setRoleMethod = controller.getClass().getMethod("setUserRole", String.class);
+                setRoleMethod.invoke(controller, role);
+            } catch (NoSuchMethodException e) {
+                // Method doesn't exist, ignore
+            } catch (Exception e) {
+                logger.warning("Could not set role on controller: " + e.getMessage());
+            }
+
+            mainContent.getChildren().clear();
+            mainContent.getChildren().add(view);
+
+            // Update breadcrumbs
+            breadcrumb1.setText(breadcrumb1Text);
+            breadcrumb2.setText(breadcrumb2Text);
+
+            logger.info("Loaded " + fxmlPath);
+        } catch (IOException e) {
+            logger.severe("Error loading view: " + e.getMessage());
+            e.printStackTrace();
+            showError("Error loading " + breadcrumb1Text + " view: " + e.getMessage());
+        }
+    }
+
     private Node adaptModuleViewForDashboard(Node loadedView) {
         if (loadedView instanceof StackPane stackPane && !stackPane.getChildren().isEmpty()) {
             Node child = stackPane.getChildren().get(0);
@@ -633,28 +755,6 @@ public class DashboardController {
             }
         }
         return loadedView;
-    }
-
-    private void showOffers() {
-        if (!hasAccess("offers")) { showAccessDenied("Offers"); return; }
-        setActiveButton(offersBtn);
-
-        /* INTEGRATION: Future Offers Module
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin/offers_management.fxml"));
-            Node view = loader.load();
-            mainContent.getChildren().clear();
-            mainContent.getChildren().add(view);
-        } catch (IOException e) {
-            e.printStackTrace();
-            showError("Error loading Offers Management: " + e.getMessage());
-        }
-        */
-
-        mainContent.getChildren().clear();
-        Label label = new Label("Offers Management Module");
-        label.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-font-family: 'Poppins';");
-        mainContent.getChildren().add(label);
     }
 
     private void showBlog() {

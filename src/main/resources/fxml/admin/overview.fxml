@@ -1,126 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
 
-<ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-border-width: 0;"
-            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fitToWidth="true"
+            style="-fx-background-color: #F5F7FA; -fx-background: #F5F7FA; -fx-border-color: transparent;"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.admin.OverviewController">
     <content>
-        <VBox spacing="25" style="-fx-padding: 20 40;">
-
-            <!-- TITLE -->
-            <VBox spacing="5">
-                <Label style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-font-family: 'Poppins';"
-                       text="Dashboard Overview" />
-                <Label style="-fx-font-size: 14px; -fx-text-fill: #777; -fx-font-family: 'Poppins';"
-                       text="Quick statistics and platform activity" />
-            </VBox>
-
-            <!-- STAT CARDS -->
-            <HBox spacing="25">
-                <VBox alignment="CENTER" prefHeight="160" prefWidth="180" spacing="10"
-                      style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-                    <Circle fill="#4cccad" radius="28" />
-                    <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" text="1,250" />
-                    <Label style="-fx-text-fill: #666; -fx-font-family: 'Poppins';" text="Total Users" />
-                </VBox>
-
-                <VBox alignment="CENTER" prefHeight="160" prefWidth="180" spacing="10"
-                      style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-                    <Circle fill="#6c63ff" radius="28" />
-                    <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" text="320" />
-                    <Label style="-fx-text-fill: #666; -fx-font-family: 'Poppins';" text="Destinations" />
-                </VBox>
-
-                <VBox alignment="CENTER" prefHeight="160" prefWidth="180" spacing="10"
-                      style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-                    <Circle fill="#ffb703" radius="28" />
-                    <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" text="540" />
-                    <Label style="-fx-text-fill: #666; -fx-font-family: 'Poppins';" text="Bookings" />
-                </VBox>
-
-                <VBox alignment="CENTER" prefHeight="160" prefWidth="180" spacing="10"
-                      style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-                    <Circle fill="#ef476f" radius="28" />
-                    <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" text="87%" />
-                    <Label style="-fx-text-fill: #666; -fx-font-family: 'Poppins';" text="Satisfaction" />
-                </VBox>
-            </HBox>
-
-            <!-- PLATFORM RULES -->
-            <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 25; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-                <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" text="📋 Platform Rules &amp; Guidelines" />
-
-                <VBox spacing="10">
-                    <HBox spacing="10">
-                        <Label style="-fx-text-fill: #4cccad;" text="🔹" />
-                        <Label style="-fx-font-family: 'Poppins'; -fx-text-fill: #555;" text="All users must verify their email before booking" />
-                    </HBox>
-                    <HBox spacing="10">
-                        <Label style="-fx-text-fill: #4cccad;" text="🔹" />
-                        <Label style="-fx-font-family: 'Poppins'; -fx-text-fill: #555;" text="Refund requests must be submitted within 48 hours" />
-                    </HBox>
-                    <HBox spacing="10">
-                        <Label style="-fx-text-fill: #4cccad;" text="🔹" />
-                        <Label style="-fx-font-family: 'Poppins'; -fx-text-fill: #555;" text="Content moderation required for all community posts" />
-                    </HBox>
-                    <HBox spacing="10">
-                        <Label style="-fx-text-fill: #4cccad;" text="🔹" />
-                        <Label style="-fx-font-family: 'Poppins'; -fx-text-fill: #555;" text="Admin approval needed for new destination listings" />
-                    </HBox>
-                    <HBox spacing="10">
-                        <Label style="-fx-text-fill: #4cccad;" text="🔹" />
-                        <Label style="-fx-font-family: 'Poppins'; -fx-text-fill: #555;" text="Monthly performance review every 1st of the month" />
-                    </HBox>
-                </VBox>
-            </VBox>
-
-            <!-- RECENT ACTIVITY -->
-            <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 25; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-                <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" text="📈 Recent Activity" />
-
-                <VBox spacing="10">
-                    <HBox spacing="15" style="-fx-padding: 10; -fx-background-color: #f9f9f9; -fx-background-radius: 10;">
-                        <Label style="-fx-font-size: 16px;" text="🆕" />
-                        <VBox>
-                            <Label style="-fx-font-family: 'Poppins'; -fx-font-weight: 500;" text="New user registration" />
-                            <Label style="-fx-font-family: 'Poppins'; -fx-text-fill: #777; -fx-font-size: 12px;" text="2 hours ago" />
-                        </VBox>
-                    </HBox>
-
-                    <HBox spacing="15" style="-fx-padding: 10; -fx-background-color: #f9f9f9; -fx-background-radius: 10;">
-                        <Label style="-fx-font-size: 16px;" text="✅" />
-                        <VBox>
-                            <Label style="-fx-font-family: 'Poppins'; -fx-font-weight: 500;" text="Booking confirmed: Paris Trip #BKT-4582" />
-                            <Label style="-fx-font-family: 'Poppins'; -fx-text-fill: #777; -fx-font-size: 12px;" text="5 hours ago" />
-                        </VBox>
-                    </HBox>
-
-                    <HBox spacing="15" style="-fx-padding: 10; -fx-background-color: #f9f9f9; -fx-background-radius: 10;">
-                        <Label style="-fx-font-size: 16px;" text="⚠️" />
-                        <VBox>
-                            <Label style="-fx-font-family: 'Poppins'; -fx-font-weight: 500;" text="System alert: High traffic detected" />
-                            <Label style="-fx-font-family: 'Poppins'; -fx-text-fill: #777; -fx-font-size: 12px;" text="Yesterday, 3:45 PM" />
-                        </VBox>
-                    </HBox>
-                </VBox>
-            </VBox>
-
-            <!-- QUICK ACTIONS -->
-            <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 25; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-                <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-font-family: 'Poppins';" text="⚡ Quick Actions" />
-                <HBox spacing="15">
-                    <Button mnemonicParsing="false" style="-fx-background-color: #4cccad; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 10 20; -fx-cursor: hand;" text="Generate Report" />
-                    <Button mnemonicParsing="false" style="-fx-background-color: #001737; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 10 20; -fx-cursor: hand;" text="Manage Tickets" />
-                    <Button mnemonicParsing="false" style="-fx-background-color: #ef476f; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 10 20; -fx-cursor: hand;" text="System Check" />
-                </HBox>
-            </VBox>
-
+        <VBox fx:id="contentBox" spacing="24"
+              style="-fx-background-color: #F5F7FA; -fx-font-family: 'Poppins', 'Inter', 'Segoe UI', 'Arial';">
+            <padding>
+                <Insets top="30" right="40" bottom="40" left="40"/>
+            </padding>
         </VBox>
     </content>
 </ScrollPane>
